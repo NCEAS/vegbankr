@@ -12,63 +12,96 @@
 
 ## ✨ Types of contributions
 
-We welcome all types of contributions, including bug fixes, feature enhancements,
-bug reports, documentation, graphics, and many others.  You might consider contributing by:
+We welcome all types of contributions, including bug fixes, feature
+enhancements, bug reports, documentation, graphics, and many others. You
+might consider contributing by:
 
-- Report a bug or request a new feature in our [issue tracker](https://github.com/DataONEorg/REPONAME/issues)
+- Report a bug or request a new feature in our [issue tracker](https://github.com/NCEAS/vegbankr/issues)
 - Fix a bug and contribute the code with a Pull Request
 - Write or edit some documentation
 - Sharing helpful tips or FAQ-type answers to users or future contributors
 - Create screenshots or tutorials of features of MetacatUI
-- Answer questions on DataONE Discussions
+- Answer questions on [VegBank Discussions](https://github.com/NCEAS/vegbank2/discussions)
 - ...
 
-This is an open source project, and we welcome full
-participation in the project.  Contributions are reviewed and suggestions are
-made to increase value to the community.  We strive to
-incorporate code, documentation, and other useful contributions quickly and
-efficiently while maintaining a high-quality software product.
+This is an open source project, and we welcome full participation in the
+project. Contributions are reviewed and suggestions are made to increase
+value to the community. We strive to incorporate code, documentation,
+and other useful contributions quickly and efficiently while maintaining
+a high-quality software product.
 
 ## 📤 Pull Requests
-We use the pull-request model for contributions. See [GitHub's help on pull-requests](https://help.github.com/articles/about-pull-requests/).
+We use the pull-request model for contributions. See [GitHub's help on
+pull-requests](https://help.github.com/articles/about-pull-requests/).
 
 In short:
 
-- add an [issue](https://github.com/DataONEorg/REPONAME/issues) describing your planned changes, or add a comment to an existing issue;
-- on GitHub, fork the [repository](https://github.com/DataONEorg/REPONAME)
+- add an [issue](https://github.com/NCEAS/vegbankr/issues) describing
+  your planned changes, or add a comment to an existing issue;
+- on GitHub, fork the [repository](https://github.com/NCEAS/vegbankr)
 - on your computer, clone your forked copy of the repository
 - base your work on the `develop` branch and commit your changes
 - push your branch to your forked repository, and submit a pull-request
 - our team will be notified of your Pull Request and will review your changes
-- our team may request changes before we will approve the Pull Request, or we will make them for you
-- once the code is reviewed, our team will merge in your changes to `develop` for the next planned release
+- our team may request changes before we will approve the Pull Request,
+  or we will make them for you
+- once the code is reviewed, our team will merge in your changes to
+  `develop` for the next planned release
 
 ## 🚀 Development Workflow
 
-Development is managed through the git repository at https://github.com/DataONEorg/REPONAME.  The repository is organized into several branches, each with a specific purpose.  
+Development is managed through the git repository at
+https://github.com/NCEAS/vegbankr. The repository is organized into
+several branches, each with a specific purpose.
 
-**main**. The `main` branch represents the stable branch that is constantly maintained with the current release.  It should generally be safe to install and use the `main` branch the same way as binary releases. The version number in all configuration files and the README on the `main` branch follows [semantic versioning](https://semver.org/) and should always be set to the current stable release, for example `2.8.5`.
+**main**. The `main` branch represents the stable branch that is
+constantly maintained with the current release. It should generally be
+safe to install and use the `main` branch the same way as binary
+releases. The version number in all configuration files and the README
+on the `main` branch follows [semantic versioning](https://semver.org/)
+and should always be set to the current stable release, for example
+`2.8.5`.
 
-**develop**. Development takes place on a single branch for integrated development and testing of the set of features
-targeting the next release. Commits should only be pushed to this branch once they are ready to be deployed to
-production immediately after being pushed. This keeps the `develop` branch in a state of readiness for the next release.
-Any unreleased code changes on the `develop` branch represent changes that have been tested and staged for the next 
-release. 
-The tip of the `develop` branch always represents the set of features that are awaiting the next release. The develop
-branch represents the opportunity to integrate changes from multiple features for integrated testing before release.
+**develop**. Development takes place on a single branch for integrated
+development and testing of the set of features targeting the next
+release. Commits should only be pushed to this branch once they are
+ready to be deployed to production immediately after being pushed. This
+keeps the `develop` branch in a state of readiness for the next release.
+Any unreleased code changes on the `develop` branch represent changes
+that have been tested and staged for the next release.  The tip of the
+`develop` branch always represents the set of features that are awaiting
+the next release. The develop branch represents the opportunity to
+integrate changes from multiple features for integrated testing before
+release.
 
-Version numbers on the `develop` branch represent either the planned next release number (e.g., `2.9.0`), or the planned next release number with a `beta` designator or release candidate `rc` designator appended as appropriate.  For example, `2.8.6-beta1` or `2.9.0-rc1`.
+Version numbers on the `develop` branch represent either the planned
+next release number (e.g., `2.9.0`), or the planned next release number
+with a `beta` designator or release candidate `rc` designator appended
+as appropriate. For example, `2.8.6-beta1` or `2.9.0-rc1`.
 
 **feature**. To isolate development on a specific set of capabilities, especially if it may be disruptive to other 
 developers working on the `develop` branch, feature branches should be created.
 
-Feature branches are named as `feature-` + `{issue}` +  `-{short-description}`, with `{issue}` being the GitHub issue number related to that new feature. e.g. `feature-23-refactor-storage`.
+Feature branches are named as `feature-` + `{issue}` +
+`-{short-description}`, with `{issue}` being the GitHub issue number
+related to that new feature. e.g. `feature-23-refactor-storage`.
 
-All `feature-*` branches should be frequently merged with changes from `develop` to
-ensure that the branch stays up to date with other features that have
-been tested and are awaiting release.  Thus, each `feature-*` branch can be tested on its own before it is merged with other features on develop, and afterwards as well. Once a feature is complete and ready for full integration testing, it is generally merged into the `develop` branch after review through a pull request.
+All `feature-*` branches should be frequently merged with changes from
+`develop` to ensure that the branch stays up to date with other features
+that have been tested and are awaiting release. Thus, each `feature-*`
+branch can be tested on its own before it is merged with other features
+on develop, and afterwards as well. Once a feature is complete and ready
+for full integration testing, it is generally merged into the `develop`
+branch after review through a pull request.
 
-**bugfix**. A final branch type are `bugfix` branches, which work the same as feature branches, but fix bugs rather than adding new functionality. Sometimes it is hard to distinguish features from bug fixes, so some repositories may choose to use `feature` branches for both types of change. Bugfix branches are named similarly, following the pattern: `bugfix-` + `{issue}` +  `-{short-description}`, with `{issue}` being the GitHub issue number related to that bug. e.g. `bugfix-83-fix-name-display`.
+**bugfix**. A final branch type are `bugfix` branches, which work the
+same as feature branches, but fix bugs rather than adding new
+functionality. Sometimes it is hard to distinguish features from bug
+fixes, so some repositories may choose to use `feature` branches for
+both types of change. Bugfix branches are named similarly, following the
+pattern: `bugfix-` + `{issue}` + `-{short-description}`, with `{issue}`
+being the GitHub issue number related to that bug. e.g.
+`bugfix-83-fix-name-display`.
 
 ### Development flow overview
 
@@ -106,40 +139,46 @@ gitGraph
 
 ## 🔀 Release process
 
-1. Our release process starts with integration testing in a `develop` branch. Once all
-changes that are desired in a release are merged into the `develop` branch, we run
-the full set of tests on a clean checkout of the `develop` branch.
-2. After testing, the `develop` branch is merged to main, and the `main` branch is tagged with
-the new version number (e.g. `2.11.2`). At this point, the tip of the `main` branch will 
-reflect the new release and the `develop` branch can be fast-forwarded to sync with `main` to 
-start work on the next release.
-3. Releases can be downloaded from the [GitHub releases page](https://github.com/DataONEorg/REPONAME/releases).
+1. Our release process starts with integration testing in a `develop`
+   branch. Once all changes that are desired in a release are merged
+   into the `develop` branch, we run the full set of tests on a clean
+   checkout of the `develop` branch.
+2. After testing, the `develop` branch is merged to main, and the `main`
+   branch is tagged with the new version number (e.g. `2.11.2`). At this
+   point, the tip of the `main` branch will reflect the new release and
+   the `develop` branch can be fast-forwarded to sync with `main` to
+   start work on the next release.
+3. Releases can be downloaded from the [GitHub releases
+   page](https://github.com/NCEAS/vegbankr/releases).
 
 ## 🔬 Testing
 
-**Unit and integration tests**. We maintain a full suite of tests in the `tests` subdirectory.
-Any new code developed should include a robust set of tests for each public
-method, as well as integration tests from new feature sets.  Tests should fully
-exercise the feature to ensure that it responds correctly to both good data inputs
-and various classes of corrupt or bad data.  All tests should pass before submitting a PR
-or merging to `develop`.
+**Unit and integration tests**. We maintain a full suite of tests in the
+`tests` subdirectory. Any new code developed should include a robust set
+of tests for each public method, as well as integration tests from new
+feature sets. Tests should fully exercise the feature to ensure that it
+responds correctly to both good data inputs and various classes of
+corrupt or bad data. All tests should pass before submitting a PR or
+merging to `develop`.
 
-Tests are automatically run via GitHub Actions. Check the root `README.md` file
-for this GitHub Actions status badge and make sure it says "Passing":
+Tests are automatically run via GitHub Actions. Check the root
+`README.md` file for e GitHub Actions status badge and make sure it
+says "Passing".
 
 ## 🎨 Code style
 
-Code should be written to professional standards to enable clean, well-documented,
-readable, and maintainable software.  While there has been significant variability
-in the coding styles applied historically, new contributions should strive for
-clean code formatting.  We generally follow PEP8 guidelines for Python code formatting,
-typically enforced through the `black` code formatting package.
+Code should be written to professional standards to enable clean,
+well-documented, readable, and maintainable software. While there has
+been significant variability in the coding styles applied historically,
+new contributions should strive for clean code formatting. We generally
+follow PEP8 guidelines for Python code formatting, typically enforced
+through the `black` code formatting package.
 
 ## 📄 Contributor license agreement
 
-In order to clarify the intellectual property license
-granted with Contributions from any person or entity, you agree to
-a Contributor License Agreement ("CLA") with the Regents of the University of
+In order to clarify the intellectual property license granted with
+Contributions from any person or entity, you agree to a Contributor
+License Agreement ("CLA") with the Regents of the University of
 California (hereafter, the "Regents").
 
 1. Definitions.
@@ -198,7 +237,7 @@ California (hereafter, the "Regents").
    your Contributions to the Regents, or that your employer has
    executed a separate Corporate CLA with the Regents.
 5. You represent that each of Your Contributions is Your original
-   creation (see section 7 for submissions on behalf of others).  You
+   creation (see section 7 for submissions on behalf of others). You
    represent that Your Contribution submissions include complete
    details of any third-party license or other restriction (including,
    but not limited to, related patents and trademarks) of which you

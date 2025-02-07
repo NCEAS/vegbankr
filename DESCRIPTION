@@ -1,0 +1,29 @@
+Package: vegbankr
+Title: Interface to the VegBank Vegetation Plot Database
+Version: 0.0.1
+Authors@R: c(
+    person("Jim", "Regetz",
+           email = "regetz@nceas.ucsb.edu",
+           role = c("aut", "cre"),
+           comment=c(ORCID = "0009-0008-2666-6229"))
+    )
+Description: Provides a programmatic interface to VegBank, the
+    vegetation plot database of the Ecological Society of America's
+    Panel on Vegetation Classification, hosted by the National Center
+    for Ecological Analysis and Synthesis (NCEAS;
+    <https://www.nceas.ucsb.edu>). VegBank contains vegetation plot
+    data, community types recognized by the U.S. National Vegetation
+    Classification and others, and all ITIS/USDA plant taxa along with
+    other taxa recorded in plot records. As a VegBank API client, the
+    'vegbankr' package supports querying, downloading, validating, and
+    uploading vegetation plot records and other supporting information
+    to and from the VegBank database.
+License: Apache License (>= 2) | file LICENSE
+URL: https://github.com/NCEAS/vegbankr
+BugReports: https://github.com/NCEAS/vegbankr/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    httr2,
+    jsonlite
