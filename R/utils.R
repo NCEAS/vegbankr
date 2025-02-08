@@ -2,7 +2,7 @@
 #'
 #' Sets a global option specifying the base URL for the VegBank API
 #' using the provided `vb_base_url` string, optionally adding a port as
-#' "http(s)://{vb_base_url}:{port}".
+#' "http(s)://vb_base_url:port".
 #'
 #' @param vb_base_url (character) The base URL, including protocol and domain
 #' @param port (numeric) Optional port value

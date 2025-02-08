@@ -14,7 +14,7 @@ set_vb_base_url(vb_base_url, port)
 \description{
 Sets a global option specifying the base URL for the VegBank API
 using the provided \code{vb_base_url} string, optionally adding a port as
-"http(s)://{vb_base_url}:{port}".
+"http(s)://vb_base_url:port".
 }
 \examples{
 set_vb_base_url("https://api.vegbank.org")
