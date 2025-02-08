@@ -1,7 +1,7 @@
 with_mock_api({
   test_that("get_plot() works", {
     old_base <- get_vb_base_url()
-    set_vb_base_url(NULL)
+    suppressMessages(set_vb_base_url(NULL))
 
     expect_GET(
       get_plot("some_accession_code"),
@@ -14,6 +14,6 @@ with_mock_api({
     expect_named(response, c("accessioncode", "latitude",
       "longitude", "plot_id"), ignore.order=TRUE)
 
-    set_vb_base_url(old_base)
+    suppressMessages(set_vb_base_url(old_base))
   })
 })
