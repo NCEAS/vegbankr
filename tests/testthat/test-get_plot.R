@@ -1,6 +1,3 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
 with_mock_api({
   test_that("get_plot() works", {
     old_base <- get_vb_base_url()

@@ -1,6 +1,3 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
 test_that("default vb_base_url is used", {
     old_base <- get_vb_base_url()
     set_vb_base_url("")
