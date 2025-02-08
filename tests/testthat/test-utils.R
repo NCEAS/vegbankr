@@ -10,3 +10,9 @@ test_that("vb_base_url option set", {
     expect_equal(get_vb_base_url(), "http://localhost:8080")
     set_vb_base_url(old_base)
 })
+test_that("set_vb_base_url(NULL) reports default URL", {
+    old_base <- get_vb_base_url()
+    expect_message(set_vb_base_url(NULL),
+                   "Using https://api.vegbank.org as base URL")
+    set_vb_base_url(old_base)
+})
