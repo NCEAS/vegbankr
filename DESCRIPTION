@@ -5,7 +5,11 @@ Authors@R: c(
     person("Jim", "Regetz",
            email = "regetz@nceas.ucsb.edu",
            role = c("aut", "cre"),
-           comment=c(ORCID = "0009-0008-2666-6229"))
+           comment=c(ORCID = "0009-0008-2666-6229")),
+    person("Matthew B.", "Jones",
+           email = "jones@nceas.ucsb.edu",
+           role = c("aut"),
+           comment=c(ORCID = "0000-0003-0077-4738"))
     )
 Description: Provides a programmatic interface to VegBank, the
     vegetation plot database of the Ecological Society of America's
