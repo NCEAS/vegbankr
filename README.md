@@ -1,46 +1,61 @@
-## Product: This is a dataone tagline for the product
+## vegbankr: An R client for the VegBank API
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/NCEAS/vegbankr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NCEAS/vegbankr/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
-- **Authors**: Last, First (ORCID); ...
+- **Authors**: Jim Regetz, Matthew B. Jones
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
-- [Package source code on GitHub](https://github.com/DataONEorg/reponame)
-- [**Submit Bugs and feature requests**](https://github.com/DataONEorg/reponame/issues)
-- Contact us: support@dataone.org
-- [DataONE discussions](https://github.com/DataONEorg/dataone/discussions)
+- [Package source code on GitHub](https://github.com/NCEAS/vegbankr)
+- [**Submit Bugs and feature requests**](https://github.com/NCEAS/vegbankr/issues)
+- Contact us: help@vegbank.org
+- [VegBank discussions](https://github.com/NCEAS/vegbank2/discussions)
 
-*Product overview goes here.* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+This package is an R client for VegBank, the vegetation plot database of
+the Ecological Society of America's Panel on Vegetation Classification,
+hosted by the [National Center for Ecological Analysis and
+Synthesis](https://www.nceas.ucsb.edu) (NCEAS). VegBank contains
+vegetation plot data, community types recognized by the U.S.  National
+Vegetation Classification and others, and all ITIS/USDA plant taxa along
+with other taxa recorded in plot records. As a VegBank API client, the
+'vegbankr' package supports querying, downloading, validating, and
+uploading vegetation plot records and other supporting information to
+and from the VegBank database.
 
-DataONE in general, and HashStore in particular, are open source, community projects.  We [welcome contributions](./CONTRIBUTING.md) in many forms, including code, graphics, documentation, bug reports, testing, etc.  Use the [DataONE discussions](https://github.com/DataONEorg/dataone/discussions) to discuss these contributions with us.
-
+VegBank in general, and the vegbankr package in particular, are open
+source, community projects. We [welcome contributions](./CONTRIBUTING.md)
+in many forms, including code, data, documentation, bug reports,
+testing, etc. Use the [VegBank
+discussions](https://github.com/NCEAS/vegbank2/discussions) to discuss
+these contributions with us.
 
 ## Documentation
 
-Documentation is a work in progress, and can be found ...
+Documentation is a work in progress, and is included in the package
+using standard R package documentation mechanisms.
 
 ## Development build
 
-This is a python package, and built using the [Python Poetry](https://python-poetry.org) build tool.
+This is an R package, and built using ...
 
-To install locally, create a virtual environment for python 3.9+, 
-install poetry, and then install or build the package with `poetry install` or `poetry build`, respectively.
+To install locally, ...
 
-To run tests, navigate to the root directory and run `pytest -s`. The test suite contains tests that
-take a longer time to run (relating to the storage of large files) - to execute all tests, run
-`pytest --run-slow`. To see detailed
+To run tests, ...
 
 ## Usage Example
 
-To view more details about the Public API - see 'hashstore.py` interface documentation
+To view more details about the VegBank API ... you'll just have to wait.
+It's still in development!
 
-```py
-from product import Product
+```r
+# Don't try this at home yet
+library(vegbankr)
 
-# Example code here...
-
+plots <- get_plot("<accession_code>")
 ```
 
 ## License
 ```
-Copyright [2024] [Regents of the University of California]
+Copyright [2025] [Regents of the University of California]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -58,8 +73,8 @@ limitations under the License.
 ## Acknowledgements
 Work on this package was supported by:
 
-- DataONE Network
-- Arctic Data Center: NSF-PLR grant #2042102 to M. B. Jones, A. Budden, M. Schildhauer, and J. Dozier
+- California Department of Fish and Wildlife
+- The ESA Panel on Vegetation Classification
 
 Additional support was provided for collaboration by the National Center for Ecological Analysis and Synthesis, a Center funded by the University of California, Santa Barbara, and the State of California.
 
