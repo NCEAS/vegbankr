@@ -9,12 +9,12 @@
 #' @returns NULL
 #' @examples
 #' set_vb_base_url("https://api.vegbank.org")
-#' set_vb_base_url("http://localhost", port=8080)
+#' set_vb_base_url("http://localhost", port = 8080)
 #' @seealso [get_vb_base_url()]
 #' @export
 set_vb_base_url <- function(vb_base_url, port) {
   if (!missing(port)) {
-    vb_base_url <- paste(vb_base_url, port, sep=":")
+    vb_base_url <- paste(vb_base_url, port, sep = ":")
   }
   options(vegbank.base_api_url = vb_base_url)
   message("Using ", get_vb_base_url(), " as base URL")

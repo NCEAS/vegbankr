@@ -18,7 +18,7 @@ using the provided \code{vb_base_url} string, optionally adding a port as
 }
 \examples{
 set_vb_base_url("https://api.vegbank.org")
-set_vb_base_url("http://localhost", port=8080)
+set_vb_base_url("http://localhost", port = 8080)
 }
 \seealso{
 \code{\link[=get_vb_base_url]{get_vb_base_url()}}
