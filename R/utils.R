@@ -37,3 +37,47 @@ get_vb_base_url <- function() {
   }
   getOption("vegbank.base_api_url")
 }
+
+#' Canonicalize VegBank column names (i.e. convert to snake_case), using
+#' a package-provided lookup table by default
+#'
+#' Takes a data frame of VegBank records, and canonicalizes the column
+#' names by converting them to snake_case via a package-provided
+#' lookup_table. If any column names in the input data frame are
+#' unmatched in the lookup table, these are left unaltered in the
+#' output, and a warning message is displayed.
+#'
+#' Callers may optionally provide a lookup table
+#'
+#' @param target_df (dataframe)
+#' @param lookup_df (dataframe) Optional custom names lookup table
+#' @returns A data frame matching the input data frame, but with
+#' canonicalized column names
+#' @examples
+#' canonicalize_names(data.frame(
+#'   stratum_ID = integer(),
+#'   stratummethodname = character()
+#' ))
+#' @export
+canonicalize_names <- function(target_df, lookup_df) {
+  if (missing(lookup_df)) {
+    lookup_file <- system.file("canonical-name-lookup.txt",
+                               package = "vegbankr")
+    lookup_df <- read.csv(lookup_file)
+  }
+  original_names <- tolower(names(target_df))
+  augmented_names <- data.frame(lower=original_names) %>%
+    dplyr::left_join(lookup_df, by=dplyr::join_by(lower))
+  if (any(is.na(augmented_names$snake))) {
+     warning("Unmatched names: ",
+       paste(augmented_names %>%
+               dplyr::filter(is.na(snake)) %>%
+               dplyr::pull(lower),
+             collapse=", "))
+  }
+  canonicalized_names <- augmented_names %>%
+    dplyr::mutate(canonical=dplyr::coalesce(snake, lower)) %>%
+    dplyr::pull(canonical)
+  names(target_df) <- canonicalized_names
+  return(target_df)
+}
