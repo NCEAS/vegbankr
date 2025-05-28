@@ -58,26 +58,27 @@ get_vb_base_url <- function() {
 #'   stratum_ID = integer(),
 #'   stratummethodname = character()
 #' ))
+#' @importFrom rlang .data
 #' @export
 canonicalize_names <- function(target_df, lookup_df) {
   if (missing(lookup_df)) {
     lookup_file <- system.file("canonical-name-lookup.txt",
                                package = "vegbankr")
-    lookup_df <- read.csv(lookup_file)
+    lookup_df <- utils::read.csv(lookup_file)
   }
   original_names <- tolower(names(target_df))
   augmented_names <- data.frame(lower=original_names) %>%
-    dplyr::left_join(lookup_df, by=dplyr::join_by(lower))
+    dplyr::left_join(lookup_df, by=dplyr::join_by("lower"))
   if (any(is.na(augmented_names$snake))) {
      warning("Unmatched names: ",
        paste(augmented_names %>%
-               dplyr::filter(is.na(snake)) %>%
-               dplyr::pull(lower),
+               dplyr::filter(is.na(.data$snake)) %>%
+               dplyr::pull(.data$lower),
              collapse=", "))
   }
   canonicalized_names <- augmented_names %>%
-    dplyr::mutate(canonical=dplyr::coalesce(snake, lower)) %>%
-    dplyr::pull(canonical)
+    dplyr::mutate(canonical=dplyr::coalesce(.data$snake, .data$lower)) %>%
+    dplyr::pull(.data$canonical)
   names(target_df) <- canonicalized_names
   return(target_df)
 }
