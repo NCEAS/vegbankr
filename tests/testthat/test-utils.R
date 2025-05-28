@@ -44,3 +44,34 @@ test_that("canonicalize_names() works", {
   expect_s3_class(output_df, "data.frame")
   expect_named(output_df, "custom_field")
 })
+
+with_mock_api({
+  test_that("as_vb_dataframe() works", {
+
+    local_base_url(NULL)
+
+    # response with record count of 0
+    zero_response <- request(get_vb_base_url()) |>
+      req_url_path_append('plot') |>
+      req_url_path_append('zero_records') |>
+      req_headers(Accept = "application/json") |>
+      req_perform()
+    expect_message(
+      zero_records <- as_vb_dataframe(zero_response),
+      "No records returned")
+    expect_s3_class(zero_records, "data.frame")
+    expect_identical(nrow(zero_records), 0L)
+
+    # response with error
+    error_response <- request(get_vb_base_url()) |>
+      req_url_path_append('plot') |>
+      req_url_path_append('error_response') |>
+      req_headers(Accept = "application/json") |>
+      req_perform()
+    expect_warning(
+      error_output <- as_vb_dataframe(error_response),
+      "API error: something went wrong")
+    expect_null(error_output)
+
+  })
+})

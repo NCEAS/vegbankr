@@ -13,13 +13,11 @@
 #' @export
 get_plot <- function(accession_code) {
   resource <- "plot"
-  response <- request(get_vb_base_url()) |>
+  request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_path_append(accession_code) |>
-    req_headers(Accept = "application/json") |>
-    req_perform()
-  plot <- response |>
-    resp_body_string() |>
-    jsonlite::fromJSON(flatten = TRUE)
-  return(plot)
+    req_headers(Accept = "application/json")
+  response <- request |> req_perform()
+  vb_data <- as_vb_dataframe(response)
+  return(vb_data)
 }
