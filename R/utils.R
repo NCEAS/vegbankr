@@ -37,3 +37,83 @@ get_vb_base_url <- function() {
   }
   getOption("vegbank.base_api_url")
 }
+
+#' Canonicalize VegBank column names (i.e. convert to snake_case), using
+#' a package-provided lookup table by default
+#'
+#' Takes a data frame of VegBank records, and canonicalizes the column
+#' names by converting them to snake_case via a package-provided
+#' lookup_table. If any column names in the input data frame are
+#' unmatched in the lookup table, these are left unaltered in the
+#' output, and a warning message is displayed.
+#'
+#' Callers may optionally provide a lookup table
+#'
+#' @param target_df (dataframe)
+#' @param lookup_df (dataframe) Optional custom names lookup table
+#' @returns A data frame matching the input data frame, but with
+#' canonicalized column names
+#' @examples
+#' canonicalize_names(data.frame(
+#'   stratum_ID = integer(),
+#'   stratummethodname = character()
+#' ))
+#' @importFrom rlang .data
+#' @export
+canonicalize_names <- function(target_df, lookup_df) {
+  if (missing(lookup_df)) {
+    lookup_file <- system.file("canonical-name-lookup.txt",
+                               package = "vegbankr")
+    lookup_df <- utils::read.csv(lookup_file)
+  }
+  original_names <- tolower(names(target_df))
+  augmented_names <- data.frame(lower=original_names) %>%
+    dplyr::left_join(lookup_df, by=dplyr::join_by("lower"))
+  if (any(is.na(augmented_names$snake))) {
+     warning("Unmatched names: ",
+       paste(augmented_names %>%
+               dplyr::filter(is.na(.data$snake)) %>%
+               dplyr::pull(.data$lower),
+             collapse=", "))
+  }
+  canonicalized_names <- augmented_names %>%
+    dplyr::mutate(canonical=dplyr::coalesce(.data$snake, .data$lower)) %>%
+    dplyr::pull(.data$canonical)
+  names(target_df) <- canonicalized_names
+  return(target_df)
+}
+
+#' Transform VegBank response into a data frame
+#'
+#' Transforms a VegBank API response into a data frame, canonicalizing
+#' names by default. If the API returns an error (indicated by a
+#' top-level "error" key in the JSON response), the error message is
+#' displayed as an R warning, and `NULL` is returned. If API returns a
+#' non-error response with a reported record count of 0, an informative
+#' message is displayed, and an empty data frame is returned.
+#'
+#' @param response VegBank API response object
+#' @param clean_names (logical) VegBank API response object
+#'
+#' @noRd
+as_vb_dataframe <- function(response, clean_names = TRUE) {
+  response_list <- response |>
+    resp_body_string() |>
+    jsonlite::fromJSON(flatten = TRUE)
+  if ("error" %in% names(response_list)) {
+     warning("API error: ", response_list[["error"]], call. = FALSE)
+     return(invisible(NULL))
+  } else if ("count" %in% names(response_list) &&
+             response_list[["count"]] == 0) {
+     message("No records returned")
+     return(invisible(data.frame()))
+  }
+  response_data <- response_list[["data"]]
+  if (length(response_data) == 0) {
+    return(as.data.frame(response_data))
+  }
+  if (clean_names) {
+    response_data <- canonicalize_names(response_data)
+  }
+  return(response_data)
+}
