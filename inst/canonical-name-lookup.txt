@@ -393,7 +393,6 @@ placename,place_name
 placesystem,place_system
 plantcode,plant_code
 plantconcept_id,plant_concept_id
-plantconcept_id,plantconcept_id
 plantconceptstatus,plant_concept_status
 plantconvergence,plant_convergence
 plantcorrelation_id,plant_correlation_id
@@ -452,6 +451,7 @@ reallatitude,real_latitude
 reallongitude,real_longitude
 recordcreationdate,record_creation_date
 reference_id,reference_id
+referenceaccessioncode,reference_accession_code
 referencealtident_id,reference_alt_ident_id
 referencecontributor_id,reference_contributor_id
 referencejournal_id,reference_journal_id
