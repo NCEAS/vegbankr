@@ -110,6 +110,7 @@ as_vb_dataframe <- function(response, clean_names = TRUE) {
   }
   response_data <- response_list[["data"]]
   if (length(response_data) == 0) {
+    message("No records returned")
     return(as.data.frame(response_data))
   }
   if (clean_names) {
