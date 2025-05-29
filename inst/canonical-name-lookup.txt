@@ -291,6 +291,7 @@ landform,landform
 landscapenarrative,landscape_narrative
 last_connect,last_connect
 lastcheckdate,last_check_date
+lastplotaddeddate,last_plot_added_date
 latitude,latitude
 layoutnarrative,layout_narrative
 lichenquality,lichen_quality
