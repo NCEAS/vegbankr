@@ -153,17 +153,19 @@ get_resource_by_code <- function(resource, accession_code) {
 #' @param limit Query result limit
 #' @param offset Query result offset
 #' @param detail Level of detail ("minimal", "full")
+#' @param ... Additional API query parameters
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
-                              detail = c("minimal", "full")) {
+                              detail = c("minimal", "full"), ...) {
   detail <- match.arg(detail)
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_query(detail = detail,
                   limit = limit,
                   offset = offset) |>
+    req_url_query(!!!list(...)) |>
     req_headers(Accept = "application/json")
   response <- request |> req_perform()
   vb_data <- as_vb_dataframe(response)

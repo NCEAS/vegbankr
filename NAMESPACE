@@ -2,8 +2,10 @@
 
 export(canonicalize_names)
 export(get_all_plot_observations)
+export(get_all_taxon_observations)
 export(get_plot)
 export(get_plot_observation)
+export(get_taxon_observation)
 export(get_vb_base_url)
 export(set_vb_base_url)
 import(httr2)
