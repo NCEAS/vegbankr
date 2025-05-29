@@ -1,0 +1,17 @@
+{
+    "count": 114635,
+    "data": [
+        {
+            "authorobscode": "ACAD.143",
+            "authorplotcode": "ACAD.143",
+            "country": "United States",
+            "latitude": 44.346509409,
+            "longitude": -68.229339874,
+            "obsaccessioncode": "VB.Ob.2948.ACAD143",
+            "observation_id": 2948,
+            "plot_id": 3004,
+            "plotaccessioncode": "VB.Pl.3004.ACAD143",
+            "stateprovince": null
+        }
+    ]
+}

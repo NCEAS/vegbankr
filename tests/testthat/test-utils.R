@@ -99,3 +99,26 @@ with_mock_api({
 
   })
 })
+
+with_mock_api({
+  local_base_url(NULL)
+  test_that("get_all_resources() works", {
+    response <- get_all_resources("plot-observations",
+                                  detail="minimal", limit=1)
+    expect_s3_class(response, "data.frame")
+    expect_identical(nrow(response), 1L)
+    expect_named(
+      response,
+      c("obs_accession_code", "author_obs_code", "observation_id",
+        "plot_accession_code", "author_plot_code", "plot_id",
+        "latitude", "longitude", "country", "state_province"),
+      ignore.order = TRUE
+    )
+    expect_identical(response$obs_accession_code,
+                 "VB.Ob.2948.ACAD143")
+    expect_identical(response$longitude,
+                  -68.229339874)
+    expect_identical(response$state_province,
+                 NA)
+  })
+})

@@ -15,3 +15,22 @@ get_plot_observation <- function(accession_code) {
   resource <- "plot-observations"
   get_resource_by_code(resource, accession_code)
 }
+
+#' Get all plot observations
+#'
+#' Return a paginated set of plot observation records from VegBank.
+#'
+#' @return A data frame
+#' @param limit Number of records to return
+#' @param offset Number of records to skip
+#' @param detail Desired level of detail ("minimal", "full")
+#' @examples \dontrun{
+#' get_all_plot_observations()
+#' }
+#' @import httr2
+#' @export
+get_all_plot_observations <- function(limit=100, offset=0,
+    detail = c("minimal", "full")) {
+  resource <- "plot-observations"
+  get_all_resources(resource, limit, offset, detail)
+}

@@ -141,3 +141,30 @@ get_resource_by_code <- function(resource, accession_code) {
   vb_data <- as_vb_dataframe(response)
   return(vb_data)
 }
+
+#' Get all records for a VegBank resource
+#'
+#' Retrieves a dataframe containing "all" returned records (constrained
+#' by limit and offset) of the requested resource type, with possible
+#' control over the level of detail depending on the API endpoint.
+#'
+#' @param resource VegBank API resource (e.g., `plot-observation`)
+#' @param limit Query result limit
+#' @param offset Query result offset
+#' @param detail Level of detail ("minimal", "full")
+#' @return VegBank query results as a dataframe
+#'
+#' @noRd
+get_all_resources <- function(resource, limit=100, offset=0,
+                              detail = c("minimal", "full")) {
+  detail <- match.arg(detail)
+  request <- request(get_vb_base_url()) |>
+    req_url_path_append(resource) |>
+    req_url_query(detail = detail,
+                  limit = limit,
+                  offset = offset) |>
+    req_headers(Accept = "application/json")
+  response <- request |> req_perform()
+  vb_data <- as_vb_dataframe(response)
+  return(vb_data)
+}
