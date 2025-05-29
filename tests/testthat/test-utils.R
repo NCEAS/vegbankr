@@ -75,3 +75,27 @@ with_mock_api({
 
   })
 })
+
+with_mock_api({
+  local_base_url(NULL)
+  test_that("get_resource_by_code() works", {
+    response <- get_resource_by_code("plot-observations",
+                                     "VB.Ob.41618.50D47AJX5G5U8WY")
+    expect_s3_class(response, "data.frame")
+    expect_identical(nrow(response), 1L)
+    expect_named(
+      response,
+      c("observation_accession_code", "author_obs_code",
+        "obs_start_date", "max_slope_aspect", "max_slope_gradient",
+        "total_cover"),
+      ignore.order = TRUE
+    )
+    expect_identical(response$observation_accession_code,
+                 "VB.Ob.41618.50D47AJX5G5U8WY")
+    expect_identical(response$max_slope_aspect,
+                 -106.409918856452)
+    expect_identical(response$max_slope_gradient,
+                 NA)
+
+  })
+})

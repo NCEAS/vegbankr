@@ -117,3 +117,27 @@ as_vb_dataframe <- function(response, clean_names = TRUE) {
   }
   return(response_data)
 }
+
+#' Request a VegBank resource by accession code
+#'
+#' Transforms a VegBank API response into a data frame, canonicalizing
+#' names by default. If the API returns an error (indicated by a
+#' top-level "error" key in the JSON response), the error message is
+#' displayed as an R warning, and `NULL` is returned. If API returns a
+#' non-error response with a reported record count of 0, an informative
+#' message is displayed, and an empty data frame is returned.
+#'
+#' @param resource VegBank API resource (e.g., `plot-observations`)
+#' @param accession_code Resource accession code
+#' @return VegBank query results as a dataframe
+#'
+#' @noRd
+get_resource_by_code <- function(resource, accession_code) {
+  request <- request(get_vb_base_url()) |>
+    req_url_path_append(resource) |>
+    req_url_path_append(accession_code) |>
+    req_headers(Accept = "application/json")
+  response <- request |> req_perform()
+  vb_data <- as_vb_dataframe(response)
+  return(vb_data)
+}

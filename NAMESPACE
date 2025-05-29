@@ -2,6 +2,7 @@
 
 export(canonicalize_names)
 export(get_plot)
+export(get_plot_observation)
 export(get_vb_base_url)
 export(set_vb_base_url)
 import(httr2)
