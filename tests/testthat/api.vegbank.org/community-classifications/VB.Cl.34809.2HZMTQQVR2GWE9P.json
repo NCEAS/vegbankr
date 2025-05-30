@@ -1,0 +1,32 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "accessioncode": "VB.Cl.34809.2HZMTQQVR2GWE9P",
+            "classconfidence": null,
+            "classfit": null,
+            "classnotes": null,
+            "classpublication_id": 50596,
+            "classstartdate": null,
+            "classstopdate": null,
+            "commauthority_id": null,
+            "commclass_id": 34809,
+            "commcode": null,
+            "commconcept_id": 30617,
+            "commframework": null,
+            "comminterpretation_id": 33870,
+            "commlevel": null,
+            "commname": "Artemisia tridentata Shrubland Alliance",
+            "emb_commclass": 0,
+            "emb_comminterpretation": 0,
+            "expertsystem": null,
+            "inspection": false,
+            "multivariateanalysis": false,
+            "nomenclaturaltype": false,
+            "notes": null,
+            "observation_id": 41618,
+            "tableanalysis": false,
+            "type": false
+        }
+    ]
+}

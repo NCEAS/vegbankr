@@ -1,0 +1,24 @@
+{
+    "data": [
+        {
+            "accessioncode": "VB.TO.64982.LICHEN",
+            "authorplantname": "Lichen",
+            "emb_taxonobservation": 0,
+            "int_currplantcode": "2LICHN",
+            "int_currplantcommon": null,
+            "int_currplantconcept_id": 92413,
+            "int_currplantscifull": "Lichen",
+            "int_currplantscinamenoauth": null,
+            "int_origplantcode": "2LICHN",
+            "int_origplantcommon": null,
+            "int_origplantconcept_id": 92413,
+            "int_origplantscifull": "Lichen",
+            "int_origplantscinamenoauth": null,
+            "maxcover": 63.3125,
+            "observation_id": 2948,
+            "reference_id": 33,
+            "taxoninferencearea": null,
+            "taxonobservation_id": 64982
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "count": 3487,
+    "data": [
+        {
+            "accessioncode": null,
+            "contactinstructions": null,
+            "currentname_id": null,
+            "d_obscount": null,
+            "email": "admin@vegbank.org",
+            "givenname": null,
+            "middlename": null,
+            "organizationname": null,
+            "party_id": 1,
+            "partypublic": true,
+            "partytype": null,
+            "salutation": null,
+            "surname": "admin"
+        },
+        {
+            "accessioncode": "VB.py.191378.VOLUNTEER",
+            "contactinstructions": null,
+            "currentname_id": null,
+            "d_obscount": 1123,
+            "email": null,
+            "givenname": null,
+            "middlename": null,
+            "organizationname": null,
+            "party_id": 191378,
+            "partypublic": true,
+            "partytype": null,
+            "salutation": null,
+            "surname": "volunteer"
+        }
+    ]
+}

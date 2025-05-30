@@ -110,10 +110,64 @@ as_vb_dataframe <- function(response, clean_names = TRUE) {
   }
   response_data <- response_list[["data"]]
   if (length(response_data) == 0) {
+    message("No records returned")
     return(as.data.frame(response_data))
   }
   if (clean_names) {
     response_data <- canonicalize_names(response_data)
   }
   return(response_data)
+}
+
+#' Request a VegBank resource by accession code
+#'
+#' Transforms a VegBank API response into a data frame, canonicalizing
+#' names by default. If the API returns an error (indicated by a
+#' top-level "error" key in the JSON response), the error message is
+#' displayed as an R warning, and `NULL` is returned. If API returns a
+#' non-error response with a reported record count of 0, an informative
+#' message is displayed, and an empty data frame is returned.
+#'
+#' @param resource VegBank API resource (e.g., `plot-observations`)
+#' @param accession_code Resource accession code
+#' @return VegBank query results as a dataframe
+#'
+#' @noRd
+get_resource_by_code <- function(resource, accession_code) {
+  request <- request(get_vb_base_url()) |>
+    req_url_path_append(resource) |>
+    req_url_path_append(accession_code) |>
+    req_headers(Accept = "application/json")
+  response <- request |> req_perform()
+  vb_data <- as_vb_dataframe(response)
+  return(vb_data)
+}
+
+#' Get all records for a VegBank resource
+#'
+#' Retrieves a dataframe containing "all" returned records (constrained
+#' by limit and offset) of the requested resource type, with possible
+#' control over the level of detail depending on the API endpoint.
+#'
+#' @param resource VegBank API resource (e.g., `plot-observation`)
+#' @param limit Query result limit
+#' @param offset Query result offset
+#' @param detail Level of detail ("minimal", "full")
+#' @param ... Additional API query parameters
+#' @return VegBank query results as a dataframe
+#'
+#' @noRd
+get_all_resources <- function(resource, limit=100, offset=0,
+                              detail = c("minimal", "full"), ...) {
+  detail <- match.arg(detail)
+  request <- request(get_vb_base_url()) |>
+    req_url_path_append(resource) |>
+    req_url_query(detail = detail,
+                  limit = limit,
+                  offset = offset) |>
+    req_url_query(!!!list(...)) |>
+    req_headers(Accept = "application/json")
+  response <- request |> req_perform()
+  vb_data <- as_vb_dataframe(response)
+  return(vb_data)
 }
