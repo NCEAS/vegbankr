@@ -4,11 +4,7 @@
 \alias{get_plot_observation_details}
 \title{Get details for a plot observation}
 \usage{
-get_plot_observation_details(
-  accession_code,
-  sub_table_names = c("taxa", "communities"),
-  clean_names = TRUE
-)
+get_plot_observation_details(accession_code)
 }
 \arguments{
 \item{accession_code}{A plot observation accession code}
