@@ -171,3 +171,24 @@ get_all_resources <- function(resource, limit=100, offset=0,
   vb_data <- as_vb_dataframe(response)
   return(vb_data)
 }
+
+#' Coerce a list of JSON-like objects into a data frame
+#'
+#' Converts a list of named lists (typically parsed from JSON) into a
+#' data frame, replacing `NULL` values with `NA` to ensure proper row
+#' and column alignment. Used for manually processing API responses
+#' containing tabular data in JSON format.
+#'
+#' @param jsonlist A list of named lists, each representing a row of
+#'        data with consistent keys.
+#' @return A data frame with one row per element of `jsonlist` and one
+#'         column per key. `NULL` values in the input are coerced to
+#'         `NA` in the output.
+#'
+#' @noRd
+jsonlist2df <- function(jsonlist) {
+  do.call(rbind, lapply(jsonlist, function(x) {
+    x[sapply(x, is.null)] <- NA
+    as.data.frame(x, stringsAsFactors = FALSE)
+  }))
+}
