@@ -52,7 +52,7 @@ with_mock_api({
 
     # response with record count of 0
     zero_response <- request(get_vb_base_url()) |>
-      req_url_path_append('plot') |>
+      req_url_path_append('plot-observations') |>
       req_url_path_append('zero_records') |>
       req_headers(Accept = "application/json") |>
       req_perform()
@@ -64,7 +64,7 @@ with_mock_api({
 
     # response with error
     error_response <- request(get_vb_base_url()) |>
-      req_url_path_append('plot') |>
+      req_url_path_append('plot-observations') |>
       req_url_path_append('error_response') |>
       req_headers(Accept = "application/json") |>
       req_perform()
