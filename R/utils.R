@@ -38,6 +38,70 @@ get_vb_base_url <- function() {
   getOption("vegbank.base_api_url")
 }
 
+#' Enable VegBank API debugging mode
+#'
+#' Set VegBank debug level used when `send`ing API requests. This
+#' currently controls two things:
+#'  1. Verbosity of API requests, specifically as handled by
+#'     `httr::req_perform()`
+#'  2. Reporting of the elapsed time, as a console message
+#'
+#' @param verbosity Integer between 0-3 (Default: 1). Using 0 is
+#' equivalent to setting `vb_undebug()`, in which case no information is
+#' reported. Values between 1-3 control verbosity level passed to
+#' `httr2::req_perform()`, and in all cases include display of API
+#' request time duration.
+#'
+#' @seealso [vb_undebug()], [httr2::req_perform()]
+#' @export
+vb_debug <- function(verbosity=1) {
+  if (is.null(verbosity) || !is.atomic(verbosity) ||
+      length(verbosity) != 1 || is.na(verbosity) ||
+      !verbosity %in% 0:3) {
+    stop("verbosity must be 0, 1, 2, or 3")
+  }
+  if (verbosity == 0) {
+    vb_undebug()
+  } else {
+    options(vegbank.debug = verbosity)
+    message("Enabling VegBank debugging with verbosity ", verbosity)
+  }
+}
+
+#' Disable VegBank API debugging mode
+#'
+#' Unset VegBank debugging. Equivalent to `vb_debug(0)`.
+#'
+#' @seealso [vb_debug()]
+#' @export
+vb_undebug <- function() {
+  options(vegbank.debug = 0)
+  message("Disabling VegBank debugging")
+}
+
+#' Get VegBank API verbosity
+#'
+#' Gets the verbosity level (0-3) as set via the `vb_debug()` and
+#' `vb_undebug()` utilities. If the underlying option variable is set to
+#' something other than an integer between 0 and 3, this resets it to 0
+#' with a warning.
+#'
+#' @return Current verbosity
+#'
+#' @noRd
+vb_verbosity <- function() {
+  verbosity <- getOption("vegbank.debug")
+  if (is.null(verbosity)) {
+    return(0)
+  } else if (!verbosity %in% 0:3) {
+    warning("invalid verbosity level; disabling debug mode")
+    suppressMessages(vb_undebug())
+    return(0)
+  } else {
+    return(verbosity)
+  }
+}
+
 #' Canonicalize VegBank column names (i.e. convert to snake_case), using
 #' a package-provided lookup table by default
 #'
