@@ -15,6 +15,28 @@ test_that("set_vb_base_url(NULL) reports default URL", {
                  "Using https://api.vegbank.org as base URL")
 })
 
+with_mock_api({
+  test_that("send() works", {
+
+    local_base_url(NULL)
+    test_request <- request(get_vb_base_url()) |>
+      req_url_path_append('test')
+
+    # verbosity 0 -- httr2_response with no message
+    local_vb_debug(0)
+    expect_no_message(response <- send(test_request))
+    expect_s3_class(response, "httr2_response")
+
+    # verbosity 1 -- httr2_response with timing message
+    local_vb_debug(1)
+    expect_message(
+      response <- send(test_request),
+      "^API response time: [0-9]")
+    expect_s3_class(response, "httr2_response")
+
+  })
+})
+
 test_that("canonicalize_names() works", {
   # Input with all names matched in the package lookup table
   input_df <- data.frame(

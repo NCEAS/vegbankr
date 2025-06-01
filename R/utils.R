@@ -102,6 +102,32 @@ vb_verbosity <- function() {
   }
 }
 
+#' Send a request
+#'
+#' Light wrapper of httr::req_perform() that performs the request with
+#' higher verbosity if enabled via vb_debug(), and also calculates and
+#' reports the time taken to perform the request.
+#'
+#' @param request An httr2 request
+#' @return An httr2 response
+#'
+#' @noRd
+send <- function(request) {
+  verbosity <- vb_verbosity()
+  if (verbosity == 0) {
+    response <- req_perform(request)
+  } else {
+    start_time <- Sys.time()
+    response <- req_perform(request, verbosity=verbosity)
+    duration <- difftime(Sys.time(), start_time)
+    elapsed_time <- paste(format(unclass(duration),
+                                 digits = getOption("digits")),
+                          attr(duration, "units"))
+    message("API response time: ", elapsed_time)
+  }
+  return(response)
+}
+
 #' Canonicalize VegBank column names (i.e. convert to snake_case), using
 #' a package-provided lookup table by default
 #'
@@ -202,7 +228,7 @@ get_resource_by_code <- function(resource, accession_code) {
     req_url_path_append(resource) |>
     req_url_path_append(accession_code) |>
     req_headers(Accept = "application/json")
-  response <- request |> req_perform()
+  response <- send(request)
   vb_data <- as_vb_dataframe(response)
   return(vb_data)
 }
@@ -231,7 +257,7 @@ get_all_resources <- function(resource, limit=100, offset=0,
                   offset = offset) |>
     req_url_query(!!!list(...)) |>
     req_headers(Accept = "application/json")
-  response <- request |> req_perform()
+  response <- send(request)
   vb_data <- as_vb_dataframe(response)
   return(vb_data)
 }
