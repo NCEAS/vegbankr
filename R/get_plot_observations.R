@@ -56,7 +56,7 @@ get_plot_observation_details <- function(accession_code) {
     req_url_path_append(resource) |>
     req_url_path_append(accession_code) |>
     req_headers(Accept = "application/json")
-  response <- req_perform(request)
+  response <- send(request)
   response_json <- resp_body_json(response)[[1]]
   if (!"error" %in% names(response_json)) {
     df_list <- sapply(sub_table_names, function(table_name) {
