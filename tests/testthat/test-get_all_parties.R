@@ -6,19 +6,19 @@ with_mock_api({
     expect_GET(
       get_all_parties(),
       paste0(endpoint,
-             "?detail=minimal",
+             "?detail=full",
              "&limit=100",
              "&offset=0")
     )
     expect_GET(
-      get_all_parties(limit=5, offset=10, detail="full"),
+      get_all_parties(limit=5, offset=10),
       paste0(endpoint,
              "?detail=full",
              "&limit=5",
              "&offset=10")
     )
 
-    response <- get_all_parties(detail="minimal", limit=2)
+    response <- get_all_parties(limit=2)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 2L)
     expect_named(

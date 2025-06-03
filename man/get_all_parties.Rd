@@ -4,14 +4,12 @@
 \alias{get_all_parties}
 \title{Get all parties}
 \usage{
-get_all_parties(limit = 100, offset = 0, detail = c("minimal", "full"))
+get_all_parties(limit = 100, offset = 0)
 }
 \arguments{
 \item{limit}{Number of records to return}
 
 \item{offset}{Number of records to skip}
-
-\item{detail}{Desired level of detail ("minimal", "full")}
 }
 \value{
 A data frame

@@ -22,14 +22,13 @@ get_party <- function(accession_code) {
 #' @return A data frame
 #' @param limit Number of records to return
 #' @param offset Number of records to skip
-#' @param detail Desired level of detail ("minimal", "full")
 #' @examples \dontrun{
 #' get_all_parties()
 #' }
 #' @import httr2
 #' @export
-get_all_parties <- function(limit=100, offset=0,
-    detail = c("minimal", "full")) {
+get_all_parties <- function(limit=100, offset=0) {
   resource <- "parties"
+  detail <- "full"
   get_all_resources(resource, limit, offset, detail)
 }
