@@ -191,21 +191,28 @@ as_vb_dataframe <- function(response, clean_names = TRUE) {
     resp_body_string() |>
     jsonlite::fromJSON(flatten = TRUE)
   if ("error" %in% names(response_list)) {
-     warning("API error: ", response_list[["error"]], call. = FALSE)
-     return(invisible(NULL))
-  } else if ("count" %in% names(response_list) &&
-             response_list[["count"]] == 0) {
-     message("No records returned")
-     return(invisible(data.frame()))
+    warning("API error: ", response_list[["error"]], call. = FALSE)
+    return(invisible(NULL))
   }
   response_data <- response_list[["data"]]
   if (length(response_data) == 0) {
     message("No records returned")
-    return(as.data.frame(response_data))
-  }
-  if (clean_names) {
+    response_data <- as.data.frame(response_data)
+  } else if (clean_names) {
     response_data <- canonicalize_names(response_data)
   }
+  attr(response_data, "vb_count_returned") <- nrow(response_data)
+  if ("count" %in% names(response_list)) {
+    count <- response_list[["count"]]
+    if (!is.atomic(count) || length(count) != 1 ||
+        is.na(count) || !is.numeric(count) || count < 0) {
+      warning("API returned an invalid count")
+      count <- NULL
+    }
+  } else {
+    count <- NULL
+  }
+  attr(response_data, "vb_count_reported") <- count
   return(response_data)
 }
 
@@ -259,7 +266,36 @@ get_all_resources <- function(resource, limit=100, offset=0,
     req_headers(Accept = "application/json")
   response <- send(request)
   vb_data <- as_vb_dataframe(response)
+  attr(vb_data, "vb_limit") <- limit
+  attr(vb_data, "vb_offset") <- offset
   return(vb_data)
+}
+
+#' Get paging details for a VegBank dataframe
+#'
+#' Reports paging details associated with a dataframe produced by
+#' querying an VegBank API endpoint with limit/offset-based pagination.
+#'
+#' @param x Dataframe, presumably returned by a VegBank getter
+#' @return Named vector with the following elements, if available (any
+#'         of these values not attached to the data frame will simply be
+#'         missing from the returned vector):
+#'  * count_reported: the full record count reported by the API
+#'  * offset: the record offset used in the API query
+#'  * limit: the record limit used in the API query
+#'  * count_returned: the actual count of returned records
+#' @examples \dontrun{
+#' parties <- get_all_parties(limit=10, offset=50)
+#' get_page_details(parties)
+#' }
+#' @export
+get_page_details <- function(x) {
+  return(c(
+    count_reported = attr(x, "vb_count_reported", exact = TRUE),
+    offset = attr(x, "vb_offset", exact = TRUE),
+    limit = attr(x, "vb_limit", exact = TRUE),
+    count_returned = attr(x, "vb_count_returned", exact = TRUE)
+    ))
 }
 
 #' Coerce a list of JSON-like objects into a data frame
