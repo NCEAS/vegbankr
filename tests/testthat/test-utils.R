@@ -95,6 +95,18 @@ with_mock_api({
       "API error: something went wrong")
     expect_null(error_output)
 
+    # response with invalid record count
+    invalid_count_response <- request(get_vb_base_url()) |>
+      req_url_path_append('invalid-count') |>
+      req_headers(Accept = "application/json") |>
+      req_perform()
+    expect_warning(
+      vb_df <- as_vb_dataframe(invalid_count_response),
+      "API returned an invalid count")
+    expect_s3_class(vb_df, "data.frame")
+    expect_identical(nrow(vb_df), 3L)
+    expect_null(attr(vb_df, "vb_count_reported"))
+
   })
 })
 
@@ -142,5 +154,33 @@ with_mock_api({
                   -68.229339874)
     expect_identical(response$state_province,
                  NA)
+  })
+})
+
+test_that("get_page_details() extracts the expected attributes", {
+  df <- data.frame()
+  attr(df, "vb_offset") <- 100
+  attr(df, "vb_limit") <- 50
+  attr(df, "vb_count_reported") <- 125
+  attr(df, "vb_count_returned") <- 25
+  page_details <- get_page_details(df)
+  expected <- c(count_reported = 125,
+                offset = 100,
+                limit = 50,
+                count_returned = 25)
+  expect_identical(page_details, expected)
+})
+
+with_mock_api({
+  local_base_url(NULL)
+  test_that("get_all_resources() returns expected page details", {
+    response <- get_all_resources("test-count",
+                                  limit=50, offset=2)
+    page_details <- get_page_details(response)
+    expected <- c(count_reported = 5,
+                  offset = 2,
+                  limit = 50,
+                  count_returned = 3)
+    expect_identical(page_details, expected)
   })
 })
