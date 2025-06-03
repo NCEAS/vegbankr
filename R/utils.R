@@ -273,19 +273,22 @@ get_all_resources <- function(resource, limit=100, offset=0,
 
 #' Get paging details for a VegBank dataframe
 #'
-#' Extracts paging parameters from a dataframe built using any VegBank
-#' API endpoints that use limit/offset-based pagination.
+#' Reports paging details associated with a dataframe produced by
+#' querying an VegBank API endpoint with limit/offset-based pagination.
 #'
 #' @param x Dataframe, presumably returned by a VegBank getter
 #' @return Named vector with the following elements, if available (any
-#' of these values not attached to the data frame will simply be missing
-#' from the returned vector):
+#'         of these values not attached to the data frame will simply be
+#'         missing from the returned vector):
 #'  * count_reported: the full record count reported by the API
 #'  * offset: the record offset used in the API query
 #'  * limit: the record limit used in the API query
 #'  * count_returned: the actual count of returned records
-#'
-#' @noRd
+#' @examples \dontrun{
+#' parties <- get_all_parties(limit=10, offset=50)
+#' get_page_details(parties)
+#' }
+#' @export
 get_page_details <- function(x) {
   return(c(
     count_reported = attr(x, "vb_count_reported", exact = TRUE),
