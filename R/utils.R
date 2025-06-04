@@ -108,11 +108,25 @@ vb_verbosity <- function() {
 #' higher verbosity if enabled via vb_debug(), and also calculates and
 #' reports the time taken to perform the request.
 #'
+#' If the API responds with an error condition, this wrapper will
+#' attempt to extract an error message from the response, else will use
+#' a generic message. This will be added to the standard httr2 error
+#' messaging, and an R error will be raised.
+#'
 #' @param request An httr2 request
 #' @return An httr2 response
 #'
 #' @noRd
 send <- function(request) {
+  error_body <- function(resp) {
+    tryCatch(resp_body_json(resp)$error$message,
+      error = function(msg) {
+        return("No additional error details from server.")
+      }
+    )
+  }
+  request <- request |> req_error(body = error_body)
+
   verbosity <- vb_verbosity()
   if (verbosity == 0) {
     response <- req_perform(request)
