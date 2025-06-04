@@ -7,12 +7,13 @@ with_mock_api({
       "https://api.vegbank.org/get_observation_details/some_accession_code"
     )
 
-    expect_warning(
-       error_response <- get_plot_observation_details("unknown_accession_code"),
-       "No observation found with that accession code.",
+    expect_message(
+       zero_records <- get_plot_observation_details("zero_records"),
+       "No records returned",
        fixed = TRUE
     )
-    expect_null(error_response)
+    expect_type(zero_records, "list")
+    expect_identical(length(zero_records), 0L)
 
     response <- get_plot_observation_details("VB.Ob.41618.50D47AJX5G5U8WY")
     expect_type(response, "list")

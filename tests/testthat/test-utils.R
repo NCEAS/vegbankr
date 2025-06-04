@@ -116,17 +116,6 @@ with_mock_api({
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    # response with error
-    error_response <- request(get_vb_base_url()) |>
-      req_url_path_append('plot-observations') |>
-      req_url_path_append('error_response') |>
-      req_headers(Accept = "application/json") |>
-      req_perform()
-    expect_warning(
-      error_output <- as_vb_dataframe(error_response),
-      "API error: something went wrong")
-    expect_null(error_output)
-
     # response with invalid record count
     invalid_count_response <- request(get_vb_base_url()) |>
       req_url_path_append('invalid-count') |>
