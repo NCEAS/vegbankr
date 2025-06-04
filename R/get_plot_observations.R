@@ -57,19 +57,24 @@ get_plot_observation_details <- function(accession_code) {
     req_url_path_append(accession_code) |>
     req_headers(Accept = "application/json")
   response <- send(request)
-  response_json <- resp_body_json(response)[[1]]
-  if (!"error" %in% names(response_json)) {
+  response_json <- resp_body_json(response)
+  if ("error" %in% names(response_json)) {
+    warning(response_json[["error"]], call. = FALSE)
+    invisible(NULL)
+  } else {
+    if (length(response_json[["data"]]) == 0) {
+      message("No records returned")
+      return(invisible(list()))
+    }
+    json_record <- response_json[["data"]][[1]]
     df_list <- sapply(sub_table_names, function(table_name) {
-        jsonlist2df(response_json[[table_name]])
+        jsonlist2df(json_record[[table_name]])
       }, simplify=FALSE)
-    obs_data_jsonlist <- response_json[!names(response_json) %in%
-                                       sub_table_names]
+    obs_data_jsonlist <- json_record[!names(json_record) %in%
+                                     sub_table_names]
     obs_df <- jsonlist2df(list(obs_data_jsonlist))
     df_list <- append(df_list, list(plot_observation=obs_df), after = 0)
     df_list <- sapply(df_list, canonicalize_names)
     return(df_list)
-  } else {
-    warning(response_json[["error"]], call. = FALSE)
-    invisible(NULL)
   }
 }
