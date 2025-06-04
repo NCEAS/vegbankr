@@ -327,8 +327,9 @@ get_page_details <- function(x) {
 #'
 #' @noRd
 jsonlist2df <- function(jsonlist) {
-  do.call(rbind, lapply(jsonlist, function(x) {
-    x[sapply(x, is.null)] <- NA
-    as.data.frame(x, stringsAsFactors = FALSE)
-  }))
+  do.call(rbind.data.frame,
+    lapply(jsonlist, function(record) {
+      replace(record, sapply(record, is.null, USE.NAMES=FALSE), NA)
+    })
+  )
 }
