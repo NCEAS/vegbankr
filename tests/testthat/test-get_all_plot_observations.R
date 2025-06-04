@@ -31,5 +31,15 @@ with_mock_api({
                   -68.229339874)
     expect_identical(response$state_province,
                  NA)
+
+    expect_error(
+      get_all_plot_observations(limit="foo"),
+      "limit must be a finite, non-negative integer")
+    expect_error(
+      get_all_plot_observations(offset=-1),
+      "offset must be a finite, non-negative integer")
+    expect_error(
+      get_all_plot_observations(detail="invalid_value"),
+      "'arg' should be one of \"minimal\", \"full\"")
   })
 })

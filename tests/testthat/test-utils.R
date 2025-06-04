@@ -175,6 +175,23 @@ with_mock_api({
                   -68.229339874)
     expect_identical(response$state_province,
                  NA)
+
+    # Parameter error conditions
+    expect_error(
+      get_all_resources("some-endpont", limit="foo"),
+      "limit must be a finite, non-negative integer")
+    expect_error(
+      get_all_resources("some-endpont", limit=NULL),
+      "limit must be a finite, non-negative integer")
+    expect_error(
+      get_all_resources("some-endpont", offset=-1),
+      "offset must be a finite, non-negative integer")
+    expect_error(
+      get_all_resources("some-endpont", offset=NA_integer_),
+      "offset must be a finite, non-negative integer")
+    expect_error(
+      get_all_resources("some-endpont", detail="invalid_value"),
+      "'arg' should be one of \"minimal\", \"full\"")
   })
 })
 
