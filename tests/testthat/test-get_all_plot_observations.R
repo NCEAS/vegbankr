@@ -2,9 +2,20 @@ with_mock_api({
   test_that("get_all_plot_observations() works", {
     local_base_url(NULL)
 
+    endpoint <- "https://api.vegbank.org/plot-observations"
     expect_GET(
       get_all_plot_observations(),
-      "https://api.vegbank.org/plot-observations"
+      paste0(endpoint,
+             "?detail=minimal",
+             "&limit=100",
+             "&offset=0")
+    )
+    expect_GET(
+      get_all_plot_observations(limit=5, offset=10),
+      paste0(endpoint,
+             "?detail=minimal",
+             "&limit=5",
+             "&offset=10")
     )
 
     expect_message(

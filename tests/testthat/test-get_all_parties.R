@@ -18,6 +18,14 @@ with_mock_api({
              "&offset=10")
     )
 
+    expect_message(
+       zero_records <- get_all_parties(limit=0),
+       "No records returned",
+       fixed = TRUE
+    )
+    expect_s3_class(zero_records, "data.frame")
+    expect_identical(nrow(zero_records), 0L)
+
     response <- get_all_parties(limit=2)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 2L)
