@@ -19,8 +19,8 @@ might consider contributing by:
 - Report a bug or request a new feature in our [issue tracker](https://github.com/NCEAS/vegbankr/issues)
 - Fix a bug and contribute the code with a Pull Request
 - Write or edit some documentation
-- Sharing helpful tips or FAQ-type answers to users or future contributors
-- Create screenshots or tutorials of features of MetacatUI
+- Share helpful tips or FAQ-type answers to users or future contributors
+- Create vignettes or tutorials about vegbankr features
 - Answer questions on [VegBank Discussions](https://github.com/NCEAS/vegbank2/discussions)
 - ...
 

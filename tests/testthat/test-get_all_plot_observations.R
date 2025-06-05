@@ -2,9 +2,20 @@ with_mock_api({
   test_that("get_all_plot_observations() works", {
     local_base_url(NULL)
 
+    endpoint <- "https://api.vegbank.org/plot-observations"
     expect_GET(
       get_all_plot_observations(),
-      "https://api.vegbank.org/plot-observations"
+      paste0(endpoint,
+             "?detail=minimal",
+             "&limit=100",
+             "&offset=0")
+    )
+    expect_GET(
+      get_all_plot_observations(limit=5, offset=10),
+      paste0(endpoint,
+             "?detail=minimal",
+             "&limit=5",
+             "&offset=10")
     )
 
     expect_message(
@@ -31,5 +42,15 @@ with_mock_api({
                   -68.229339874)
     expect_identical(response$state_province,
                  NA)
+
+    expect_error(
+      get_all_plot_observations(limit="foo"),
+      "limit must be a finite, non-negative integer")
+    expect_error(
+      get_all_plot_observations(offset=-1),
+      "offset must be a finite, non-negative integer")
+    expect_error(
+      get_all_plot_observations(detail="invalid_value"),
+      "'arg' should be one of \"minimal\", \"full\"")
   })
 })

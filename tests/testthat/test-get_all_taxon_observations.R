@@ -9,7 +9,7 @@ with_mock_api({
              "?detail=minimal",
              "&limit=100",
              "&offset=0",
-             "&numTaxa=5")
+             "&num_taxa=5")
     )
     expect_GET(
       get_all_taxon_observations(max_taxa_per_plot=2, limit=5),
@@ -17,7 +17,7 @@ with_mock_api({
              "?detail=minimal",
              "&limit=5",
              "&offset=0",
-             "&numTaxa=2")
+             "&num_taxa=2")
     )
 
     expect_message(

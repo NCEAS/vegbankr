@@ -108,11 +108,25 @@ vb_verbosity <- function() {
 #' higher verbosity if enabled via vb_debug(), and also calculates and
 #' reports the time taken to perform the request.
 #'
+#' If the API responds with an error condition, this wrapper will
+#' attempt to extract an error message from the response, else will use
+#' a generic message. This will be added to the standard httr2 error
+#' messaging, and an R error will be raised.
+#'
 #' @param request An httr2 request
 #' @return An httr2 response
 #'
 #' @noRd
 send <- function(request) {
+  error_body <- function(resp) {
+    tryCatch(resp_body_json(resp)$error$message,
+      error = function(msg) {
+        return("No additional error details from server.")
+      }
+    )
+  }
+  request <- request |> req_error(body = error_body)
+
   verbosity <- vb_verbosity()
   if (verbosity == 0) {
     response <- req_perform(request)
@@ -176,11 +190,11 @@ canonicalize_names <- function(target_df, lookup_df) {
 #' Transform VegBank response into a data frame
 #'
 #' Transforms a VegBank API response into a data frame, canonicalizing
-#' names by default. If the API returns an error (indicated by a
-#' top-level "error" key in the JSON response), the error message is
-#' displayed as an R warning, and `NULL` is returned. If API returns a
-#' non-error response with a reported record count of 0, an informative
-#' message is displayed, and an empty data frame is returned.
+#' names by default. This is intended for use on API responses in JSON
+#' format with a top level "data" element containing a list of records
+#' coercible to a dataframe. If this element contains zero records
+#' (represented as an empty JSON array, an informative message is
+#' displayed, and an empty data frame is returned.
 #'
 #' @param response VegBank API response object
 #' @param clean_names (logical) VegBank API response object
@@ -190,10 +204,6 @@ as_vb_dataframe <- function(response, clean_names = TRUE) {
   response_list <- response |>
     resp_body_string() |>
     jsonlite::fromJSON(flatten = TRUE)
-  if ("error" %in% names(response_list)) {
-    warning("API error: ", response_list[["error"]], call. = FALSE)
-    return(invisible(NULL))
-  }
   response_data <- response_list[["data"]]
   if (length(response_data) == 0) {
     message("No records returned")
@@ -256,6 +266,10 @@ get_resource_by_code <- function(resource, accession_code) {
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
                               detail = c("minimal", "full"), ...) {
+  if (!rlang::is_scalar_integerish(limit, finite=TRUE) ||
+      limit <0) stop("limit must be a finite, non-negative integer")
+  if (!rlang::is_scalar_integerish(offset, finite=TRUE) ||
+      offset <0) stop("offset must be a finite, non-negative integer")
   detail <- match.arg(detail)
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
@@ -313,8 +327,9 @@ get_page_details <- function(x) {
 #'
 #' @noRd
 jsonlist2df <- function(jsonlist) {
-  do.call(rbind, lapply(jsonlist, function(x) {
-    x[sapply(x, is.null)] <- NA
-    as.data.frame(x, stringsAsFactors = FALSE)
-  }))
+  do.call(rbind.data.frame,
+    lapply(jsonlist, function(record) {
+      replace(record, sapply(record, is.null, USE.NAMES=FALSE), NA)
+    })
+  )
 }

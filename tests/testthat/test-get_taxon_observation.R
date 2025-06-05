@@ -15,13 +15,6 @@ with_mock_api({
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    expect_warning(
-       error_response <- get_taxon_observation("error_response"),
-       "API error: something went wrong",
-       fixed = TRUE
-    )
-    expect_null(error_response)
-
     response <- get_taxon_observation("VB.TO.693826.Q8MM3I559WIQP3D")
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)

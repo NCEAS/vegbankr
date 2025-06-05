@@ -37,6 +37,38 @@ with_mock_api({
   })
 })
 
+with_mock_api({
+  test_that("send() handles errors", {
+
+    # quick helper to verify the mocked response looks right :)
+    get_mock_http_status <- function(request) {
+      response_status <- request |>
+        req_error(is_error=\(resp) FALSE) |>
+        req_perform() |>
+        resp_status()
+    }
+
+    local_base_url(NULL)
+    base_request <- request(get_vb_base_url()) |>
+      req_url_path_append('api-error-test')
+
+    # error handling -- HTTP 400 with JSON error message
+    error_400_request <- base_request |> req_url_query(limit = "foo")
+    expect_identical(get_mock_http_status(error_400_request), 400L)
+    expect_error(
+      send(error_400_request),
+      "When provided, 'offset' and 'limit' must be non-negative integers.")
+
+    # error handling -- HTTP 500 with no error message
+    error_500_request <- base_request |> req_url_query(limit = -1)
+    expect_identical(get_mock_http_status(error_500_request), 500L)
+    expect_error(
+      send(error_500_request),
+      "No additional error details from server.")
+
+  })
+})
+
 test_that("canonicalize_names() works", {
   # Input with all names matched in the package lookup table
   input_df <- data.frame(
@@ -83,17 +115,6 @@ with_mock_api({
       "No records returned")
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
-
-    # response with error
-    error_response <- request(get_vb_base_url()) |>
-      req_url_path_append('plot-observations') |>
-      req_url_path_append('error_response') |>
-      req_headers(Accept = "application/json") |>
-      req_perform()
-    expect_warning(
-      error_output <- as_vb_dataframe(error_response),
-      "API error: something went wrong")
-    expect_null(error_output)
 
     # response with invalid record count
     invalid_count_response <- request(get_vb_base_url()) |>
@@ -154,6 +175,23 @@ with_mock_api({
                   -68.229339874)
     expect_identical(response$state_province,
                  NA)
+
+    # Parameter error conditions
+    expect_error(
+      get_all_resources("some-endpont", limit="foo"),
+      "limit must be a finite, non-negative integer")
+    expect_error(
+      get_all_resources("some-endpont", limit=NULL),
+      "limit must be a finite, non-negative integer")
+    expect_error(
+      get_all_resources("some-endpont", offset=-1),
+      "offset must be a finite, non-negative integer")
+    expect_error(
+      get_all_resources("some-endpont", offset=NA_integer_),
+      "offset must be a finite, non-negative integer")
+    expect_error(
+      get_all_resources("some-endpont", detail="invalid_value"),
+      "'arg' should be one of \"minimal\", \"full\"")
   })
 })
 

@@ -35,5 +35,5 @@ get_all_taxon_observations <- function(max_taxa_per_plot = 5, limit=100, offset=
     detail = c("minimal", "full")) {
   resource <- "taxon-observations"
   get_all_resources(resource, limit, offset, detail,
-                    numTaxa = max_taxa_per_plot)
+                    num_taxa = max_taxa_per_plot)
 }
