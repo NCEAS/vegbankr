@@ -2,6 +2,8 @@ ENABLED <- FALSE
 
 test_that("VegBank API error handling works", {
   skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+
   local_vb_debug(0)
 
   expect_error(
