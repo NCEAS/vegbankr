@@ -100,7 +100,7 @@ test_that("canonicalize_names() works", {
 })
 
 with_mock_api({
-  test_that("as_vb_dataframe() works", {
+  test_that("vb_df_from_json() works", {
 
     local_base_url(NULL)
 
@@ -111,7 +111,7 @@ with_mock_api({
       req_headers(Accept = "application/json") |>
       req_perform()
     expect_message(
-      zero_records <- as_vb_dataframe(zero_response),
+      zero_records <- vb_df_from_json(zero_response),
       "No records returned")
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
@@ -122,7 +122,7 @@ with_mock_api({
       req_headers(Accept = "application/json") |>
       req_perform()
     expect_warning(
-      vb_df <- as_vb_dataframe(invalid_count_response),
+      vb_df <- vb_df_from_json(invalid_count_response),
       "API returned an invalid count")
     expect_s3_class(vb_df, "data.frame")
     expect_identical(nrow(vb_df), 3L)

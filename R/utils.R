@@ -187,9 +187,9 @@ canonicalize_names <- function(target_df, lookup_df) {
   return(target_df)
 }
 
-#' Transform VegBank response into a data frame
+#' Transform VegBank JSON response into a data frame
 #'
-#' Transforms a VegBank API response into a data frame, canonicalizing
+#' Transforms a VegBank API JSON response into a data frame, canonicalizing
 #' names by default. This is intended for use on API responses in JSON
 #' format with a top level "data" element containing a list of records
 #' coercible to a dataframe. If this element contains zero records
@@ -197,10 +197,11 @@ canonicalize_names <- function(target_df, lookup_df) {
 #' displayed, and an empty data frame is returned.
 #'
 #' @param response VegBank API response object
-#' @param clean_names (logical) VegBank API response object
+#' @param clean_names (logical) Should names be canonicalized?
+#' @returns A data frame
 #'
 #' @noRd
-as_vb_dataframe <- function(response, clean_names = TRUE) {
+vb_df_from_json <- function(response, clean_names = TRUE) {
   response_list <- response |>
     resp_body_string() |>
     jsonlite::fromJSON(flatten = TRUE)
@@ -246,7 +247,7 @@ get_resource_by_code <- function(resource, accession_code) {
     req_url_path_append(accession_code) |>
     req_headers(Accept = "application/json")
   response <- send(request)
-  vb_data <- as_vb_dataframe(response)
+  vb_data <- vb_df_from_json(response)
   return(vb_data)
 }
 
@@ -279,7 +280,7 @@ get_all_resources <- function(resource, limit=100, offset=0,
     req_url_query(!!!list(...)) |>
     req_headers(Accept = "application/json")
   response <- send(request)
-  vb_data <- as_vb_dataframe(response)
+  vb_data <- vb_df_from_json(response)
   attr(vb_data, "vb_limit") <- limit
   attr(vb_data, "vb_offset") <- offset
   return(vb_data)
