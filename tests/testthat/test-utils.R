@@ -132,6 +132,42 @@ with_mock_api({
 })
 
 with_mock_api({
+  test_that("vb_df_from_parquet() works", {
+    local_base_url(NULL)
+
+    # response with record count of 0
+    empty_parquet_response <- request(get_vb_base_url()) |>
+      req_url_path_append('parquet-test') |>
+      req_url_query(detail = "full",
+                    limit = 0,
+                    offset = 0,
+                    create_parquet = TRUE) |>
+      req_perform()
+    expect_message(
+      empty_vb_df <- vb_df_from_parquet(empty_parquet_response),
+      "No records returned")
+    # response with invalid record count
+    expect_s3_class(empty_vb_df, "data.frame")
+    expect_identical(ncol(empty_vb_df), 10L)
+    expect_identical(nrow(empty_vb_df), 0L)
+
+    # response with record count of 2
+    parquet_response <- request(get_vb_base_url()) |>
+      req_url_path_append('parquet-test') |>
+      req_url_query(detail = "full",
+                    limit = 2,
+                    offset = 0,
+                    create_parquet = TRUE) |>
+      req_perform()
+    vb_df <- vb_df_from_parquet(parquet_response)
+    # response with invalid record count
+    expect_s3_class(vb_df, "data.frame")
+    expect_identical(ncol(vb_df), 10L)
+    expect_identical(nrow(vb_df), 2L)
+  })
+})
+
+with_mock_api({
   local_base_url(NULL)
   test_that("get_resource_by_code() works", {
     response <- get_resource_by_code("plot-observations",

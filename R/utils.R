@@ -227,6 +227,33 @@ vb_df_from_json <- function(response, clean_names = TRUE) {
   return(response_data)
 }
 
+#' Transform VegBank parquet response into a data frame
+#'
+#' Transforms a VegBank API Parquet response into a data frame.
+#' This is intended for use on API responses in Parquet format
+#' representing a single data table. (TODO) If this element contains zero
+#' records (represented as an empty JSON array, an informative message
+#' is displayed, and an empty data frame is returned.
+#'
+#' @param response VegBank API response object
+#' @returns A data frame
+#'
+#' @noRd
+vb_df_from_parquet <- function(response) {
+    temp_file <- tempfile(fileext = ".parquet")
+    on.exit(unlink(temp_file))
+    writeBin(resp_body_raw(response), temp_file)
+    conn <- duckdb::dbConnect(duckdb::duckdb())
+    on.exit(duckdb::dbDisconnect(conn), add=TRUE)
+    vb_data <- DBI::dbGetQuery(conn,
+      paste0("SELECT * FROM read_parquet('", temp_file, "')"))
+    vb_data <- dplyr::as_tibble(vb_data)
+    if (nrow(vb_data) == 0) {
+      message("No records returned")
+    }
+    return(vb_data)
+}
+
 #' Request a VegBank resource by accession code
 #'
 #' Transforms a VegBank API response into a data frame, canonicalizing
