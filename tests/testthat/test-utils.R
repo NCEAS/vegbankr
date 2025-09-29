@@ -227,7 +227,7 @@ with_mock_api({
 
     # Test Parquet response
     response_parquet <- get_all_resources("parquet-test", detail="full",
-                                          limit=2, create_parquet=TRUE)
+                                          limit=2, parquet=TRUE)
     expect_s3_class(response_parquet, "data.frame")
     expect_identical(nrow(response_parquet), 2L)
     expect_identical(response_parquet$cm_code[1],

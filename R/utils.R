@@ -265,6 +265,7 @@ vb_df_from_parquet <- function(response) {
 #'
 #' @param resource VegBank API resource (e.g., `plot-observations`)
 #' @param accession_code Resource accession code
+#' @param parquet Request data in Parquet format? Defaults to FALSE.
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
@@ -296,13 +297,14 @@ get_resource_by_code <- function(resource, accession_code,
 #' @param limit Query result limit
 #' @param offset Query result offset
 #' @param detail Level of detail ("minimal", "full")
+#' @param parquet Request data in Parquet format? Defaults to FALSE.
 #' @param ... Additional API query parameters
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
-                              detail = c("minimal", "full"), ...) {
-  dot_args <- list(...)
+                              detail = c("minimal", "full"),
+                              parquet = FALSE, ...) {
   if (!rlang::is_scalar_integerish(limit, finite=TRUE) ||
       limit <0) stop("limit must be a finite, non-negative integer")
   if (!rlang::is_scalar_integerish(offset, finite=TRUE) ||
@@ -310,15 +312,17 @@ get_all_resources <- function(resource, limit=100, offset=0,
   detail <- match.arg(detail)
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
+    req_headers(Accept = "application/json") |>
     req_url_query(detail = detail,
                   limit = limit,
                   offset = offset) |>
-    req_url_query(!!!dot_args) |>
-    req_headers(Accept = "application/json")
-  response <- send(request)
-  if (isTRUE(dot_args[["create_parquet"]])) {
+    req_url_query(!!!list(...))
+  if (parquet) {
+    request <- request |> req_url_query(create_parquet = TRUE)
+    response <- send(request)
     vb_data <- vb_df_from_parquet(response)
   } else {
+    response <- send(request)
     vb_data <- vb_df_from_json(response)
   }
   attr(vb_data, "vb_limit") <- limit
