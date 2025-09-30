@@ -194,7 +194,7 @@ canonicalize_names <- function(target_df, lookup_df) {
 #' format with a top level "data" element containing a list of records
 #' coercible to a dataframe. If this element contains zero records
 #' (represented as an empty JSON array, an informative message is
-#' displayed, and an empty data frame is returned.
+#' displayed, and a data frame with zero columns and zero rows is returned.
 #'
 #' @param response VegBank API response object
 #' @param clean_names (logical) Should names be canonicalized?
@@ -231,9 +231,9 @@ vb_df_from_json <- function(response, clean_names = TRUE) {
 #'
 #' Transforms a VegBank API Parquet response into a data frame.
 #' This is intended for use on API responses in Parquet format
-#' representing a single data table. (TODO) If this element contains zero
-#' records (represented as an empty JSON array, an informative message
-#' is displayed, and an empty data frame is returned.
+#' representing a single data table. If this element contains zero
+#' records, an informative message is displayed, and the empty data
+#' frame is returned.
 #'
 #' @param response VegBank API response object
 #' @returns A data frame
