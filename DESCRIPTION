@@ -34,6 +34,7 @@ Imports:
     duckdb,
     httr2,
     jsonlite,
+    purrr,
     rlang
 Suggests:
     httptest2,

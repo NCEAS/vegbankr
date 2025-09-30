@@ -1,0 +1,29 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "children": "{ \"pc.111487\" : \"Acer rubrum L. var. trilobum\", \"pc.111479\" : \"Acer rubrum L. var. drummondii\" }",
+            "concept_rf_code": "rf.37",
+            "concept_rf_name": "USDA Plants 2011",
+            "current_accepted": true,
+            "obs_count": 0,
+            "parent_name": "Acer L.",
+            "parent_pc_code": "pc.111387",
+            "party": "USDA-NRCS-PLANTS",
+            "pc_code": "pc.111478",
+            "plant_code": "ACRU",
+            "plant_description": null,
+            "plant_level": "Species",
+            "plant_name": "Acer rubrum L.",
+            "plant_party_comments": null,
+            "py_code": "py.511",
+            "start_date": "Thu, 25 Aug 2011 07:00:00 GMT",
+            "status": "accepted",
+            "status_rf_code": "rf.37",
+            "status_rf_name": "USDA Plants 2011",
+            "stop_date": null,
+            "usage_names": "{ \"Code\" : \"ACRU\", \"English Common\" : \"red maple\" }",
+            "usage_statuses": "{ \"Code\" : \"Standard\", \"English Common\" : \"Standard\" }"
+        }
+    ]
+}

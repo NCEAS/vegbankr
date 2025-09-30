@@ -330,6 +330,36 @@ test_that("Getting community concepts works", {
 
 })
 
+test_that("Getting plant concepts works", {
+  skip_if_not(ENABLED && interactive())
+  local_vb_debug(0)
+
+  expect_message(
+    pc_zero <- get_plant_concept("pc.0"),
+    "No records returned",
+    fixed = TRUE
+  )
+  expect_identical(nrow(pc_zero), 0L)
+
+  names_pc_one <- c("children", "children_list", "concept_rf_code",
+    "concept_rf_name", "current_accepted", "obs_count", "parent_name",
+    "parent_pc_code", "party", "pc_code", "plant_code",
+    "plant_description", "plant_level", "plant_name",
+    "plant_party_comments", "py_code", "start_date", "status",
+    "status_rf_code", "status_rf_name", "stop_date", "usage_names",
+    "usage_names_list", "usage_statuses", "usage_statuses_list")
+  names_pc_all <- names_pc_one
+
+  pc_one <- get_plant_concept("pc.193")
+  expect_identical(nrow(pc_one), 1L)
+  expect_named(pc_one, names_pc_one, ignore.order = TRUE)
+
+  pc_all <- get_all_plant_concepts(limit = 5)
+  expect_identical(nrow(pc_all), 5L)
+  expect_named(pc_all, names_pc_all, ignore.order = TRUE)
+
+})
+
 test_that("Getting parties works", {
   skip_if_not(ENABLED && interactive())
   local_vb_debug(0)
