@@ -187,20 +187,21 @@ canonicalize_names <- function(target_df, lookup_df) {
   return(target_df)
 }
 
-#' Transform VegBank response into a data frame
+#' Transform VegBank JSON response into a data frame
 #'
-#' Transforms a VegBank API response into a data frame, canonicalizing
+#' Transforms a VegBank API JSON response into a data frame, canonicalizing
 #' names by default. This is intended for use on API responses in JSON
 #' format with a top level "data" element containing a list of records
 #' coercible to a dataframe. If this element contains zero records
 #' (represented as an empty JSON array, an informative message is
-#' displayed, and an empty data frame is returned.
+#' displayed, and a data frame with zero columns and zero rows is returned.
 #'
 #' @param response VegBank API response object
-#' @param clean_names (logical) VegBank API response object
+#' @param clean_names (logical) Should names be canonicalized?
+#' @returns A data frame
 #'
 #' @noRd
-as_vb_dataframe <- function(response, clean_names = TRUE) {
+vb_df_from_json <- function(response, clean_names = TRUE) {
   response_list <- response |>
     resp_body_string() |>
     jsonlite::fromJSON(flatten = TRUE)
@@ -226,6 +227,33 @@ as_vb_dataframe <- function(response, clean_names = TRUE) {
   return(response_data)
 }
 
+#' Transform VegBank parquet response into a data frame
+#'
+#' Transforms a VegBank API Parquet response into a data frame.
+#' This is intended for use on API responses in Parquet format
+#' representing a single data table. If this element contains zero
+#' records, an informative message is displayed, and the empty data
+#' frame is returned.
+#'
+#' @param response VegBank API response object
+#' @returns A data frame
+#'
+#' @noRd
+vb_df_from_parquet <- function(response) {
+    temp_file <- tempfile(fileext = ".parquet")
+    on.exit(unlink(temp_file))
+    writeBin(resp_body_raw(response), temp_file)
+    conn <- duckdb::dbConnect(duckdb::duckdb())
+    on.exit(duckdb::dbDisconnect(conn), add=TRUE)
+    vb_data <- DBI::dbGetQuery(conn,
+      paste0("SELECT * FROM read_parquet('", temp_file, "')"))
+    vb_data <- dplyr::as_tibble(vb_data)
+    if (nrow(vb_data) == 0) {
+      message("No records returned")
+    }
+    return(vb_data)
+}
+
 #' Request a VegBank resource by accession code
 #'
 #' Transforms a VegBank API response into a data frame, canonicalizing
@@ -237,16 +265,25 @@ as_vb_dataframe <- function(response, clean_names = TRUE) {
 #'
 #' @param resource VegBank API resource (e.g., `plot-observations`)
 #' @param accession_code Resource accession code
+#' @param parquet Request data in Parquet format? Defaults to FALSE.
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
-get_resource_by_code <- function(resource, accession_code) {
+get_resource_by_code <- function(resource, accession_code,
+                                 parquet = FALSE) {
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_path_append(accession_code) |>
     req_headers(Accept = "application/json")
+  if (parquet) {
+    request <- request |> req_url_query(create_parquet = parquet)
+  }
   response <- send(request)
-  vb_data <- as_vb_dataframe(response)
+  if (parquet) {
+    vb_data <- vb_df_from_parquet(response)
+  } else {
+    vb_data <- vb_df_from_json(response)
+  }
   return(vb_data)
 }
 
@@ -260,12 +297,14 @@ get_resource_by_code <- function(resource, accession_code) {
 #' @param limit Query result limit
 #' @param offset Query result offset
 #' @param detail Level of detail ("minimal", "full")
+#' @param parquet Request data in Parquet format? Defaults to FALSE.
 #' @param ... Additional API query parameters
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
-                              detail = c("minimal", "full"), ...) {
+                              detail = c("minimal", "full"),
+                              parquet = FALSE, ...) {
   if (!rlang::is_scalar_integerish(limit, finite=TRUE) ||
       limit <0) stop("limit must be a finite, non-negative integer")
   if (!rlang::is_scalar_integerish(offset, finite=TRUE) ||
@@ -273,13 +312,19 @@ get_all_resources <- function(resource, limit=100, offset=0,
   detail <- match.arg(detail)
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
+    req_headers(Accept = "application/json") |>
     req_url_query(detail = detail,
                   limit = limit,
                   offset = offset) |>
-    req_url_query(!!!list(...)) |>
-    req_headers(Accept = "application/json")
-  response <- send(request)
-  vb_data <- as_vb_dataframe(response)
+    req_url_query(!!!list(...))
+  if (parquet) {
+    request <- request |> req_url_query(create_parquet = TRUE)
+    response <- send(request)
+    vb_data <- vb_df_from_parquet(response)
+  } else {
+    response <- send(request)
+    vb_data <- vb_df_from_json(response)
+  }
   attr(vb_data, "vb_limit") <- limit
   attr(vb_data, "vb_offset") <- offset
   return(vb_data)

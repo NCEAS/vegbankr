@@ -100,7 +100,7 @@ test_that("canonicalize_names() works", {
 })
 
 with_mock_api({
-  test_that("as_vb_dataframe() works", {
+  test_that("vb_df_from_json() works", {
 
     local_base_url(NULL)
 
@@ -111,7 +111,7 @@ with_mock_api({
       req_headers(Accept = "application/json") |>
       req_perform()
     expect_message(
-      zero_records <- as_vb_dataframe(zero_response),
+      zero_records <- vb_df_from_json(zero_response),
       "No records returned")
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
@@ -122,7 +122,7 @@ with_mock_api({
       req_headers(Accept = "application/json") |>
       req_perform()
     expect_warning(
-      vb_df <- as_vb_dataframe(invalid_count_response),
+      vb_df <- vb_df_from_json(invalid_count_response),
       "API returned an invalid count")
     expect_s3_class(vb_df, "data.frame")
     expect_identical(nrow(vb_df), 3L)
@@ -132,49 +132,110 @@ with_mock_api({
 })
 
 with_mock_api({
+  test_that("vb_df_from_parquet() works", {
+    local_base_url(NULL)
+
+    # response with record count of 0
+    empty_parquet_response <- request(get_vb_base_url()) |>
+      req_url_path_append('parquet-test') |>
+      req_url_query(detail = "full",
+                    limit = 0,
+                    offset = 0,
+                    create_parquet = TRUE) |>
+      req_perform()
+    expect_message(
+      empty_vb_df <- vb_df_from_parquet(empty_parquet_response),
+      "No records returned")
+    # response with invalid record count
+    expect_s3_class(empty_vb_df, "data.frame")
+    expect_identical(ncol(empty_vb_df), 10L)
+    expect_identical(nrow(empty_vb_df), 0L)
+
+    # response with record count of 2
+    parquet_response <- request(get_vb_base_url()) |>
+      req_url_path_append('parquet-test') |>
+      req_url_query(detail = "full",
+                    limit = 2,
+                    offset = 0,
+                    create_parquet = TRUE) |>
+      req_perform()
+    vb_df <- vb_df_from_parquet(parquet_response)
+    # response with invalid record count
+    expect_s3_class(vb_df, "data.frame")
+    expect_identical(ncol(vb_df), 10L)
+    expect_identical(nrow(vb_df), 2L)
+  })
+})
+
+with_mock_api({
   local_base_url(NULL)
   test_that("get_resource_by_code() works", {
-    response <- get_resource_by_code("plot-observations",
+    # Test JSON response
+    response_json <- get_resource_by_code("plot-observations",
                                      "VB.Ob.41618.50D47AJX5G5U8WY")
-    expect_s3_class(response, "data.frame")
-    expect_identical(nrow(response), 1L)
+    expect_s3_class(response_json, "data.frame")
+    expect_identical(nrow(response_json), 1L)
     expect_named(
-      response,
+      response_json,
       c("observation_accession_code", "author_obs_code",
         "obs_start_date", "max_slope_aspect", "max_slope_gradient",
         "total_cover"),
       ignore.order = TRUE
     )
-    expect_identical(response$observation_accession_code,
+    expect_identical(response_json$observation_accession_code,
                  "VB.Ob.41618.50D47AJX5G5U8WY")
-    expect_identical(response$max_slope_aspect,
+    expect_identical(response_json$max_slope_aspect,
                  -106.409918856452)
-    expect_identical(response$max_slope_gradient,
+    expect_identical(response_json$max_slope_gradient,
                  NA)
 
+    # Test Parquet response
+    response_parquet <- get_resource_by_code("parquet-test", "vb.1",
+                                             parquet=TRUE)
+    expect_s3_class(response_parquet, "data.frame")
+    expect_identical(nrow(response_parquet), 40L)
+    expect_identical(response_parquet$cm_code[1],
+                     "cm.1")
+    expect_identical(response_parquet$cover_percent[1],
+                     0.05)
+    expect_identical(response_parquet$cover_estimation_method[1],
+                     NA_integer_)
   })
 })
 
 with_mock_api({
   local_base_url(NULL)
   test_that("get_all_resources() works", {
-    response <- get_all_resources("plot-observations",
+    # Test JSON response
+    response_json <- get_all_resources("plot-observations",
                                   detail="minimal", limit=1)
-    expect_s3_class(response, "data.frame")
-    expect_identical(nrow(response), 1L)
+    expect_s3_class(response_json, "data.frame")
+    expect_identical(nrow(response_json), 1L)
     expect_named(
-      response,
+      response_json,
       c("obs_accession_code", "author_obs_code", "observation_id",
         "plot_accession_code", "author_plot_code", "plot_id",
         "latitude", "longitude", "country", "state_province"),
       ignore.order = TRUE
     )
-    expect_identical(response$obs_accession_code,
+    expect_identical(response_json$obs_accession_code,
                  "VB.Ob.2948.ACAD143")
-    expect_identical(response$longitude,
+    expect_identical(response_json$longitude,
                   -68.229339874)
-    expect_identical(response$state_province,
+    expect_identical(response_json$state_province,
                  NA)
+
+    # Test Parquet response
+    response_parquet <- get_all_resources("parquet-test", detail="full",
+                                          limit=2, parquet=TRUE)
+    expect_s3_class(response_parquet, "data.frame")
+    expect_identical(nrow(response_parquet), 2L)
+    expect_identical(response_parquet$cm_code[1],
+                     "cm.1")
+    expect_identical(response_parquet$cover_percent[1],
+                     0.05)
+    expect_identical(response_parquet$cover_estimation_method[1],
+                     NA_integer_)
 
     # Parameter error conditions
     expect_error(
