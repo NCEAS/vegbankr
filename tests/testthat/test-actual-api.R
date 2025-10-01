@@ -357,6 +357,34 @@ test_that("Getting cover methods works", {
 
 })
 
+test_that("Getting stratum methods works", {
+  skip_if_not(ENABLED && interactive())
+  local_vb_debug(0)
+
+  expect_message(
+    sm_zero <- get_stratum_method("sm.0"),
+    "No records returned",
+    fixed = TRUE
+  )
+  expect_identical(nrow(sm_zero), 0L)
+
+  names_sm_one <- c("rf_code", "rf_name", "sm_code",
+    "stratum_assignment", "stratum_description", "stratum_index",
+    "stratum_method_description", "stratum_method_name", "stratum_name",
+    "sy_code")
+  names_sm_all <- names_sm_one
+
+  sm_one <- get_stratum_method("sm.1")
+  # Note that `sm.1` has 11 associated stratum types
+  expect_identical(nrow(sm_one), 11L)
+  expect_named(sm_one, names_sm_one, ignore.order = TRUE)
+
+  sm_all <- get_all_stratum_methods(limit = 5)
+  expect_identical(nrow(sm_all), 5L)
+  expect_named(sm_all, names_sm_all, ignore.order = TRUE)
+
+})
+
 test_that("Getting plant concepts works", {
   skip_if_not(ENABLED && interactive())
   local_vb_debug(0)
