@@ -330,6 +330,33 @@ test_that("Getting community concepts works", {
 
 })
 
+test_that("Getting cover methods works", {
+  skip_if_not(ENABLED && interactive())
+  local_vb_debug(0)
+
+  expect_message(
+    cm_zero <- get_cover_method("cm.0"),
+    "No records returned",
+    fixed = TRUE
+  )
+  expect_identical(nrow(cm_zero), 0L)
+
+  names_cm_one <- c("cm_code", "cover_code", "cover_estimation_method",
+    "cover_percent", "cover_type", "index_description", "lower_limit",
+    "rf_code", "rf_name", "upper_limit")
+  names_cm_all <- names_cm_one
+
+  cm_one <- get_cover_method("cm.1")
+  # Note that `cm.1` has 40 associated cover indices
+  expect_identical(nrow(cm_one), 40L)
+  expect_named(cm_one, names_cm_one, ignore.order = TRUE)
+
+  cm_all <- get_all_cover_methods(limit = 5)
+  expect_identical(nrow(cm_all), 5L)
+  expect_named(cm_all, names_cm_all, ignore.order = TRUE)
+
+})
+
 test_that("Getting plant concepts works", {
   skip_if_not(ENABLED && interactive())
   local_vb_debug(0)
