@@ -1,0 +1,41 @@
+{
+    "count": 3,
+    "data": [
+        {
+            "rf_code": null,
+            "rf_name": null,
+            "sm_code": "sm.1",
+            "stratum_assignment": null,
+            "stratum_description": null,
+            "stratum_index": "T",
+            "stratum_method_description": null,
+            "stratum_method_name": "Test method",
+            "stratum_name": "Tree",
+            "sy_code": "sy.1"
+        },
+        {
+            "rf_code": null,
+            "rf_name": null,
+            "sm_code": "sm.1",
+            "stratum_assignment": null,
+            "stratum_description": null,
+            "stratum_index": "H",
+            "stratum_method_description": null,
+            "stratum_method_name": "Test method",
+            "stratum_name": "Herb",
+            "sy_code": "sy.2"
+        },
+        {
+            "rf_code": null,
+            "rf_name": null,
+            "sm_code": "sm.2038",
+            "stratum_assignment": null,
+            "stratum_description": null,
+            "stratum_index": "SubCnpy",
+            "stratum_method_description": null,
+            "stratum_method_name": "Sharitz",
+            "stratum_name": "SubCnpy",
+            "sy_code": "sy.217681"
+        }
+    ]
+}
