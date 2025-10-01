@@ -197,7 +197,8 @@ canonicalize_names <- function(target_df, lookup_df) {
 #' displayed, and a data frame with zero columns and zero rows is returned.
 #'
 #' @param response VegBank API response object
-#' @param clean_names (logical) Should names be canonicalized?
+#' @param clean_names (logical) Should names be canonicalized? Defaults
+#'        to `TRUE`.
 #' @returns A data frame
 #'
 #' @noRd
@@ -265,12 +266,14 @@ vb_df_from_parquet <- function(response) {
 #'
 #' @param resource VegBank API resource (e.g., `plot-observations`)
 #' @param accession_code Resource accession code
-#' @param parquet Request data in Parquet format? Defaults to FALSE.
+#' @param parquet Request data in Parquet format? Defaults to `FALSE`.
+#' @param clean_names (logical) Should names be canonicalized? Defaults
+#'        to `TRUE`.
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
 get_resource_by_code <- function(resource, accession_code,
-                                 parquet = FALSE) {
+                                 parquet = FALSE, clean_names = TRUE) {
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_path_append(accession_code) |>
@@ -282,7 +285,7 @@ get_resource_by_code <- function(resource, accession_code,
   if (parquet) {
     vb_data <- vb_df_from_parquet(response)
   } else {
-    vb_data <- vb_df_from_json(response)
+    vb_data <- vb_df_from_json(response, clean_names)
   }
   return(vb_data)
 }
@@ -297,14 +300,16 @@ get_resource_by_code <- function(resource, accession_code,
 #' @param limit Query result limit
 #' @param offset Query result offset
 #' @param detail Level of detail ("minimal", "full")
-#' @param parquet Request data in Parquet format? Defaults to FALSE.
+#' @param parquet Request data in Parquet format? Defaults to `FALSE`.
+#' @param clean_names (logical) Should names be canonicalized? Defaults
+#'        to `TRUE`.
 #' @param ... Additional API query parameters
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
                               detail = c("minimal", "full"),
-                              parquet = FALSE, ...) {
+                              parquet = FALSE, clean_names = TRUE, ...) {
   if (!rlang::is_scalar_integerish(limit, finite=TRUE) ||
       limit <0) stop("limit must be a finite, non-negative integer")
   if (!rlang::is_scalar_integerish(offset, finite=TRUE) ||
@@ -323,7 +328,7 @@ get_all_resources <- function(resource, limit=100, offset=0,
     vb_data <- vb_df_from_parquet(response)
   } else {
     response <- send(request)
-    vb_data <- vb_df_from_json(response)
+    vb_data <- vb_df_from_json(response, clean_names)
   }
   attr(vb_data, "vb_limit") <- limit
   attr(vb_data, "vb_offset") <- offset
@@ -377,4 +382,41 @@ jsonlist2df <- function(jsonlist) {
       replace(record, sapply(record, is.null, USE.NAMES=FALSE), NA)
     })
   )
+}
+
+#' Parse JSON column to list column
+#'
+#' Takes a data frame and the name of a column containing character string
+#' representations of JSON objects, and parses them to create a new column
+#' with R list representations of the same information. The new column is
+#' added to the data frame and named by appending `_list` to the input
+#' column name.
+#'
+#' @param df A data frame
+#' @param col_name Character string naming the column to parse
+#' @param skip_if_missing Logical. If `TRUE`, skip processing if column is
+#'        missing instead of throwing an error. Default is `FALSE`.
+#'
+#' @returns The data frame with an added list column named `{col_name}_list`
+#'
+#' @importFrom rlang .data := !!
+#' @noRd
+parse_json_column <- function(df, col_name, skip_if_missing = FALSE) {
+  # Check whether col_name exists
+  if (!col_name %in% names(df)) {
+    if (skip_if_missing) {
+      return(df)
+    } else {
+      stop(sprintf("Column '%s' not found in data frame", col_name))
+    }
+  }
+  # Create the new column with parsed lists
+  new_col_name <- paste0(col_name, "_list")
+  df |>
+    dplyr::mutate(
+      !!new_col_name := purrr::map(
+        ifelse(is.na(.data[[!!col_name]]), "{}", .data[[!!col_name]]),
+        ~ jsonlite::fromJSON(.x, simplifyVector = FALSE)
+      )
+    )
 }

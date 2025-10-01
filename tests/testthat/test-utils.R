@@ -20,7 +20,8 @@ with_mock_api({
 
     local_base_url(NULL)
     test_request <- request(get_vb_base_url()) |>
-      req_url_path_append('test')
+      req_url_path_append('json-test') |>
+      req_url_path_append('zero-records')
 
     # verbosity 0 -- httr2_response with no message
     local_vb_debug(0)
@@ -104,10 +105,29 @@ with_mock_api({
 
     local_base_url(NULL)
 
+    # responses with record count of 3
+    request <- request(get_vb_base_url()) |>
+      req_url_path_append('json-test') |>
+      req_url_path_append('three-records') |>
+      req_headers(Accept = "application/json")
+    response <- request |> req_perform()
+    # canonicalize names
+    records_c <- vb_df_from_json(response)
+    expect_s3_class(records_c, "data.frame")
+    expect_identical(nrow(records_c), 3L)
+    expect_named(records_c,
+      c("surname", "given_name"), ignore.order = TRUE)
+    # don't canonicalize names
+    records_nc <- vb_df_from_json(response, clean_names = FALSE)
+    expect_s3_class(records_nc, "data.frame")
+    expect_identical(nrow(records_nc), 3L)
+    expect_named(records_nc,
+      c("surname", "givenname"), ignore.order = TRUE)
+
     # response with record count of 0
     zero_response <- request(get_vb_base_url()) |>
-      req_url_path_append('plot-observations') |>
-      req_url_path_append('zero_records') |>
+      req_url_path_append('json-test') |>
+      req_url_path_append('zero-records') |>
       req_headers(Accept = "application/json") |>
       req_perform()
     expect_message(
@@ -118,6 +138,7 @@ with_mock_api({
 
     # response with invalid record count
     invalid_count_response <- request(get_vb_base_url()) |>
+      req_url_path_append('json-test') |>
       req_url_path_append('invalid-count') |>
       req_headers(Accept = "application/json") |>
       req_perform()
@@ -282,4 +303,37 @@ with_mock_api({
                   count_returned = 3)
     expect_identical(page_details, expected)
   })
+})
+
+test_that("parse_json_column() works", {
+  df <- data.frame(
+    id = 1:3,
+    json_col = c('{"a": 1}', NA, '{"b": 2, "c": 3}'),
+    stringsAsFactors = FALSE
+  )
+
+  # normal path
+  new_df <- parse_json_column(df, "json_col", skip_if_missing = TRUE)
+  expect_true("json_col_list" %in% names(new_df))
+  expect_equal(names(df), names(new_df)[1:2])
+  expect_type(new_df$json_col_list, "list")
+  expect_equal(new_df$json_col_list[[1]]$a, 1)
+  expect_type(new_df$json_col_list[[2]], "list")
+  expect_length(new_df$json_col_list[[2]], 0)
+  expect_equal(new_df$json_col_list[[3]]$b, 2)
+
+  # no target column, but skip_if_missing
+  same_df <- parse_json_column(df, "missing_col", skip_if_missing = TRUE)
+  expect_identical(df, same_df)
+
+  # no target column, and don't skip if missing
+  expect_error(
+    parse_json_column(df, "missing_col"),
+    "Column 'missing_col' not found in data frame"
+  )
+  expect_error(
+    parse_json_column(df, "missing_col", skip_if_missing = FALSE),
+    "Column 'missing_col' not found in data frame"
+  )
+
 })
