@@ -1,0 +1,37 @@
+{
+    "count": 470,
+    "data": [
+        {
+            "degree": null,
+            "doi": null,
+            "full_citation": "Estimated date for EcoArt version in the CVS old archive database",
+            "isbn": null,
+            "journal": null,
+            "publication_date": null,
+            "publication_place": null,
+            "publisher": null,
+            "reference_type": null,
+            "rf_code": "rf.50590",
+            "short_name": "EcoArt 1999?",
+            "title": null,
+            "total_pages": null,
+            "url": null
+        },
+        {
+            "degree": null,
+            "doi": null,
+            "full_citation": null,
+            "isbn": null,
+            "journal": null,
+            "publication_date": "Sun, 01 Jan 2006 08:00:00 GMT",
+            "publication_place": "Chapel Hill, NC, USA",
+            "publisher": "NCU Herbarium",
+            "reference_type": "Book",
+            "rf_code": "rf.50592",
+            "short_name": "Weakley Jan 1, 2006",
+            "title": "Flora of the Carolinas, Virginia, and Georgia",
+            "total_pages": null,
+            "url": "http://www.herbarium.unc.edu/flora.htm"
+        }
+    ]
+}
