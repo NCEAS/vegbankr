@@ -470,3 +470,30 @@ test_that("Getting projects works", {
   expect_named(proj_all, names_proj_all, ignore.order = TRUE)
 
 })
+
+test_that("Getting references works", {
+  skip_if_not(ENABLED && interactive())
+  local_vb_debug(0)
+
+  expect_message(
+    rf_zero <- get_reference("rf.0"),
+    "No records returned",
+    fixed = TRUE
+  )
+  expect_identical(nrow(rf_zero), 0L)
+
+  names_rf_one <- c("degree", "doi", "full_citation", "isbn", "journal",
+    "publication_date", "publication_place", "publisher",
+    "reference_type", "rf_code", "short_name", "title", "total_pages",
+    "url")
+  names_rf_all <- names_rf_one
+
+  rf_one <- get_reference("rf.1")
+  expect_identical(nrow(rf_one), 1L)
+  expect_named(rf_one, names_rf_one, ignore.order = TRUE)
+
+  rf_all <- get_all_references(limit = 5)
+  expect_identical(nrow(rf_all), 5L)
+  expect_named(rf_all, names_rf_all, ignore.order = TRUE)
+
+})
