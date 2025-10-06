@@ -1,0 +1,21 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "degree": null,
+            "doi": null,
+            "full_citation": null,
+            "isbn": null,
+            "journal": null,
+            "publication_date": null,
+            "publication_place": null,
+            "publisher": null,
+            "reference_type": null,
+            "rf_code": "rf.1",
+            "short_name": "USLC place names",
+            "title": "US Library of Congress Place Names",
+            "total_pages": 5,
+            "url": null
+        }
+    ]
+}
