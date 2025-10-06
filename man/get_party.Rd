@@ -4,20 +4,22 @@
 \alias{get_party}
 \title{Get a single party}
 \usage{
-get_party(accession_code)
+get_party(party_code, parquet = FALSE)
 }
 \arguments{
-\item{accession_code}{A party accession code}
+\item{party_code}{A party code}
+
+\item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
 }
 \value{
 A data frame (one row), or an empty data frame if there is
-no matching record for the provided accession code
+no matching record for the provided code
 }
 \description{
-Return a single party record from VegBank, using its accession code.
+Return a single party record from VegBank, using its \code{py} code.
 }
 \examples{
 \dontrun{
-get_party("VB.py.191378.VOLUNTEER")
+get_party("py.191378")
 }
 }

@@ -255,7 +255,7 @@ vb_df_from_parquet <- function(response) {
     return(vb_data)
 }
 
-#' Request a VegBank resource by accession code
+#' Request a VegBank resource by vb code
 #'
 #' Transforms a VegBank API response into a data frame, canonicalizing
 #' names by default. If the API returns an error (indicated by a
@@ -265,18 +265,18 @@ vb_df_from_parquet <- function(response) {
 #' message is displayed, and an empty data frame is returned.
 #'
 #' @param resource VegBank API resource (e.g., `plot-observations`)
-#' @param accession_code Resource accession code
+#' @param vb_code Resource identifier
 #' @param parquet Request data in Parquet format? Defaults to `FALSE`.
 #' @param clean_names (logical) Should names be canonicalized? Defaults
 #'        to `TRUE`.
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
-get_resource_by_code <- function(resource, accession_code,
+get_resource_by_code <- function(resource, vb_code,
                                  parquet = FALSE, clean_names = TRUE) {
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
-    req_url_path_append(accession_code) |>
+    req_url_path_append(vb_code) |>
     req_headers(Accept = "application/json")
   if (parquet) {
     request <- request |> req_url_query(create_parquet = parquet)

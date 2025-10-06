@@ -3,8 +3,8 @@ with_mock_api({
     local_base_url(NULL)
 
     expect_GET(
-      get_project("some_accession_code"),
-      "https://api.vegbank.org/projects/some_accession_code"
+      get_project("some_vb_code"),
+      "https://api.vegbank.org/projects/some_vb_code"
     )
 
     response <- get_project("VB.pj.10508.SOUTHWESTGAPCOL")

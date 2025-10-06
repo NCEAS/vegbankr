@@ -3,8 +3,8 @@ with_mock_api({
     local_base_url(NULL)
 
     expect_GET(
-      get_community_classification("some_accession_code"),
-      "https://api.vegbank.org/community-classifications/some_accession_code"
+      get_community_classification("some_vb_code"),
+      "https://api.vegbank.org/community-classifications/some_vb_code"
     )
 
     response <- get_community_classification("VB.Cl.34809.2HZMTQQVR2GWE9P")

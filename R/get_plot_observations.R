@@ -1,60 +1,62 @@
 #' Get a single plot observation
 #'
-#' Return a single plot observation record from VegBank, using the
-#' observation's accession code.
+#' Return a single plot observation record from VegBank, using
+#' its `ob` code.
 #'
-#' @param accession_code A plot observation accession code
+#' @param plot_obs_code A plot observation code
+#' @param parquet Transfer data as Parquet (TRUE) or JSON (FALSE)?
 #' @return A data frame (one row), or an empty data frame if there is
-#' no matching record for the provided accession code
+#' no matching record for the provided code
 #' @examples \dontrun{
-#' get_plot_observation("VB.Ob.2948.ACAD143")
+#' get_plot_observation("ob.2948")
 #' }
 #' @import httr2
 #' @export
-get_plot_observation <- function(accession_code) {
+get_plot_observation <- function(plot_obs_code, parquet = FALSE) {
   resource <- "plot-observations"
-  get_resource_by_code(resource, accession_code)
+  get_resource_by_code(resource, plot_obs_code, parquet = parquet)
 }
 
 #' Get all plot observations
 #'
 #' Return a paginated set of plot observation records from VegBank.
 #'
-#' @return A data frame
 #' @param limit Number of records to return
 #' @param offset Number of records to skip
 #' @param detail Desired level of detail ("minimal", "full")
+#' @param parquet Transfer data as Parquet (TRUE) or JSON (FALSE)?
+#' @return A data frame
 #' @examples \dontrun{
 #' get_all_plot_observations()
 #' }
 #' @import httr2
 #' @export
 get_all_plot_observations <- function(limit=100, offset=0,
-    detail = c("minimal", "full")) {
+    detail = c("minimal", "full"), parquet = TRUE) {
   resource <- "plot-observations"
-  get_all_resources(resource, limit, offset, detail)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet)
 }
 
 #' Get details for a plot observation
 #'
 #' Return details about a plot observation record from VegBank,
 #' including plot observation details, taxon observation, and community
-#' classifications, and more, using the plot observation accession code.
+#' classifications, and more, using the plot observation `ob` code.
 #'
-#' @param accession_code A plot observation accession code
+#' @param plot_obs_code A plot observation code
 #' @return A list of 3 data frames, or an empty list if there is no
-#' matching record for the provided accession code
+#' matching record for the provided code
 #' @examples \dontrun{
-#' get_plot_observation_details("VB.Ob.2948.ACAD143")
+#' get_plot_observation_details("ob.2948")
 #' }
 #' @import httr2
 #' @export
-get_plot_observation_details <- function(accession_code) {
+get_plot_observation_details <- function(plot_obs_code) {
   resource <- "get_observation_details"
   sub_table_names <- c("taxa", "communities")
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
-    req_url_path_append(accession_code) |>
+    req_url_path_append(plot_obs_code) |>
     req_headers(Accept = "application/json")
   response <- send(request)
   response_json <- resp_body_json(response)

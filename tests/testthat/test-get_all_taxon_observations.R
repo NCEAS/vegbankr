@@ -6,7 +6,7 @@ with_mock_api({
     expect_GET(
       get_all_taxon_observations(),
       paste0(endpoint,
-             "?detail=minimal",
+             "?detail=full",
              "&limit=100",
              "&offset=0",
              "&num_taxa=5")
@@ -14,21 +14,21 @@ with_mock_api({
     expect_GET(
       get_all_taxon_observations(max_taxa_per_plot=2, limit=5),
       paste0(endpoint,
-             "?detail=minimal",
+             "?detail=full",
              "&limit=5",
              "&offset=0",
              "&num_taxa=2")
     )
 
     expect_message(
-       zero_records <- get_all_taxon_observations(limit=0),
+       zero_records <- get_all_taxon_observations(limit=0, parquet=FALSE),
        "No records returned",
        fixed = TRUE
     )
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    response <- get_all_taxon_observations(detail="minimal", limit=2)
+    response <- get_all_taxon_observations(limit=2, parquet=FALSE)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 2L)
     expect_named(

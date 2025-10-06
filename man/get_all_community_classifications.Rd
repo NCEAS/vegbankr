@@ -7,7 +7,8 @@
 get_all_community_classifications(
   limit = 100,
   offset = 0,
-  detail = c("minimal", "full")
+  detail = c("minimal", "full"),
+  parquet = TRUE
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ get_all_community_classifications(
 \item{offset}{Number of records to skip}
 
 \item{detail}{Desired level of detail ("minimal", "full")}
+
+\item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
 }
 \value{
 A data frame

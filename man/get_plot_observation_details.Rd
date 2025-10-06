@@ -4,22 +4,22 @@
 \alias{get_plot_observation_details}
 \title{Get details for a plot observation}
 \usage{
-get_plot_observation_details(accession_code)
+get_plot_observation_details(plot_obs_code)
 }
 \arguments{
-\item{accession_code}{A plot observation accession code}
+\item{plot_obs_code}{A plot observation code}
 }
 \value{
 A list of 3 data frames, or an empty list if there is no
-matching record for the provided accession code
+matching record for the provided code
 }
 \description{
 Return details about a plot observation record from VegBank,
 including plot observation details, taxon observation, and community
-classifications, and more, using the plot observation accession code.
+classifications, and more, using the plot observation \code{ob} code.
 }
 \examples{
 \dontrun{
-get_plot_observation_details("VB.Ob.2948.ACAD143")
+get_plot_observation_details("ob.2948")
 }
 }

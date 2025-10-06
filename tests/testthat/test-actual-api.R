@@ -22,7 +22,7 @@ test_that("VegBank API error handling works", {
       req_url_path_append("plot-observations") |>
       req_url_query(limit = -1) |>
       send(),
-    "No additional error details from server.")
+    "When provided, 'offset' and 'limit' must be non-negative integers.")
 
   expect_error(
     get_all_resources("plot-observations", limit = -1),
@@ -40,7 +40,7 @@ test_that("Getting plot observations works", {
   local_vb_debug(0)
 
   expect_message(
-    obs_zero <- get_plot_observation("does_not_exist"),
+    obs_zero <- get_plot_observation("ob.0"),
     "No records returned",
     fixed = TRUE
   )
@@ -130,7 +130,7 @@ test_that("Getting plot observations works", {
     "observation_id", "plot_id", "plot_accession_code",
     "state_province")
 
-  obs_one <- get_plot_observation("VB.Ob.41618.50D47AJX5G5U8WY")
+  obs_one <- get_plot_observation("ob.41618")
   expect_identical(nrow(obs_one), 1L)
   expect_named(obs_one, names_obs_one, ignore.order = TRUE)
 
@@ -149,7 +149,7 @@ test_that("Getting plot observation details works", {
   local_vb_debug(0)
 
   expect_message(
-    det_obs_zero <- get_plot_observation_details("does_not_exist"),
+    det_obs_zero <- get_plot_observation_details("ob.0"),
     "No records returned",
     fixed = TRUE
   )
@@ -176,7 +176,7 @@ test_that("Getting plot observation details works", {
     "int_orig_plant_sci_name_no_auth", "stratum")
   names_det_comm <- c("accession_code", "comm_name")
 
-  det_obs_one <- get_plot_observation_details("VB.Ob.41618.50D47AJX5G5U8WY")
+  det_obs_one <- get_plot_observation_details("ob.41618")
   expect_type(det_obs_one, "list")
   expect_identical(length(det_obs_one), 3L)
   expect_named(
@@ -207,7 +207,7 @@ test_that("Getting taxon observations works", {
   local_vb_debug(0)
 
   expect_message(
-    txo_zero <- get_taxon_observation("does_not_exist"),
+    txo_zero <- get_taxon_observation("to.0"),
     "No records returned",
     fixed = TRUE
   )
@@ -231,27 +231,14 @@ test_that("Getting taxon observations works", {
     "int_orig_plant_sci_name_no_auth", "max_cover", "observation_id",
     "reference_id", "taxon_inference_area", "taxon_observation_id",
     "taxon_observation_accession_code")
-  names_txo_all_minimal <- c("author_plant_name",
-    "emb_taxon_observation", "int_curr_plant_code",
-    "int_curr_plant_common", "int_curr_plant_concept_id",
-    "int_curr_plant_sci_full", "int_curr_plant_sci_name_no_auth",
-    "int_orig_plant_code", "int_orig_plant_common",
-    "int_orig_plant_concept_id", "int_orig_plant_sci_full",
-    "int_orig_plant_sci_name_no_auth", "max_cover", "observation_id",
-    "reference_id", "taxon_inference_area", "taxon_observation_id",
-    "taxon_observation_accession_code")
 
-  txo_one <- get_taxon_observation("VB.TO.693826.Q8MM3I559WIQP3D")
+  txo_one <- get_taxon_observation("to.693826")
   expect_identical(nrow(txo_one), 1L)
   expect_named(txo_one, names_txo_one, ignore.order = TRUE)
 
-  txo_all_full <- get_all_taxon_observations(detail = "full", limit = 5)
+  txo_all_full <- get_all_taxon_observations(limit = 5)
   expect_identical(nrow(txo_all_full), 5L)
   expect_named(txo_all_full, names_txo_all_full, ignore.order = TRUE)
-
-  txo_all_minimal <- get_all_taxon_observations(detail = "minimal", limit = 5)
-  expect_identical(nrow(txo_all_minimal), 5L)
-  expect_named(txo_all_minimal, names_txo_all_minimal, ignore.order = TRUE)
 
   txo_all_max2 <- get_all_taxon_observations(max_taxa_per_plot = 2, limit = 500)
   expect_identical(max(table(txo_all_max2$observation_id)), 2L)
@@ -263,7 +250,7 @@ test_that("Getting community classifications works", {
   local_vb_debug(0)
 
   expect_message(
-    cc_zero <- get_community_classification("does_not_exist"),
+    cc_zero <- get_community_classification("cl.0"),
     "No records returned",
     fixed = TRUE
   )
@@ -286,7 +273,7 @@ test_that("Getting community classifications works", {
   names_cc_all_minimal <- c("comm_class_accession_code",
     "comm_concept_accession_code", "comm_name", "obs_accession_code")
 
-  cc_one <- get_community_classification("VB.Cl.34809.2HZMTQQVR2GWE9P")
+  cc_one <- get_community_classification("cl.34809")
   expect_identical(nrow(cc_one), 1L)
   expect_named(cc_one, names_cc_one, ignore.order = TRUE)
 
@@ -305,7 +292,7 @@ test_that("Getting community concepts works", {
   local_vb_debug(0)
 
   expect_message(
-    co_zero <- get_community_concept("does_not_exist"),
+    co_zero <- get_community_concept("cc.0"),
     "No records returned",
     fixed = TRUE
   )
@@ -320,7 +307,7 @@ test_that("Getting community concepts works", {
     "comm_name_date_entered", "current_accepted", "default_name",
     "obs_count", "reference_id", "reference_accession_code")
 
-  co_one <- get_community_concept("VB.cc.30617.ARTEMISIATRIDEN")
+  co_one <- get_community_concept("cc.30617")
   expect_identical(nrow(co_one), 1L)
   expect_named(co_one, names_co_one, ignore.order = TRUE)
 
@@ -420,7 +407,7 @@ test_that("Getting parties works", {
   local_vb_debug(0)
 
   expect_message(
-    party_zero <- get_party("does_not_exist"),
+    party_zero <- get_party("py.0"),
     "No records returned",
     fixed = TRUE
   )
@@ -433,7 +420,7 @@ test_that("Getting parties works", {
     "middle_name", "organization_name", "party_id",
     "party_accession_code", "salutation", "surname")
 
-  party_one <- get_party("VB.py.191378.VOLUNTEER")
+  party_one <- get_party("py.191378")
   expect_identical(nrow(party_one), 1L)
   expect_named(party_one, names_party_one, ignore.order = TRUE)
 
@@ -448,7 +435,7 @@ test_that("Getting projects works", {
   local_vb_debug(0)
 
   expect_message(
-    proj_zero <- get_project("does_not_exist"),
+    proj_zero <- get_project("pj.0"),
     "No records returned",
     fixed = TRUE
   )
@@ -461,7 +448,7 @@ test_that("Getting projects works", {
     "project_accession_code", "project_description", "project_name",
     "start_date", "stop_date")
 
-  proj_one <- get_project("VB.pj.10508.SOUTHWESTGAPCOL")
+  proj_one <- get_project("pj.10508")
   expect_identical(nrow(proj_one), 1L)
   expect_named(proj_one, names_proj_one, ignore.order = TRUE)
 

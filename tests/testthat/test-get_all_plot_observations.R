@@ -19,14 +19,14 @@ with_mock_api({
     )
 
     expect_message(
-       zero_records <- get_all_plot_observations(limit=0),
+       zero_records <- get_all_plot_observations(limit=0, parquet=FALSE),
        "No records returned",
        fixed = TRUE
     )
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    response <- get_all_plot_observations(detail="minimal", limit=1)
+    response <- get_all_plot_observations(detail="minimal", limit=1, parquet=FALSE)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(
