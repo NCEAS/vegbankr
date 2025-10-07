@@ -165,7 +165,8 @@ with_mock_api({
                     create_parquet = TRUE) |>
       req_perform()
     expect_message(
-      empty_vb_df <- vb_df_from_parquet(empty_parquet_response),
+      empty_vb_df <- vb_df_from_parquet(empty_parquet_response,
+                                        clean_names=FALSE),
       "No records returned")
     # response with invalid record count
     expect_s3_class(empty_vb_df, "data.frame")
@@ -180,11 +181,18 @@ with_mock_api({
                     offset = 0,
                     create_parquet = TRUE) |>
       req_perform()
-    vb_df <- vb_df_from_parquet(parquet_response)
+    vb_df <- vb_df_from_parquet(parquet_response,
+                                clean_names=FALSE)
     # response with invalid record count
     expect_s3_class(vb_df, "data.frame")
-    expect_identical(ncol(vb_df), 10L)
+    expect_identical(ncol(vb_df), 8L)
     expect_identical(nrow(vb_df), 2L)
+    expect_true("givenname" %in% names(vb_df))
+
+    # and again, but this time clean names
+    vb_df <- vb_df_from_parquet(parquet_response,
+                                clean_names=TRUE)
+    expect_true("given_name" %in% names(vb_df))
   })
 })
 
@@ -212,7 +220,8 @@ with_mock_api({
 
     # Test Parquet response
     response_parquet <- get_resource_by_code("parquet-test", "vb.1",
-                                             parquet=TRUE)
+                                             parquet=TRUE,
+                                             clean_names=FALSE)
     expect_s3_class(response_parquet, "data.frame")
     expect_identical(nrow(response_parquet), 40L)
     expect_identical(response_parquet$cm_code[1],
@@ -248,14 +257,15 @@ with_mock_api({
 
     # Test Parquet response
     response_parquet <- get_all_resources("parquet-test", detail="full",
-                                          limit=2, parquet=TRUE)
+                                          limit=2, parquet=TRUE,
+                                          clean_names=TRUE)
     expect_s3_class(response_parquet, "data.frame")
     expect_identical(nrow(response_parquet), 2L)
-    expect_identical(response_parquet$cm_code[1],
-                     "cm.1")
-    expect_identical(response_parquet$cover_percent[1],
-                     0.05)
-    expect_identical(response_parquet$cover_estimation_method[1],
+    expect_identical(response_parquet$party_id[2],
+                     199335)
+    expect_identical(response_parquet$given_name[2],
+                     "Chris")
+    expect_identical(response_parquet$salutation[1],
                      NA_integer_)
 
     # Parameter error conditions
