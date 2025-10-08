@@ -4,21 +4,23 @@
 \alias{get_community_concept}
 \title{Get a single community concept}
 \usage{
-get_community_concept(accession_code)
+get_community_concept(comm_concept_code, parquet = FALSE)
 }
 \arguments{
-\item{accession_code}{A community concept accession code}
+\item{comm_concept_code}{A community concept code}
+
+\item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
 }
 \value{
 A data frame (one row), or an empty data frame if there is
-no matching record for the provided accession code
+no matching record for the provided code
 }
 \description{
 Return a single community concept record from VegBank, using
-its accession code.
+its \code{cc} code.
 }
 \examples{
 \dontrun{
-get_community_concept("VB.cc.30617.ARTEMISIATRIDEN")
+get_community_concept("cc.30617")
 }
 }

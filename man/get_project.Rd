@@ -4,21 +4,22 @@
 \alias{get_project}
 \title{Get a single project}
 \usage{
-get_project(accession_code)
+get_project(project_code, parquet = FALSE)
 }
 \arguments{
-\item{accession_code}{A project accession code}
+\item{project_code}{A project code}
+
+\item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
 }
 \value{
 A data frame (one row), or an empty data frame if there is
-no matching record for the provided accession code
+no matching record for the provided code
 }
 \description{
-Return a single project record from VegBank, using its accession
-code.
+Return a single project record from VegBank, using its \code{pj} code.
 }
 \examples{
 \dontrun{
-get_project("VB.Pj.340.ACADIANATIONALP")
+get_project("pj.340")
 }
 }

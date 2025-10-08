@@ -258,6 +258,7 @@ int_origplantscinamenoauth,int_orig_plant_sci_name_no_auth
 interp_bestfit_cc_id,interp_bestfit_cc_id
 interp_bestfit_ci_id,interp_bestfit_ci_id
 interp_bestfit_code,interp_bestfit_code
+interpbestfitpartyaccessioncode,interp_bestfit_party_accession_code
 interp_bestfit_party_id,interp_bestfit_party_id
 interp_bestfit_partyname,interp_bestfit_partyname
 interp_bestfit_sciname,interp_bestfit_sciname
@@ -346,7 +347,12 @@ observationaccessioncode,observation_accession_code
 observationcontributor_id,observation_contributor_id
 observationnarrative,observation_narrative
 observationsynonym_id,observation_synonym_id
+obsnotesmgt,obs_notes_mgt
+obsnotespublic,obs_notes_public
+obsrevisions,obs_revisions
 obsstartdate,obs_start_date
+oldobservationaccessioncode,old_observation_accession_code
+oldplotaccessioncode,old_plot_accession_code
 organicdepth,organic_depth
 organization_id,organization_id
 organizationname,organization_name
@@ -359,6 +365,7 @@ ownerstop,owner_stop
 ownertype,owner_type
 pagerange,page_range
 parent_id,parent_id
+parentplotaccessioncode,parent_plot_accession_code
 parentcommstatus_id,parent_comm_status_id
 parentparty_id,parent_party_id
 parentplace_id,parent_place_id
@@ -411,9 +418,11 @@ plantstatus_id,plant_status_id
 plantusage_id,plant_usage_id
 plot_id,plot_id
 plotaccessioncode,plot_accession_code
+plotnotesmgt,plot_notes_mgt
 plotnotespublic,plot_notes_public
 plotplace_id,plot_place_id
 plotrationalenarrative,plot_rationale_narrative
+plotrevisions,plot_revisions
 plotvalidationlevel,plot_validation_level
 plotvalidationleveldescr,plot_validation_level_descr
 position,position
@@ -426,6 +435,7 @@ preferencestop,preference_stop
 preferencevalue,preference_value
 preferred_name,preferred_name
 prefixhtml,prefix_html
+previousobsaccessioncode,previous_obs_accession_code
 previousobs_id,previous_obs_id
 previousrevision_id,previous_revision_id
 previousvaluetext,previous_value_text
@@ -506,6 +516,7 @@ soilparent_id,soil_parent_id
 soilph,soil_ph
 soilsand,soil_sand
 soilsilt,soil_silt
+soiltaxonaccessioncode,soil_taxon_accession_code
 soiltaxon_id,soil_taxon_id
 soiltaxonsrc,soil_taxon_src
 soiltexture,soil_texture

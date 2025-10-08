@@ -3,8 +3,8 @@ with_mock_api({
     local_base_url(NULL)
 
     expect_GET(
-      get_taxon_observation("some_accession_code"),
-      "https://api.vegbank.org/taxon-observations/some_accession_code"
+      get_taxon_observation("some_vb_code"),
+      "https://api.vegbank.org/taxon-observations/some_vb_code"
     )
 
     expect_message(

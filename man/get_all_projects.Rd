@@ -4,12 +4,14 @@
 \alias{get_all_projects}
 \title{Get all projects}
 \usage{
-get_all_projects(limit = 100, offset = 0)
+get_all_projects(limit = 100, offset = 0, parquet = TRUE)
 }
 \arguments{
 \item{limit}{Number of records to return}
 
 \item{offset}{Number of records to skip}
+
+\item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
 }
 \value{
 A data frame

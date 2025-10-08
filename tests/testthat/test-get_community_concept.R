@@ -3,8 +3,8 @@ with_mock_api({
     local_base_url(NULL)
 
     expect_GET(
-      get_community_concept("some_accession_code"),
-      "https://api.vegbank.org/community-concepts/some_accession_code"
+      get_community_concept("some_vb_code"),
+      "https://api.vegbank.org/community-concepts/some_vb_code"
     )
 
     response <- get_community_concept("VB.cc.30617.ARTEMISIATRIDEN")

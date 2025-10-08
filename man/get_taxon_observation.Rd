@@ -4,21 +4,23 @@
 \alias{get_taxon_observation}
 \title{Get a single taxon observation}
 \usage{
-get_taxon_observation(accession_code)
+get_taxon_observation(taxon_obs_code, parquet = FALSE)
 }
 \arguments{
-\item{accession_code}{A taxon observation accession code}
+\item{taxon_obs_code}{A taxon observation code}
+
+\item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
 }
 \value{
 A data frame (one row), or an empty data frame if there is
-no matching record for the provided accession code
+no matching record for the provided code
 }
 \description{
-Return a single taxon observation record from VegBank, using the
-observation's accession code.
+Return a single taxon observation record from VegBank, using
+its \code{to} code.
 }
 \examples{
 \dontrun{
-get_taxon_observation("VB.TO.64992.VACCINIUMBOREAL")
+get_taxon_observation("to.64992")
 }
 }

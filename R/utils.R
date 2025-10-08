@@ -230,32 +230,37 @@ vb_df_from_json <- function(response, clean_names = TRUE) {
 
 #' Transform VegBank parquet response into a data frame
 #'
-#' Transforms a VegBank API Parquet response into a data frame.
-#' This is intended for use on API responses in Parquet format
-#' representing a single data table. If this element contains zero
+#' Transforms a VegBank API Parquet response into a data frame, canonicalizing
+#' names by default. This is intended for use on API responses in Parquet
+#' format representing a single data table. If this element contains zero
 #' records, an informative message is displayed, and the empty data
 #' frame is returned.
 #'
 #' @param response VegBank API response object
+#' @param clean_names (logical) Should names be canonicalized? Defaults
+#'        to `TRUE`.
 #' @returns A data frame
 #'
 #' @noRd
-vb_df_from_parquet <- function(response) {
-    temp_file <- tempfile(fileext = ".parquet")
-    on.exit(unlink(temp_file))
-    writeBin(resp_body_raw(response), temp_file)
-    conn <- duckdb::dbConnect(duckdb::duckdb())
-    on.exit(duckdb::dbDisconnect(conn), add=TRUE)
-    vb_data <- DBI::dbGetQuery(conn,
-      paste0("SELECT * FROM read_parquet('", temp_file, "')"))
-    vb_data <- dplyr::as_tibble(vb_data)
-    if (nrow(vb_data) == 0) {
-      message("No records returned")
-    }
-    return(vb_data)
+vb_df_from_parquet <- function(response, clean_names = TRUE) {
+  temp_file <- tempfile(fileext = ".parquet")
+  on.exit(unlink(temp_file))
+  writeBin(resp_body_raw(response), temp_file)
+  conn <- duckdb::dbConnect(duckdb::duckdb())
+  on.exit(duckdb::dbDisconnect(conn), add=TRUE)
+  vb_data <- DBI::dbGetQuery(conn,
+    paste0("SELECT * FROM read_parquet('", temp_file, "')"))
+  if (clean_names) {
+    vb_data <- canonicalize_names(vb_data)
+  }
+  if (nrow(vb_data) == 0) {
+    message("No records returned")
+  }
+  vb_data <- dplyr::as_tibble(vb_data)
+  return(vb_data)
 }
 
-#' Request a VegBank resource by accession code
+#' Request a VegBank resource by vb code
 #'
 #' Transforms a VegBank API response into a data frame, canonicalizing
 #' names by default. If the API returns an error (indicated by a
@@ -265,25 +270,25 @@ vb_df_from_parquet <- function(response) {
 #' message is displayed, and an empty data frame is returned.
 #'
 #' @param resource VegBank API resource (e.g., `plot-observations`)
-#' @param accession_code Resource accession code
+#' @param vb_code Resource identifier
 #' @param parquet Request data in Parquet format? Defaults to `FALSE`.
 #' @param clean_names (logical) Should names be canonicalized? Defaults
 #'        to `TRUE`.
 #' @return VegBank query results as a dataframe
 #'
 #' @noRd
-get_resource_by_code <- function(resource, accession_code,
+get_resource_by_code <- function(resource, vb_code,
                                  parquet = FALSE, clean_names = TRUE) {
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
-    req_url_path_append(accession_code) |>
+    req_url_path_append(vb_code) |>
     req_headers(Accept = "application/json")
   if (parquet) {
     request <- request |> req_url_query(create_parquet = parquet)
   }
   response <- send(request)
   if (parquet) {
-    vb_data <- vb_df_from_parquet(response)
+    vb_data <- vb_df_from_parquet(response, clean_names)
   } else {
     vb_data <- vb_df_from_json(response, clean_names)
   }
@@ -325,7 +330,7 @@ get_all_resources <- function(resource, limit=100, offset=0,
   if (parquet) {
     request <- request |> req_url_query(create_parquet = TRUE)
     response <- send(request)
-    vb_data <- vb_df_from_parquet(response)
+    vb_data <- vb_df_from_parquet(response, clean_names)
   } else {
     response <- send(request)
     vb_data <- vb_df_from_json(response, clean_names)

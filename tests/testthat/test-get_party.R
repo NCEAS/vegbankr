@@ -3,8 +3,8 @@ with_mock_api({
     local_base_url(NULL)
 
     expect_GET(
-      get_party("some_accession_code"),
-      "https://api.vegbank.org/parties/some_accession_code"
+      get_party("some_vb_code"),
+      "https://api.vegbank.org/parties/some_vb_code"
     )
 
     response <- get_party("VB.py.191378.VOLUNTEER")

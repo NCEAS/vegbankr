@@ -4,21 +4,23 @@
 \alias{get_community_classification}
 \title{Get a single community classification}
 \usage{
-get_community_classification(accession_code)
+get_community_classification(comm_class_code, parquet = FALSE)
 }
 \arguments{
-\item{accession_code}{A community classification accession code}
+\item{comm_class_code}{A community classification code}
+
+\item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
 }
 \value{
 A data frame (one row), or an empty data frame if there is
-no matching record for the provided accession code
+no matching record for the provided code
 }
 \description{
 Return a single community classification record from VegBank, using
-its accession code.
+its \code{cl} code.
 }
 \examples{
 \dontrun{
-get_community_classification("VB.Cl.1553.2948")
+get_community_classification("cl.1553")
 }
 }

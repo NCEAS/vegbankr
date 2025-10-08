@@ -4,21 +4,23 @@
 \alias{get_plot_observation}
 \title{Get a single plot observation}
 \usage{
-get_plot_observation(accession_code)
+get_plot_observation(plot_obs_code, parquet = FALSE)
 }
 \arguments{
-\item{accession_code}{A plot observation accession code}
+\item{plot_obs_code}{A plot observation code}
+
+\item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
 }
 \value{
 A data frame (one row), or an empty data frame if there is
-no matching record for the provided accession code
+no matching record for the provided code
 }
 \description{
-Return a single plot observation record from VegBank, using the
-observation's accession code.
+Return a single plot observation record from VegBank, using
+its \code{ob} code.
 }
 \examples{
 \dontrun{
-get_plot_observation("VB.Ob.2948.ACAD143")
+get_plot_observation("ob.2948")
 }
 }

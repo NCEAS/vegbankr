@@ -3,8 +3,8 @@ with_mock_api({
     local_base_url(NULL)
 
     expect_GET(
-      get_plot_observation("some_accession_code"),
-      "https://api.vegbank.org/plot-observations/some_accession_code"
+      get_plot_observation("some_vb_code"),
+      "https://api.vegbank.org/plot-observations/some_vb_code"
     )
 
     expect_message(
