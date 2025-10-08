@@ -33,12 +33,11 @@ with_mock_api({
     expect_identical(nrow(response), 2L)
     expect_named(
       response,
-      c("comm_class_accession_code", "comm_concept_accession_code",
-        "comm_name", "obs_accession_code"),
+      c("cl_code", "cc_code", "comm_name", "ob_code"),
       ignore.order = TRUE
     )
-    expect_identical(response$comm_class_accession_code[2],
-                     "VB.Cl.1554.2949")
+    expect_identical(response$cl_code[2],
+                     "cl.1554")
     expect_identical(response$comm_name[2],
                      "Typha (angustifolia, latifolia) - (Schoenoplectus spp.) Eastern Marsh")
   })

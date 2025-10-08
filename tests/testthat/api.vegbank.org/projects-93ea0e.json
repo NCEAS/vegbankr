@@ -4,8 +4,7 @@
         {
             "lastplotaddeddate": null,
             "obscount": 0,
-            "project_id": 9300,
-            "projectaccessioncode": "VB.Pj.9300.CAROLINAVEGETAT",
+            "pj_code": "pj.9300",
             "projectdescription": "Longleaf Pine plots along the coast on NC, SC, GA, and FL",
             "projectname": "Carolina Vegetation Survey - Longleaf",
             "startdate": null,
@@ -14,8 +13,7 @@
         {
             "lastplotaddeddate": "Fri, 11 Dec 2015 18:28:33 GMT",
             "obscount": 56,
-            "project_id": 10869,
-            "projectaccessioncode": "urn:lsid:cvs.bio.unc.edu:project:CVS.Pj.CVS-49",
+            "pj_code": "pj.49",
             "projectdescription": null,
             "projectname": "Carolina Vegetation Survey (49): BW Wells",
             "startdate": null,

@@ -2,7 +2,7 @@
     "count": 1,
     "data": [
         {
-            "observationaccessioncode": "VB.Ob.41618.50D47AJX5G5U8WY",
+            "ob_code": "ob.41618",
             "authorobscode": "CO071903JS14",
             "obsstartdate": "Sat, 19 Jul 2003 07:00:00 GMT",
             "maxslopeaspect": -106.409918856452,

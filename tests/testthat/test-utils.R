@@ -206,13 +206,13 @@ with_mock_api({
     expect_identical(nrow(response_json), 1L)
     expect_named(
       response_json,
-      c("observation_accession_code", "author_obs_code",
+      c("ob_code", "author_obs_code",
         "obs_start_date", "max_slope_aspect", "max_slope_gradient",
         "total_cover"),
       ignore.order = TRUE
     )
-    expect_identical(response_json$observation_accession_code,
-                 "VB.Ob.41618.50D47AJX5G5U8WY")
+    expect_identical(response_json$ob_code,
+                 "ob.41618")
     expect_identical(response_json$max_slope_aspect,
                  -106.409918856452)
     expect_identical(response_json$max_slope_gradient,
@@ -243,13 +243,12 @@ with_mock_api({
     expect_identical(nrow(response_json), 1L)
     expect_named(
       response_json,
-      c("obs_accession_code", "author_obs_code", "observation_id",
-        "plot_accession_code", "author_plot_code", "plot_id",
+      c("ob_code", "author_obs_code", "pl_code", "author_plot_code",
         "latitude", "longitude", "country", "state_province"),
       ignore.order = TRUE
     )
-    expect_identical(response_json$obs_accession_code,
-                 "VB.Ob.2948.ACAD143")
+    expect_identical(response_json$ob_code,
+                 "ob.2948")
     expect_identical(response_json$longitude,
                   -68.229339874)
     expect_identical(response_json$state_province,

@@ -2,24 +2,22 @@
     "count": 38961,
     "data": [
         {
-            "accessioncode": "VB.CC.132.V",
+            "cc_code": "cc.132",
             "commdescription": "Graminoids and/or forbs (including ferns) generally forming >10% cover with woody cover usually <10%.",
             "commnamedateentered": "Fri, 30 May 2003 07:00:00 GMT",
             "currentaccepted": true,
             "defaultname": "V",
             "obscount": 0,
-            "reference_id": 32,
-            "referenceaccessioncode": "VB.Rf.32.ECOART2002"
+            "rf_code": "rf.32"
         },
         {
-            "accessioncode": "VB.CC.133.VII",
+            "cc_code": "cc.133",
             "commdescription": null,
             "commnamedateentered": "Fri, 30 May 2003 07:00:00 GMT",
             "currentaccepted": true,
             "defaultname": "VII",
             "obscount": 0,
-            "reference_id": 32,
-            "referenceaccessioncode": "VB.Rf.32.ECOART2002"
+            "rf_code": "rf.32"
         }
     ]
 }

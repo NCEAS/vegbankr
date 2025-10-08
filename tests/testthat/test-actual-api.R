@@ -50,7 +50,7 @@ test_that("Getting plot observations works", {
     "author_n", "author_obs_code", "author_plot_code", "author_zone",
     "auto_taxon_cover", "azimuth", "basal_area", "bryophyte_quality",
     "confidentiality_reason", "confidentiality_status", "country",
-    "cover_dispersion", "cover_method_id", "date_accuracy",
+    "cover_dispersion", "cm_code", "date_accuracy",
     "dominant_stratum", "dsg_poly", "effort_level", "elevation",
     "elevation_accuracy", "elevation_range", "field_cover", "field_ht",
     "floating_cover", "floristic_quality", "growthform_1_cover",
@@ -61,19 +61,19 @@ test_that("Getting plot observations works", {
     "location_narrative", "max_slope_aspect", "max_slope_gradient",
     "method_narrative", "min_slope_aspect", "min_slope_gradient",
     "name_other", "nonvascular_cover", "nonvascular_ht", "obs_end_date",
-    "observation_id", "observation_accession_code",
+    "ob_code",
     "observation_narrative", "obs_start_date", "organic_depth",
-    "original_data", "parent_id", "percent_bare_soil",
+    "original_data", "parent_pl_code", "percent_bare_soil",
     "percent_bed_rock", "percent_litter", "percent_other",
     "percent_rock_gravel", "percent_water", "percent_wood",
-    "permanence", "phenologic_aspect", "placement_method", "plot_id",
-    "plot_accession_code", "previous_obs_id", "project_id", "rock_type",
+    "permanence", "phenologic_aspect", "placement_method",
+    "pl_code", "previous_ob_code", "pj_code", "rock_type",
     "shape", "shore_distance", "shrub_cover", "shrub_ht",
     "slope_aspect", "slope_gradient", "soil_depth", "soil_drainage",
-    "soil_moisture_regime", "soil_taxon_id", "soil_taxon_src",
+    "soil_moisture_regime", "st_code", "soil_taxon_src",
     "stand_maturity", "stand_size", "state_province",
     "stem_observation_area", "stem_sample_method", "stem_size_limit",
-    "stratum_assignment", "stratum_method_accession_code",
+    "stratum_assignment", "sm_code",
     "stratum_method_description", "stratum_method_name",
     "submerged_cover", "submerged_ht", "successional_status",
     "surficial_deposits", "taxon_observation_area", "topo_position",
@@ -84,52 +84,51 @@ test_that("Getting plot observations works", {
     "author_plot_code", "author_zone", "auto_taxon_cover", "azimuth",
     "basal_area", "bryophyte_quality", "confidentiality_reason",
     "confidentiality_status", "country", "cover_dispersion",
-    "cover_method_accession_code", "date_accuracy", "date_entered",
+    "cm_code", "date_accuracy", "date_entered",
     "dominant_stratum", "dsg_poly", "effort_level", "elevation",
     "elevation_accuracy", "elevation_range", "emb_observation",
     "field_cover", "field_ht", "floating_cover", "floristic_quality",
     "growthform_1_cover", "growthform_1_type", "growthform_2_cover",
     "growthform_2_type", "growthform_3_cover", "growthform_3_type",
     "has_observation_synonym", "homogeneity", "hydrologic_regime",
-    "interp_bestfit_cc_id", "interp_bestfit_ci_id",
+    "interp_bestfit_cc_code", "interp_bestfit_ci_code",
     "interp_bestfit_code", "interp_bestfit_partyname",
-    "interp_bestfit_sciname", "interp_current_cc_id",
-    "interp_current_ci_id", "interp_current_code",
-    "interp_current_party_id", "interp_current_partyname",
-    "interp_current_sciname", "interp_orig_cc_id", "interp_orig_ci_id",
-    "interp_orig_code", "interp_orig_party_id",
+    "interp_bestfit_sciname", "interp_current_cc_code",
+    "interp_current_ci_code", "interp_current_code",
+    "interp_current_py_code", "interp_current_partyname",
+    "interp_current_sciname", "interp_orig_cc_code", "interp_orig_ci_code",
+    "interp_orig_code", "interp_orig_py_code",
     "interp_orig_party_name", "interp_orig_sci_name",
-    "interp_bestfit_party_accession_code", "landform",
+    "interp_bestfit_py_code", "landform",
     "landscape_narrative", "latitude", "layout_narrative",
     "lichen_quality", "location_accuracy", "location_narrative",
     "longitude", "max_slope_aspect", "max_slope_gradient",
     "method_narrative", "min_slope_aspect", "min_slope_gradient",
     "name_other", "nonvascular_cover", "nonvascular_ht",
-    "number_of_taxa", "obs_end_date", "observation_accession_code",
+    "number_of_taxa", "obs_end_date", "ob_code",
     "observation_narrative", "obs_notes_mgt", "obs_notes_public",
-    "obs_revisions", "obs_start_date", "old_observation_accession_code",
-    "old_plot_accession_code", "organic_depth", "original_data",
-    "parent_plot_accession_code", "percent_bare_soil", "percent_bed_rock",
+    "obs_revisions", "obs_start_date",
+    "organic_depth", "original_data",
+    "parent_pl_code", "percent_bare_soil", "percent_bed_rock",
     "percent_litter", "percent_other", "percent_rock_gravel",
     "percent_water", "percent_wood", "permanence", "phenologic_aspect",
-    "placement_method", "plot_accession_code", "plot_notes_mgt",
+    "placement_method", "pl_code", "plot_notes_mgt",
     "plot_notes_public", "plot_revisions", "plot_validation_level",
-    "previous_obs_accession_code", "project_accession_code",
-    "reference_accession_code", "representativeness", "rock_type",
+    "previous_ob_code", "pj_code",
+    "rf_code", "representativeness", "rock_type",
     "shape", "shore_distance", "shrub_cover", "shrub_ht",
     "slope_aspect", "slope_gradient", "soil_depth", "soil_drainage",
-    "soil_moisture_regime", "soil_taxon_accession_code", "soil_taxon_src",
+    "soil_moisture_regime", "st_code", "soil_taxon_src",
     "stand_maturity", "stand_size", "state_province",
     "stem_observation_area", "stem_sample_method", "stem_size_limit",
-    "stratum_method_accession_code", "submerged_cover", "submerged_ht",
+    "sm_code", "submerged_cover", "submerged_ht",
     "successional_status", "surficial_deposits",
     "taxon_observation_area", "topo_position", "top_taxon_1_name",
     "top_taxon_2_name", "top_taxon_3_name", "top_taxon_4_name",
     "top_taxon_5_name", "total_cover", "tree_cover", "tree_ht",
     "water_depth", "water_salinity")
   names_obs_all_minimal <- c("author_obs_code", "author_plot_code",
-    "country", "latitude", "longitude", "obs_accession_code",
-    "observation_id", "plot_id", "plot_accession_code",
+    "country", "latitude", "longitude", "ob_code", "pl_code",
     "state_province")
 
   obs_one <- get_plot_observation("ob.41618")
@@ -160,14 +159,14 @@ test_that("Getting plot observation details works", {
 
   names_det_obs <- c("area", "author_obs_code", "author_plot_code",
     "auto_taxon_cover", "bryophyte_quality", "confidentiality_text",
-    "country", "cover_method_accession_code", "cover_type",
+    "country", "cm_code", "cover_type",
     "date_entered", "effort_level", "elevation", "floristic_quality",
     "interp_current_partyname", "latitude", "lichen_quality",
-    "location_narrative", "longitude", "obs_accession_code",
-    "obs_end_date", "obs_start_date", "permanence", "plot_accession_code",
+    "location_narrative", "longitude", "ob_code",
+    "obs_end_date", "obs_start_date", "permanence", "pl_code",
     "plot_validation_level", "plot_validation_level_descr",
-    "project_accession_code", "project_name", "slope_aspect",
-    "slope_gradient", "state_province", "stratum_method_accession_code",
+    "pj_code", "project_name", "slope_aspect",
+    "slope_gradient", "state_province", "sm_code",
     "stratum_method_description", "stratum_method_name",
     "taxon_observation_area")
   names_det_taxa <- c("author_plant_name", "basal_area", "biomass",
@@ -176,7 +175,7 @@ test_that("Getting plot observation details works", {
     "int_curr_plant_sci_name_no_auth", "int_orig_plant_code",
     "int_orig_plant_common", "int_orig_plant_sci_full",
     "int_orig_plant_sci_name_no_auth", "stratum")
-  names_det_comm <- c("accession_code", "comm_name")
+  names_det_comm <- c("cc_code", "comm_name")
 
   det_obs_one <- get_plot_observation_details("ob.41618")
   expect_type(det_obs_one, "list")
@@ -217,22 +216,20 @@ test_that("Getting taxon observations works", {
 
   names_txo_one <- c("author_plant_name", "emb_taxon_observation",
     "int_curr_plant_code", "int_curr_plant_common",
-    "int_curr_plant_concept_id", "int_curr_plant_sci_full",
+    "int_curr_pc_code", "int_curr_plant_sci_full",
     "int_curr_plant_sci_name_no_auth", "int_orig_plant_code",
-    "int_orig_plant_common", "int_orig_plant_concept_id",
+    "int_orig_plant_common", "int_orig_pc_code",
     "int_orig_plant_sci_full", "int_orig_plant_sci_name_no_auth",
-    "max_cover", "observation_id", "reference_id",
-    "taxon_inference_area", "taxon_observation_id",
-    "taxon_observation_accession_code")
+    "max_cover", "ob_code", "rf_code",
+    "taxon_inference_area", "to_code")
   names_txo_all_full <- c("author_plant_name",
     "emb_taxon_observation", "int_curr_plant_code",
-    "int_curr_plant_common", "int_curr_plant_concept_id",
+    "int_curr_plant_common", "int_curr_pc_code",
     "int_curr_plant_sci_full", "int_curr_plant_sci_name_no_auth",
     "int_orig_plant_code", "int_orig_plant_common",
-    "int_orig_plant_concept_id", "int_orig_plant_sci_full",
-    "int_orig_plant_sci_name_no_auth", "max_cover", "observation_id",
-    "reference_id", "taxon_inference_area", "taxon_observation_id",
-    "taxon_observation_accession_code")
+    "int_orig_pc_code", "int_orig_plant_sci_full",
+    "int_orig_plant_sci_name_no_auth", "max_cover", "ob_code",
+    "rf_code", "taxon_inference_area", "to_code")
 
   txo_one <- get_taxon_observation("to.693826")
   expect_identical(nrow(txo_one), 1L)
@@ -243,7 +240,7 @@ test_that("Getting taxon observations works", {
   expect_named(txo_all_full, names_txo_all_full, ignore.order = TRUE)
 
   txo_all_max2 <- get_all_taxon_observations(max_taxa_per_plot = 2, limit = 500)
-  expect_identical(max(table(txo_all_max2$observation_id)), 2L)
+  expect_identical(max(table(txo_all_max2$ob_code)), 2L)
 
 })
 
@@ -259,21 +256,21 @@ test_that("Getting community classifications works", {
   expect_identical(nrow(cc_zero), 0L)
 
   names_cc_one <- c("class_confidence", "class_fit", "class_notes",
-    "class_start_date", "class_stop_date", "comm_authority_id",
-    "comm_class_accession_code", "comm_code", "comm_concept_id",
+    "class_start_date", "class_stop_date", "comm_authority_rf_code",
+    "cl_code", "comm_code", "cc_code",
     "comm_framework", "comm_level", "comm_name", "emb_comm_class",
     "emb_comm_interpretation", "expert_system", "inspection",
     "multivariate_analysis", "nomenclatural_type", "notes",
     "table_analysis", "type")
   names_cc_all_full <- c("class_confidence", "class_fit", "class_notes",
-    "class_start_date", "class_stop_date", "comm_authority_id",
-    "comm_class_accession_code", "comm_code", "comm_concept_id",
+    "class_start_date", "class_stop_date", "comm_authority_rf_code",
+    "cl_code", "comm_code", "cc_code",
     "comm_framework", "comm_level", "comm_name", "emb_comm_class",
     "emb_comm_interpretation", "expert_system", "inspection",
     "multivariate_analysis", "nomenclatural_type", "notes",
     "table_analysis", "type")
-  names_cc_all_minimal <- c("comm_class_accession_code",
-    "comm_concept_accession_code", "comm_name", "obs_accession_code")
+  names_cc_all_minimal <- c("cl_code",
+    "cc_code", "comm_name", "ob_code")
 
   cc_one <- get_community_classification("cl.34809")
   expect_identical(nrow(cc_one), 1L)
@@ -300,14 +297,14 @@ test_that("Getting community concepts works", {
   )
   expect_identical(nrow(co_zero), 0L)
 
-  names_co_one <- c("accession_code", "class_system",
+  names_co_one <- c("cc_code", "class_system",
     "comm_description", "comm_name", "comm_name_date_entered",
     "comm_name_status", "current_accepted", "default_name", "obs_count",
-    "party_id", "party_accession_code", "reference_id", "usage_start",
+    "py_code", "rf_code", "usage_start",
     "usage_stop")
-  names_co_all <- c("accession_code", "comm_description",
+  names_co_all <- c("cc_code", "comm_description",
     "comm_name_date_entered", "current_accepted", "default_name",
-    "obs_count", "reference_id", "reference_accession_code")
+    "obs_count", "rf_code")
 
   co_one <- get_community_concept("cc.30617")
   expect_identical(nrow(co_one), 1L)
@@ -416,11 +413,11 @@ test_that("Getting parties works", {
   expect_identical(nrow(party_zero), 0L)
 
   names_party_one <- c("contact_instructions", "given_name",
-    "middle_name", "organization_name", "party_id",
-    "party_accession_code", "salutation", "surname")
+    "middle_name", "organization_name", "py_code",
+    "salutation", "surname")
   names_party_all <- c("contact_instructions", "given_name",
-    "middle_name", "organization_name", "party_id",
-    "party_accession_code", "salutation", "surname")
+    "middle_name", "organization_name", "py_code",
+    "salutation", "surname")
 
   party_one <- get_party("py.191378")
   expect_identical(nrow(party_one), 1L)
@@ -443,11 +440,11 @@ test_that("Getting projects works", {
   )
   expect_identical(nrow(proj_zero), 0L)
 
-  names_proj_one <- c("last_plot_added_date", "obs_count", "project_id",
-    "project_accession_code", "project_description", "project_name",
+  names_proj_one <- c("last_plot_added_date", "obs_count", "pj_code",
+    "project_description", "project_name",
     "start_date", "stop_date")
-  names_proj_all <- c("last_plot_added_date", "obs_count", "project_id",
-    "project_accession_code", "project_description", "project_name",
+  names_proj_all <- c("last_plot_added_date", "obs_count", "pj_code",
+    "project_description", "project_name",
     "start_date", "stop_date")
 
   proj_one <- get_project("pj.10508")

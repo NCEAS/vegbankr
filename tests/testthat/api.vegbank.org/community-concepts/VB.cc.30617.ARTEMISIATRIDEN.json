@@ -2,7 +2,7 @@
     "count": 1,
     "data": [
         {
-            "accessioncode": "VB.cc.30617.ARTEMISIATRIDEN",
+            "cc_code": "cc.30617",
             "classsystem": "Scientific",
             "commdescription": null,
             "commname": "Artemisia tridentata Shrubland Alliance",
@@ -11,9 +11,8 @@
             "currentaccepted": true,
             "defaultname": "Artemisia tridentata Shrubland Alliance",
             "obscount": 336,
-            "party_id": 191319,
-            "partyaccessioncode": "VB.py.191319.LEE",
-            "reference_id": 50596,
+            "py_code": "py.191319",
+            "rf_code": "rf.50596",
             "usagestart": "Thu, 09 Jun 2011 01:02:22 GMT",
             "usagestop": null
         }

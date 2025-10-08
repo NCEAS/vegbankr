@@ -3,8 +3,8 @@ with_mock_api({
     local_base_url(NULL)
 
     expect_GET(
-      get_plot_observation_details("some_accession_code"),
-      "https://api.vegbank.org/get_observation_details/some_accession_code"
+      get_plot_observation_details("ob.0"),
+      "https://api.vegbank.org/get_observation_details/ob.0"
     )
 
     expect_message(
@@ -28,19 +28,9 @@ with_mock_api({
     expect_identical(nrow(df_plot_observation), 1L)
     expect_named(
       df_plot_observation,
-      c("area", "author_obs_code", "author_plot_code",
-        "auto_taxon_cover", "bryophyte_quality", "confidentiality_text",
-        "country", "cover_method_accession_code", "cover_type",
-        "date_entered", "effort_level", "elevation",
-        "floristic_quality", "interp_current_partyname", "latitude",
-        "lichen_quality", "location_narrative", "longitude",
-        "obs_accession_code", "obs_end_date", "obs_start_date",
-        "permanence", "plot_accession_code", "plot_validation_level",
-        "plot_validation_level_descr", "project_accession_code",
-        "project_name", "slope_aspect", "slope_gradient",
-        "state_province", "stratum_method_accession_code",
-        "stratum_method_description", "stratum_method_name",
-        "taxon_observation_area"),
+      c("author_obs_code", "author_plot_code",
+        "latitude", "lichen_quality", "longitude",
+        "plot_validation_level", "taxon_observation_area"),
       ignore.order = TRUE
     )
     expect_identical(df_plot_observation$longitude,
@@ -56,14 +46,10 @@ with_mock_api({
     expect_named(
       df_taxa,
       c("author_plant_name", "basal_area", "biomass", "cover",
-        "cover_code", "inference_area", "int_curr_plant_code",
-        "int_curr_plant_common", "int_curr_plant_sci_full",
-        "int_curr_plant_sci_name_no_auth", "int_orig_plant_code",
-        "int_orig_plant_common", "int_orig_plant_sci_full",
-        "int_orig_plant_sci_name_no_auth", "stratum"),
+        "cover_code", "stratum"),
       ignore.order = TRUE
     )
-    expect_identical(df_taxa$int_curr_plant_sci_full[8],
+    expect_identical(df_taxa$author_plant_name[8],
                      "Lupinus L.")
 
     df_communities <- response[["communities"]]
@@ -71,10 +57,10 @@ with_mock_api({
     expect_identical(nrow(df_communities), 1L)
     expect_named(
       df_communities,
-      c("accession_code", "comm_name"),
+      c("cc_code", "comm_name"),
       ignore.order = TRUE
     )
-    expect_identical(df_communities$accession_code,
-                     "VB.cc.30617.ARTEMISIATRIDEN")
+    expect_identical(df_communities$cc_code,
+                     "cc.30617")
   })
 })

@@ -2,7 +2,7 @@
     "count": 1,
     "data": [
         {
-            "accessioncode": "VB.py.191378.VOLUNTEER",
+            "py_code": "py.191378",
             "contactinstructions": null,
             "currentname_id": null,
             "d_obscount": 1123,
@@ -10,7 +10,6 @@
             "givenname": null,
             "middlename": null,
             "organizationname": null,
-            "party_id": 191378,
             "partypublic": true,
             "partytype": null,
             "salutation": null,

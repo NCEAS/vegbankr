@@ -20,18 +20,17 @@ with_mock_api({
     expect_identical(nrow(response), 1L)
     expect_named(
       response,
-      c("accession_code", "author_plant_name", "emb_taxon_observation",
+      c("to_code", "author_plant_name", "emb_taxon_observation",
         "int_curr_plant_code", "int_curr_plant_common",
         "int_curr_plant_concept_id", "int_curr_plant_sci_full",
         "int_curr_plant_sci_name_no_auth", "int_orig_plant_code",
         "int_orig_plant_common", "int_orig_plant_concept_id",
         "int_orig_plant_sci_full", "int_orig_plant_sci_name_no_auth",
-        "max_cover", "observation_id", "reference_id",
-        "taxon_inference_area", "taxon_observation_id"),
+        "max_cover", "ob_code", "rf_code", "taxon_inference_area"),
       ignore.order = TRUE
     )
-    expect_identical(response$accession_code,
-                     "VB.TO.64982.LICHEN")
+    expect_identical(response$to_code,
+                     "to.64982")
     expect_identical(response$max_cover,
                      63.3125)
     expect_identical(response$taxon_inference_area,

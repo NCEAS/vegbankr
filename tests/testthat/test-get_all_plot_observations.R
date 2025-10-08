@@ -31,13 +31,13 @@ with_mock_api({
     expect_identical(nrow(response), 1L)
     expect_named(
       response,
-      c("obs_accession_code", "author_obs_code", "observation_id",
-        "plot_accession_code", "author_plot_code", "plot_id",
+      c("ob_code", "author_obs_code",
+        "pl_code", "author_plot_code",
         "latitude", "longitude", "country", "state_province"),
       ignore.order = TRUE
     )
-    expect_identical(response$obs_accession_code,
-                 "VB.Ob.2948.ACAD143")
+    expect_identical(response$ob_code,
+                 "ob.2948")
     expect_identical(response$longitude,
                   -68.229339874)
     expect_identical(response$state_province,

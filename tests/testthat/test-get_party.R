@@ -12,14 +12,14 @@ with_mock_api({
     expect_identical(nrow(response), 1L)
     expect_named(
       response,
-      c("accession_code", "contact_instructions", "current_name_id",
+      c("py_code", "contact_instructions", "current_name_id",
         "d_obs_count", "email", "given_name", "middle_name",
-        "organization_name", "party_id", "party_public", "party_type",
+        "organization_name", "party_public", "party_type",
         "salutation", "surname"),
       ignore.order = TRUE
     )
-    expect_identical(response$accession_code,
-                     "VB.py.191378.VOLUNTEER")
+    expect_identical(response$py_code,
+                     "py.191378")
     expect_identical(response$d_obs_count,
                      1123L)
     expect_identical(response$party_public,
