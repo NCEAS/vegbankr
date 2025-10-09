@@ -7,7 +7,7 @@ with_mock_api({
       "https://api.vegbank.org/projects/some_vb_code"
     )
 
-    response <- get_project("VB.pj.10508.SOUTHWESTGAPCOL")
+    response <- get_project("pj.10508")
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(

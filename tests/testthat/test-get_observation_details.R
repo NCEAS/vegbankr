@@ -15,7 +15,7 @@ with_mock_api({
     expect_type(zero_records, "list")
     expect_identical(length(zero_records), 0L)
 
-    response <- get_plot_observation_details("VB.Ob.41618.50D47AJX5G5U8WY")
+    response <- get_plot_observation_details("ob.41618")
     expect_type(response, "list")
     expect_identical(length(response), 3L)
     expect_named(

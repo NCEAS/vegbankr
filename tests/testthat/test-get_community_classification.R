@@ -7,7 +7,7 @@ with_mock_api({
       "https://api.vegbank.org/community-classifications/some_vb_code"
     )
 
-    response <- get_community_classification("VB.Cl.34809.2HZMTQQVR2GWE9P")
+    response <- get_community_classification("cl.34809")
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(

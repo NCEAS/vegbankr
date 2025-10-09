@@ -7,7 +7,7 @@ with_mock_api({
       "https://api.vegbank.org/community-concepts/some_vb_code"
     )
 
-    response <- get_community_concept("VB.cc.30617.ARTEMISIATRIDEN")
+    response <- get_community_concept("cc.30617")
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(

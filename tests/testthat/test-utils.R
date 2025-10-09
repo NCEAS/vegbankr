@@ -201,7 +201,7 @@ with_mock_api({
   test_that("get_resource_by_code() works", {
     # Test JSON response
     response_json <- get_resource_by_code("plot-observations",
-                                     "VB.Ob.41618.50D47AJX5G5U8WY")
+                                     "ob.41618")
     expect_s3_class(response_json, "data.frame")
     expect_identical(nrow(response_json), 1L)
     expect_named(

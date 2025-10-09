@@ -7,7 +7,7 @@ with_mock_api({
       "https://api.vegbank.org/parties/some_vb_code"
     )
 
-    response <- get_party("VB.py.191378.VOLUNTEER")
+    response <- get_party("py.191378")
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(

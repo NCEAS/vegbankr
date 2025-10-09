@@ -15,7 +15,7 @@ with_mock_api({
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    response <- get_plot_observation("VB.Ob.41618.50D47AJX5G5U8WY")
+    response <- get_plot_observation("ob.41618")
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(

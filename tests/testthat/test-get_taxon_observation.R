@@ -15,7 +15,7 @@ with_mock_api({
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    response <- get_taxon_observation("VB.TO.693826.Q8MM3I559WIQP3D")
+    response <- get_taxon_observation("to.693826")
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(
