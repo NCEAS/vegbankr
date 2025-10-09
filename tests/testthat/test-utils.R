@@ -269,19 +269,19 @@ with_mock_api({
 
     # Parameter error conditions
     expect_error(
-      get_all_resources("some-endpont", limit="foo"),
+      get_all_resources("some-endpoint", limit="foo"),
       "limit must be a finite, non-negative integer")
     expect_error(
-      get_all_resources("some-endpont", limit=NULL),
+      get_all_resources("some-endpoint", limit=NULL),
       "limit must be a finite, non-negative integer")
     expect_error(
-      get_all_resources("some-endpont", offset=-1),
+      get_all_resources("some-endpoint", offset=-1),
       "offset must be a finite, non-negative integer")
     expect_error(
-      get_all_resources("some-endpont", offset=NA_integer_),
+      get_all_resources("some-endpoint", offset=NA_integer_),
       "offset must be a finite, non-negative integer")
     expect_error(
-      get_all_resources("some-endpont", detail="invalid_value"),
+      get_all_resources("some-endpoint", detail="invalid_value"),
       "'arg' should be one of \"minimal\", \"full\"")
   })
 })
