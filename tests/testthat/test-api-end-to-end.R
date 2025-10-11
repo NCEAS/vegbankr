@@ -624,9 +624,9 @@ test_that("Getting plant concepts works", {
 
   names_pc_one <- c(
     "children",
-    "children_list",
     "concept_rf_code",
     "concept_rf_name",
+    "correlations",
     "current_accepted",
     "obs_count",
     "parent_name",
@@ -644,10 +644,7 @@ test_that("Getting plant concepts works", {
     "status_rf_code",
     "status_rf_name",
     "stop_date",
-    "usage_names",
-    "usage_names_list",
-    "usage_statuses",
-    "usage_statuses_list"
+    "usages"
   )
   names_pc_all <- names_pc_one
 

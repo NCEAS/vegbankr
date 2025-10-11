@@ -2,9 +2,21 @@
     "count": 1,
     "data": [
         {
-            "children": "{ \"pc.111487\" : \"Acer rubrum L. var. trilobum\", \"pc.111479\" : \"Acer rubrum L. var. drummondii\" }",
+            "children": [
+              {
+                "pc_code": "pc.126085",
+                "plant_name": "Carex parallela (Laest.) Sommerf. ssp. parallela"
+              }
+            ],
             "concept_rf_code": "rf.37",
             "concept_rf_name": "USDA Plants 2011",
+            "correlations": [
+              {
+                "convergence": "undetermined",
+                "pc_code": "pc.125685",
+                "plant_name": "Carex gynocrates Wormsk. ex Drejer"
+              }
+            ],
             "current_accepted": true,
             "obs_count": 0,
             "parent_name": "Acer L.",
@@ -22,8 +34,18 @@
             "status_rf_code": "rf.37",
             "status_rf_name": "USDA Plants 2011",
             "stop_date": null,
-            "usage_names": "{ \"Code\" : \"ACRU\", \"English Common\" : \"red maple\" }",
-            "usage_statuses": "{ \"Code\" : \"Standard\", \"English Common\" : \"Standard\" }"
+            "usages": [
+              {
+                "class_system": "Code",
+                "plant_name": "CAPA57",
+                "status": "Standard"
+              },
+              {
+                "class_system": "Scientific",
+                "plant_name": "Carex parallela auct. non (Laest.) Sommerf.",
+                "status": "Standard"
+              }
+            ]
         }
     ]
 }

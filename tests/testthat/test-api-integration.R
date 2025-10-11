@@ -545,6 +545,7 @@ test_that("plant-concepts works", {
     "children",
     "concept_rf_code",
     "concept_rf_name",
+    "correlations",
     "current_accepted",
     "obs_count",
     "parent_name",
@@ -562,8 +563,7 @@ test_that("plant-concepts works", {
     "status_rf_code",
     "status_rf_name",
     "stop_date",
-    "usage_names",
-    "usage_statuses"
+    "usages"
   )
   test_error_limit(resource)
   test_error_offset(resource)
