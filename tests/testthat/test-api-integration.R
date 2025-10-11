@@ -501,35 +501,36 @@ test_that("community-concepts works", {
   operator <- "community_concept"
   vb_code <- "cc.1324"
   names_one <- c(
+    "children",
+    "concept_rf_code",
+    "concept_rf_name",
+    "correlations",
+    "current_accepted",
+    "obs_count",
+    "parent_name",
+    "parent_cc_code",
+    "party",
     "cc_code",
-    "classsystem",
-    "commdescription",
-    "commname",
-    "commnamedateentered",
-    "commnamestatus",
-    "currentaccepted",
-    "defaultname",
-    "obscount",
+    "comm_code",
+    "comm_description",
+    "comm_level",
+    "comm_name",
+    "comm_party_comments",
     "py_code",
-    "rf_code",
-    "usagestart",
-    "usagestop"
+    "start_date",
+    "status",
+    "status_rf_code",
+    "status_rf_name",
+    "stop_date",
+    "usages"
   )
-  names_collection <- c(
-    "cc_code",
-    "commdescription",
-    "commnamedateentered",
-    "currentaccepted",
-    "defaultname",
-    "obscount",
-    "rf_code"
-  )
+  names_collection <- names_one
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
   test_error_vb_code(resource, operator)
-  test_success_one_json(resource, vb_code, names_one, n=3)
-  test_success_one_parquet(resource, vb_code, names_one, n=3)
+  test_success_one_json(resource, vb_code, names_one, n=1)
+  test_success_one_parquet(resource, vb_code, names_one, n=1)
   test_success_collection_json(resource, names_collection)
   test_success_collection_parquet(resource, names_collection)
 })
