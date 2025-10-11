@@ -201,18 +201,18 @@ with_mock_api({
   test_that("get_resource_by_code() works", {
     # Test JSON response
     response_json <- get_resource_by_code("plot-observations",
-                                     "VB.Ob.41618.50D47AJX5G5U8WY")
+                                     "ob.41618")
     expect_s3_class(response_json, "data.frame")
     expect_identical(nrow(response_json), 1L)
     expect_named(
       response_json,
-      c("observation_accession_code", "author_obs_code",
+      c("ob_code", "author_obs_code",
         "obs_start_date", "max_slope_aspect", "max_slope_gradient",
         "total_cover"),
       ignore.order = TRUE
     )
-    expect_identical(response_json$observation_accession_code,
-                 "VB.Ob.41618.50D47AJX5G5U8WY")
+    expect_identical(response_json$ob_code,
+                 "ob.41618")
     expect_identical(response_json$max_slope_aspect,
                  -106.409918856452)
     expect_identical(response_json$max_slope_gradient,
@@ -243,13 +243,12 @@ with_mock_api({
     expect_identical(nrow(response_json), 1L)
     expect_named(
       response_json,
-      c("obs_accession_code", "author_obs_code", "observation_id",
-        "plot_accession_code", "author_plot_code", "plot_id",
+      c("ob_code", "author_obs_code", "pl_code", "author_plot_code",
         "latitude", "longitude", "country", "state_province"),
       ignore.order = TRUE
     )
-    expect_identical(response_json$obs_accession_code,
-                 "VB.Ob.2948.ACAD143")
+    expect_identical(response_json$ob_code,
+                 "ob.2948")
     expect_identical(response_json$longitude,
                   -68.229339874)
     expect_identical(response_json$state_province,
@@ -270,19 +269,19 @@ with_mock_api({
 
     # Parameter error conditions
     expect_error(
-      get_all_resources("some-endpont", limit="foo"),
+      get_all_resources("some-endpoint", limit="foo"),
       "limit must be a finite, non-negative integer")
     expect_error(
-      get_all_resources("some-endpont", limit=NULL),
+      get_all_resources("some-endpoint", limit=NULL),
       "limit must be a finite, non-negative integer")
     expect_error(
-      get_all_resources("some-endpont", offset=-1),
+      get_all_resources("some-endpoint", offset=-1),
       "offset must be a finite, non-negative integer")
     expect_error(
-      get_all_resources("some-endpont", offset=NA_integer_),
+      get_all_resources("some-endpoint", offset=NA_integer_),
       "offset must be a finite, non-negative integer")
     expect_error(
-      get_all_resources("some-endpont", detail="invalid_value"),
+      get_all_resources("some-endpoint", detail="invalid_value"),
       "'arg' should be one of \"minimal\", \"full\"")
   })
 })

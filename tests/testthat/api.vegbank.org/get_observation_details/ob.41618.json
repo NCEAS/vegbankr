@@ -1,0 +1,86 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "authorobscode": "CO071903JS14",
+            "authorplotcode": "CO071903JS14",
+            "communities": [
+                {
+                    "cc_code": "cc.30617",
+                    "commname": "Artemisia tridentata Shrubland Alliance"
+                }
+            ],
+            "latitude": 38.4116325461036,
+            "lichenquality": null,
+            "longitude": -106.410502828997,
+            "plotvalidationlevel": 1,
+            "taxa": [
+                {
+                    "authorplantname": "Artemisia tridentata Nutt.",
+                    "basalarea": null,
+                    "biomass": null,
+                    "cover": 25.0,
+                    "covercode": null,
+                    "stratum": "shrubs"
+                },
+                {
+                    "authorplantname": "Chrysothamnus viscidiflorus (Hook.) Nutt.",
+                    "basalarea": null,
+                    "biomass": null,
+                    "cover": 5.0,
+                    "covercode": null,
+                    "stratum": "shrubs"
+                },
+                {
+                    "authorplantname": "Aristida purpurea Nutt.",
+                    "basalarea": null,
+                    "biomass": null,
+                    "cover": 5.0,
+                    "covercode": null,
+                    "stratum": "grasses"
+                },
+                {
+                    "authorplantname": "Poaceae",
+                    "basalarea": null,
+                    "biomass": null,
+                    "cover": 5.0,
+                    "covercode": null,
+                    "stratum": "grasses"
+                },
+                {
+                    "authorplantname": "Euthamia occidentalis Nutt.",
+                    "basalarea": null,
+                    "biomass": null,
+                    "cover": 2.0,
+                    "covercode": null,
+                    "stratum": "forbs"
+                },
+                {
+                    "authorplantname": "Erigeron L.",
+                    "basalarea": null,
+                    "biomass": null,
+                    "cover": 1.0,
+                    "covercode": null,
+                    "stratum": "forbs"
+                },
+                {
+                    "authorplantname": "Castilleja chromosa A. Nels.",
+                    "basalarea": null,
+                    "biomass": null,
+                    "cover": 1.0,
+                    "covercode": null,
+                    "stratum": "forbs"
+                },
+                {
+                    "authorplantname": "Lupinus L.",
+                    "basalarea": null,
+                    "biomass": null,
+                    "cover": 1.0,
+                    "covercode": null,
+                    "stratum": "forbs"
+                }
+            ],
+            "taxonobservationarea": null
+        }
+    ]
+}

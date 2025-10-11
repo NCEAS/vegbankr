@@ -50,7 +50,7 @@ It's still in development!
 # Don't try this at home yet
 library(vegbankr)
 
-plot_observation <- get_plot_observation("<accession_code>")
+plot_observation <- get_plot_observation("<ob_code>")
 ```
 
 ## License

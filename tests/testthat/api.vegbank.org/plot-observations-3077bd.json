@@ -7,10 +7,8 @@
             "country": "United States",
             "latitude": 44.346509409,
             "longitude": -68.229339874,
-            "obsaccessioncode": "VB.Ob.2948.ACAD143",
-            "observation_id": 2948,
-            "plot_id": 3004,
-            "plotaccessioncode": "VB.Pl.3004.ACAD143",
+            "ob_code": "ob.2948",
+            "pl_code": "pl.3004",
             "stateprovince": null
         }
     ]

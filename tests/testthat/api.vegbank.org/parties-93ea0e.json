@@ -2,7 +2,7 @@
     "count": 3487,
     "data": [
         {
-            "accessioncode": null,
+            "py_code": null,
             "contactinstructions": null,
             "currentname_id": null,
             "d_obscount": null,
@@ -10,14 +10,13 @@
             "givenname": null,
             "middlename": null,
             "organizationname": null,
-            "party_id": 1,
             "partypublic": true,
             "partytype": null,
             "salutation": null,
             "surname": "admin"
         },
         {
-            "accessioncode": "VB.py.191378.VOLUNTEER",
+            "py_code": "py.191378",
             "contactinstructions": null,
             "currentname_id": null,
             "d_obscount": 1123,
@@ -25,7 +24,6 @@
             "givenname": null,
             "middlename": null,
             "organizationname": null,
-            "party_id": 191378,
             "partypublic": true,
             "partytype": null,
             "salutation": null,

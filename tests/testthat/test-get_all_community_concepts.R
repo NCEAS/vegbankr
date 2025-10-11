@@ -31,9 +31,8 @@ with_mock_api({
     expect_identical(nrow(response), 2L)
     expect_named(
       response,
-      c("accession_code", "comm_description", "comm_name_date_entered",
-        "current_accepted", "default_name", "obs_count", "reference_id",
-        "reference_accession_code"),
+      c("cc_code", "comm_description", "comm_name_date_entered",
+        "current_accepted", "default_name", "obs_count", "rf_code"),
       ignore.order = TRUE
     )
     expect_identical(response$comm_name_date_entered[2],
