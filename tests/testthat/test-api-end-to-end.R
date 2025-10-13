@@ -438,13 +438,13 @@ test_that("Getting community classifications works", {
   local_vb_debug(0)
 
   expect_message(
-    cc_zero <- get_community_classification("cl.0"),
+    cl_zero <- get_community_classification("cl.0"),
     "No records returned",
     fixed = TRUE
   )
-  expect_identical(nrow(cc_zero), 0L)
+  expect_identical(nrow(cl_zero), 0L)
 
-  names_cc_one <- c(
+  names_cl_one <- c(
     "cc_code",
     "cl_code",
     "class_confidence",
@@ -467,25 +467,25 @@ test_that("Getting community classifications works", {
     "table_analysis",
     "type"
   )
-  names_cc_all_full <- names_cc_one
-  names_cc_all_minimal <- c(
+  names_cl_all_full <- names_cl_one
+  names_cl_all_minimal <- c(
     "cl_code",
     "cc_code",
     "comm_name",
     "ob_code"
   )
 
-  cc_one <- get_community_classification("cl.34809")
-  expect_identical(nrow(cc_one), 1L)
-  expect_named(cc_one, names_cc_one, ignore.order = TRUE)
+  cl_one <- get_community_classification("cl.34809")
+  expect_identical(nrow(cl_one), 1L)
+  expect_named(cl_one, names_cl_one, ignore.order = TRUE)
 
-  cc_all_full <- get_all_community_classifications(detail = "full", limit = 5)
-  expect_identical(nrow(cc_all_full), 5L)
-  expect_named(cc_all_full, names_cc_all_full, ignore.order = TRUE)
+  cl_all_full <- get_all_community_classifications(detail = "full", limit = 5)
+  expect_identical(nrow(cl_all_full), 5L)
+  expect_named(cl_all_full, names_cl_all_full, ignore.order = TRUE)
 
-  cc_all_minimal <- get_all_community_classifications(detail = "minimal", limit = 5)
-  expect_identical(nrow(cc_all_minimal), 5L)
-  expect_named(cc_all_minimal, names_cc_all_minimal, ignore.order = TRUE)
+  cl_all_minimal <- get_all_community_classifications(detail = "minimal", limit = 5)
+  expect_identical(nrow(cl_all_minimal), 5L)
+  expect_named(cl_all_minimal, names_cl_all_minimal, ignore.order = TRUE)
 
 })
 
@@ -495,44 +495,45 @@ test_that("Getting community concepts works", {
   local_vb_debug(0)
 
   expect_message(
-    co_zero <- get_community_concept("cc.0"),
+    cc_zero <- get_community_concept("cc.0"),
     "No records returned",
     fixed = TRUE
   )
-  expect_identical(nrow(co_zero), 0L)
+  expect_identical(nrow(cc_zero), 0L)
 
-  names_co_one <- c(
+  names_cc_one <- c(
+    "children",
+    "concept_rf_code",
+    "concept_rf_name",
+    "correlations",
+    "current_accepted",
+    "obs_count",
+    "parent_name",
+    "parent_cc_code",
+    "party",
     "cc_code",
-    "class_system",
+    "comm_code",
     "comm_description",
+    "comm_level",
     "comm_name",
-    "comm_name_date_entered",
-    "comm_name_status",
-    "current_accepted",
-    "default_name",
-    "obs_count",
+    "comm_party_comments",
     "py_code",
-    "rf_code",
-    "usage_start",
-    "usage_stop"
+    "start_date",
+    "status",
+    "status_rf_code",
+    "status_rf_name",
+    "stop_date",
+    "usages"
   )
-  names_co_all <- c(
-    "cc_code",
-    "comm_description",
-    "comm_name_date_entered",
-    "current_accepted",
-    "default_name",
-    "obs_count",
-    "rf_code"
-  )
+  names_cc_all <- names_cc_one
 
-  co_one <- get_community_concept("cc.30617")
-  expect_identical(nrow(co_one), 1L)
-  expect_named(co_one, names_co_one, ignore.order = TRUE)
+  cc_one <- get_community_concept("cc.30617")
+  expect_identical(nrow(cc_one), 1L)
+  expect_named(cc_one, names_cc_one, ignore.order = TRUE)
 
-  co_all <- get_all_community_concepts(limit = 5)
-  expect_identical(nrow(co_all), 5L)
-  expect_named(co_all, names_co_all, ignore.order = TRUE)
+  cc_all <- get_all_community_concepts(limit = 5)
+  expect_identical(nrow(cc_all), 5L)
+  expect_named(cc_all, names_cc_all, ignore.order = TRUE)
 
 })
 
@@ -624,9 +625,9 @@ test_that("Getting plant concepts works", {
 
   names_pc_one <- c(
     "children",
-    "children_list",
     "concept_rf_code",
     "concept_rf_name",
+    "correlations",
     "current_accepted",
     "obs_count",
     "parent_name",
@@ -644,10 +645,7 @@ test_that("Getting plant concepts works", {
     "status_rf_code",
     "status_rf_name",
     "stop_date",
-    "usage_names",
-    "usage_names_list",
-    "usage_statuses",
-    "usage_statuses_list"
+    "usages"
   )
   names_pc_all <- names_pc_one
 

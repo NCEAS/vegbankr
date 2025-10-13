@@ -17,11 +17,7 @@ get_all_plant_concepts(limit = 100, offset = 0, parquet = TRUE)
 A data frame
 }
 \description{
-Return a paginated set of plant concept records from VegBank. This
-includes additional processing to take three columns containing
-nested JSON objects (\code{usage_names}, \verb{usage_statuses, and }children`),
-and parse them into companion columns that contain this
-information in list format.
+Return a paginated set of plant concept records from VegBank.
 }
 \examples{
 \dontrun{

@@ -17,10 +17,7 @@ no matching record for the provided code
 }
 \description{
 Return a single plant concept record from VegBank, using
-its \code{pc} code. This includes additional processing to take three
-columns containing nested JSON objects (\code{usage_names},
-\verb{usage_statuses, and }children`), and parse them into companion
-columns that contain this information in list format.
+its \code{pc} code.
 }
 \examples{
 \dontrun{

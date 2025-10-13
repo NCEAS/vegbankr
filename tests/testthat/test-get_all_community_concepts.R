@@ -31,15 +31,15 @@ with_mock_api({
     expect_identical(nrow(response), 2L)
     expect_named(
       response,
-      c("cc_code", "comm_description", "comm_name_date_entered",
-        "current_accepted", "default_name", "obs_count", "rf_code"),
+      c("cc_code", "children", "comm_description", "obs_count",
+        "usages"),
       ignore.order = TRUE
     )
-    expect_identical(response$comm_name_date_entered[2],
-                     "Fri, 30 May 2003 07:00:00 GMT")
+    expect_identical(response$children[[2]]$cc_code[2],
+                     "cc.25004")
     expect_identical(response$obs_count[2],
-                     0L)
-    expect_identical(response$current_accepted[2],
-                     TRUE)
+                     100L)
+    expect_identical(response$comm_description[2],
+                     "Graminoids and stuff")
   })
 })
