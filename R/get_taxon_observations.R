@@ -14,7 +14,8 @@
 #' @export
 get_taxon_observation <- function(taxon_obs_code, parquet = FALSE) {
   resource <- "taxon-observations"
-  get_resource_by_code(resource, taxon_obs_code, parquet = parquet)
+  get_resource_by_code(resource, taxon_obs_code, parquet = parquet,
+                       clean_names = TRUE)
 }
 
 #' Get all plot observations
@@ -37,5 +38,6 @@ get_all_taxon_observations <- function(max_taxa_per_plot = 5, limit=100,
   resource <- "taxon-observations"
   detail <- "full"
   get_all_resources(resource, limit, offset, detail,
-                    num_taxa = max_taxa_per_plot, parquet = parquet)
+                    num_taxa = max_taxa_per_plot, parquet = parquet,
+                    clean_names = TRUE)
 }

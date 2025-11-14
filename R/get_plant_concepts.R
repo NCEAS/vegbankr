@@ -13,8 +13,7 @@
 #' @export
 get_plant_concept <- function(plant_concept_code, parquet = FALSE) {
   resource <- "plant-concepts"
-  get_resource_by_code(resource, plant_concept_code, parquet = parquet,
-                       clean_names = FALSE)
+  get_resource_by_code(resource, plant_concept_code, parquet = parquet)
 }
 
 #' Get all plant concepts
@@ -32,6 +31,5 @@ get_plant_concept <- function(plant_concept_code, parquet = FALSE) {
 get_all_plant_concepts <- function(limit = 100, offset = 0, parquet = TRUE) {
   resource <- "plant-concepts"
   detail <- "full"
-  get_all_resources(resource, limit, offset, detail, parquet = parquet,
-                       clean_names = FALSE)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet)
 }

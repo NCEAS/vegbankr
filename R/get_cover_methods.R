@@ -13,8 +13,7 @@
 #' @export
 get_cover_method <- function(cover_method_code, parquet = FALSE) {
   resource <- "cover-methods"
-  get_resource_by_code(resource, cover_method_code, parquet = parquet,
-                       clean_names = FALSE)
+  get_resource_by_code(resource, cover_method_code, parquet = parquet)
 }
 
 #' Get all cover methods
@@ -32,6 +31,5 @@ get_cover_method <- function(cover_method_code, parquet = FALSE) {
 get_all_cover_methods <- function(limit = 100, offset = 0, parquet = TRUE) {
   resource <- "cover-methods"
   detail <- "full"
-  get_all_resources(resource, limit, offset, detail,
-                    parquet = parquet, clean_names = FALSE)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet)
 }

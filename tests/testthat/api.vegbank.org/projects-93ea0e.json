@@ -2,22 +2,22 @@
     "count": 261,
     "data": [
         {
-            "lastplotaddeddate": null,
-            "obscount": 0,
+            "last_plot_added_date": null,
+            "obs_count": 0,
             "pj_code": "pj.9300",
-            "projectdescription": "Longleaf Pine plots along the coast on NC, SC, GA, and FL",
-            "projectname": "Carolina Vegetation Survey - Longleaf",
-            "startdate": null,
-            "stopdate": null
+            "project_description": "Longleaf Pine plots along the coast on NC, SC, GA, and FL",
+            "project_name": "Carolina Vegetation Survey - Longleaf",
+            "start_date": null,
+            "stop_date": null
         },
         {
-            "lastplotaddeddate": "Fri, 11 Dec 2015 18:28:33 GMT",
-            "obscount": 56,
+            "last_plot_added_date": "Fri, 11 Dec 2015 18:28:33 GMT",
+            "obs_count": 56,
             "pj_code": "pj.49",
-            "projectdescription": null,
-            "projectname": "Carolina Vegetation Survey (49): BW Wells",
-            "startdate": null,
-            "stopdate": null
+            "project_description": null,
+            "project_name": "Carolina Vegetation Survey (49): BW Wells",
+            "start_date": null,
+            "stop_date": null
         }
     ]
 }

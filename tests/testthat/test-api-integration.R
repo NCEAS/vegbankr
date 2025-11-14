@@ -66,8 +66,8 @@ test_error_detail <- function(resource, must_be_full = TRUE) {
 }
 
 # Test invalid vb code
-test_error_vb_code <- function(resource, operator) {
-  error_msg <- paste("Invalid", operator, "code 'foo.123'.")
+test_error_vb_code <- function(resource, table_code) {
+  error_msg <- paste("Invalid", table_code, "code 'foo.123'.")
   expect_error(
     request(get_vb_base_url()) |>
       req_url_path_append(resource) |>
@@ -141,152 +141,48 @@ test_that("plot-observations works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "plot-observations"
-  operator <- "plot_observation"
+  table_code <- "ob"
   vb_code <- "ob.2948"
   names_one <- c(
-    "authordatum",
-    "authore",
-    "authorlocation",
-    "authorn",
-    "authorobscode",
-    "authorplotcode",
-    "authorzone",
-    "autotaxoncover",
-    "azimuth",
-    "basalarea",
-    "bryophytequality",
-    "cm_code",
-    "confidentialityreason",
-    "confidentialitystatus",
-    "country",
-    "coverdispersion",
-    "dateaccuracy",
-    "dominantstratum",
-    "dsgpoly",
-    "effortlevel",
-    "elevation",
-    "elevationaccuracy",
-    "elevationrange",
-    "fieldcover",
-    "fieldht",
-    "floatingcover",
-    "floristicquality",
-    "growthform1cover",
-    "growthform1type",
-    "growthform2cover",
-    "growthform2type",
-    "growthform3cover",
-    "growthform3type",
-    "homogeneity",
-    "hydrologicregime",
-    "landform",
-    "landscapenarrative",
-    "layoutnarrative",
-    "lichenquality",
-    "locationaccuracy",
-    "locationnarrative",
-    "maxslopeaspect",
-    "maxslopegradient",
-    "methodnarrative",
-    "minslopeaspect",
-    "minslopegradient",
-    "nameother",
-    "nonvascularcover",
-    "nonvascularht",
-    "ob_code",
-    "obsenddate",
-    "observationnarrative",
-    "obsstartdate",
-    "organicdepth",
-    "originaldata",
-    "parent_pl_code",
-    "percentbaresoil",
-    "percentbedrock",
-    "percentlitter",
-    "percentother",
-    "percentrockgravel",
-    "percentwater",
-    "percentwood",
-    "permanence",
-    "phenologicaspect",
-    "pj_code",
-    "pl_code",
-    "placementmethod",
-    "previous_ob_code",
-    "rocktype",
-    "shape",
-    "shoredistance",
-    "shrubcover",
-    "shrubht",
-    "slopeaspect",
-    "slopegradient",
-    "sm_code",
-    "soildepth",
-    "soildrainage",
-    "soilmoistureregime",
-    "soiltaxonsrc",
-    "st_code",
-    "standmaturity",
-    "standsize",
-    "stateprovince",
-    "stemobservationarea",
-    "stemsamplemethod",
-    "stemsizelimit",
-    "stratumassignment",
-    "stratummethoddescription",
-    "stratummethodname",
-    "submergedcover",
-    "submergedht",
-    "successionalstatus",
-    "surficialdeposits",
-    "taxonobservationarea",
-    "topoposition",
-    "totalcover",
-    "treecover",
-    "treeht",
-    "waterdepth",
-    "watersalinity"
-  )
-  names_collection <- c(
     "area",
-    "authordatum",
-    "authore",
-    "authorlocation",
-    "authorn",
-    "authorobscode",
-    "authorplotcode",
-    "authorzone",
-    "autotaxoncover",
+    "author_datum",
+    "author_e",
+    "author_location",
+    "author_n",
+    "author_obs_code",
+    "author_plot_code",
+    "author_zone",
+    "auto_taxon_cover",
     "azimuth",
-    "basalarea",
-    "bryophytequality",
+    "basal_area",
+    "bryophyte_quality",
     "cm_code",
-    "confidentialityreason",
-    "confidentialitystatus",
+    "confidentiality_reason",
+    "confidentiality_status",
     "country",
-    "coverdispersion",
-    "dateaccuracy",
-    "dateentered",
-    "dominantstratum",
-    "dsgpoly",
-    "effortlevel",
+    "cover_dispersion",
+    "date_accuracy",
+    "date_entered",
+    "dominant_stratum",
+    "dsg_poly",
+    "effort_level",
     "elevation",
-    "elevationaccuracy",
-    "elevationrange",
+    "elevation_accuracy",
+    "elevation_range",
     "emb_observation",
-    "fieldcover",
-    "fieldht",
-    "floatingcover",
-    "floristicquality",
-    "growthform1cover",
-    "growthform1type",
-    "growthform2cover",
-    "growthform2type",
-    "growthform3cover",
-    "growthform3type",
-    "hasobservationsynonym",
+    "field_cover",
+    "field_ht",
+    "floating_cover",
+    "floristic_quality",
+    "growthform_1_cover",
+    "growthform_1_type",
+    "growthform_2_cover",
+    "growthform_2_type",
+    "growthform_3_cover",
+    "growthform_3_type",
+    "has_observation_synonym",
     "homogeneity",
-    "hydrologicregime",
+    "hydrologic_regime",
     "interp_bestfit_cc_code",
     "interp_bestfit_ci_code",
     "interp_bestfit_code",
@@ -306,101 +202,105 @@ test_that("plot-observations works", {
     "interp_orig_py_code",
     "interp_orig_sciname",
     "landform",
-    "landscapenarrative",
+    "landscape_narrative",
     "latitude",
-    "layoutnarrative",
-    "lichenquality",
-    "locationaccuracy",
-    "locationnarrative",
+    "layout_narrative",
+    "lichen_quality",
+    "location_accuracy",
+    "location_narrative",
     "longitude",
-    "maxslopeaspect",
-    "maxslopegradient",
-    "methodnarrative",
-    "minslopeaspect",
-    "minslopegradient",
-    "nameother",
-    "nonvascularcover",
-    "nonvascularht",
-    "numberoftaxa",
+    "max_slope_aspect",
+    "max_slope_gradient",
+    "method_narrative",
+    "min_slope_aspect",
+    "min_slope_gradient",
+    "name_other",
+    "nonvascular_cover",
+    "nonvascular_ht",
+    "number_of_taxa",
     "ob_code",
-    "obsenddate",
-    "observationnarrative",
-    "obsnotesmgt",
-    "obsnotespublic",
-    "obsrevisions",
-    "obsstartdate",
-    "organicdepth",
-    "originaldata",
+    "obs_end_date",
+    "ob_notes_mgt",
+    "ob_notes_public",
+    "ob_revisions",
+    "obs_start_date",
+    "observation_narrative",
+    "organic_depth",
+    "original_data",
     "parent_pl_code",
-    "percentbaresoil",
-    "percentbedrock",
-    "percentlitter",
-    "percentother",
-    "percentrockgravel",
-    "percentwater",
-    "percentwood",
+    "percent_bare_soil",
+    "percent_bed_rock",
+    "percent_litter",
+    "percent_other",
+    "percent_rock_gravel",
+    "percent_water",
+    "percent_wood",
     "permanence",
-    "phenologicaspect",
+    "phenologic_aspect",
     "pj_code",
     "pl_code",
-    "placementmethod",
-    "plotnotesmgt",
-    "plotnotespublic",
-    "plotrevisions",
-    "plotvalidationlevel",
+    "placement_method",
+    "pl_notes_mgt",
+    "pl_notes_public",
+    "pl_revisions",
+    "plot_validation_level",
     "previous_ob_code",
     "representativeness",
     "rf_code",
-    "rocktype",
+    "rock_type",
     "shape",
-    "shoredistance",
-    "shrubcover",
-    "shrubht",
-    "slopeaspect",
-    "slopegradient",
+    "shore_distance",
+    "shrub_cover",
+    "shrub_ht",
+    "slope_aspect",
+    "slope_gradient",
     "sm_code",
-    "soildepth",
-    "soildrainage",
-    "soilmoistureregime",
-    "soiltaxonsrc",
+    "soil_depth",
+    "soil_drainage",
+    "soil_moisture_regime",
+    "soil_taxon_src",
     "st_code",
-    "standmaturity",
-    "standsize",
-    "stateprovince",
-    "stemobservationarea",
-    "stemsamplemethod",
-    "stemsizelimit",
-    "submergedcover",
-    "submergedht",
-    "successionalstatus",
-    "surficialdeposits",
-    "taxonobservationarea",
-    "topoposition",
-    "toptaxon1name",
-    "toptaxon2name",
-    "toptaxon3name",
-    "toptaxon4name",
-    "toptaxon5name",
-    "totalcover",
-    "treecover",
-    "treeht",
-    "waterdepth",
-    "watersalinity"
+    "stratum_assignment",
+    "stratum_method_description",
+    "stratum_method_name",
+    "stand_maturity",
+    "stand_size",
+    "state_province",
+    "stem_observation_area",
+    "stem_sample_method",
+    "stem_size_limit",
+    "submerged_cover",
+    "submerged_ht",
+    "successional_status",
+    "surficial_deposits",
+    "taxon_observation_area",
+    "top_taxon1_name",
+    "top_taxon2_name",
+    "top_taxon3_name",
+    "top_taxon4_name",
+    "top_taxon5_name",
+    "topo_position",
+    "total_cover",
+    "tree_cover",
+    "tree_ht",
+    "water_depth",
+    "water_salinity"
   )
+  names_collection <- names_one
   names_coll_min <- c(
-    "authorobscode",
-    "authorplotcode",
+    "author_obs_code",
+    "author_plot_code",
     "country",
     "latitude",
     "longitude",
     "ob_code",
     "pl_code",
-    "stateprovince"
+    "state_province"
   )
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource, must_be_full = FALSE)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names_one)
   test_success_one_parquet(resource, vb_code, names_one)
   test_success_collection_json(resource, names_collection)
@@ -414,7 +314,7 @@ test_that("taxon-observations works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "taxon-observations"
-  operator <- "taxon_observation"
+  table_code <- "to"
   vb_code <- "to.587096"
   names <- c(
     "authorplantname",
@@ -438,7 +338,7 @@ test_that("taxon-observations works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -450,41 +350,42 @@ test_that("community-classifications works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "community-classifications"
-  operator <- "community_classification"
+  table_code <- "cl"
   vb_code <- "cl.1553"
   names <- c(
     "cc_code",
     "cl_code",
-    "classconfidence",
-    "classfit",
-    "classnotes",
-    "classstartdate",
-    "classstopdate",
+    "class_confidence",
+    "class_fit",
+    "class_notes",
+    "class_start_date",
+    "class_stop_date",
     "comm_authority_rf_code",
-    "commcode",
-    "commframework",
-    "commlevel",
-    "commname",
-    "emb_commclass",
-    "emb_comminterpretation",
-    "expertsystem",
+    "comm_code",
+    "comm_framework",
+    "comm_level",
+    "comm_name",
+    "emb_comm_class",
+    "emb_comm_interpretation",
+    "expert_system",
     "inspection",
-    "multivariateanalysis",
-    "nomenclaturaltype",
-    "notes",
-    "tableanalysis",
-    "type"
+    "interpretation_nomenclatural_type",
+    "interpretation_notes",
+    "interpretation_type",
+    "multivariate_analysis",
+    "ob_code",
+    "table_analysis"
   )
   names_coll_min <- c(
     "cc_code",
     "cl_code",
-    "commname",
+    "comm_name",
     "ob_code"
   )
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource, must_be_full = FALSE)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -498,7 +399,7 @@ test_that("community-concepts works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "community-concepts"
-  operator <- "community_concept"
+  table_code <- "cc"
   vb_code <- "cc.1324"
   names_one <- c(
     "children",
@@ -528,7 +429,7 @@ test_that("community-concepts works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names_one, n=1)
   test_success_one_parquet(resource, vb_code, names_one, n=1)
   test_success_collection_json(resource, names_collection)
@@ -540,7 +441,7 @@ test_that("plant-concepts works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "plant-concepts"
-  operator <- "plant_concept"
+  table_code <- "pc"
   vb_code <- "pc.193"
   names <- c(
     "children",
@@ -569,7 +470,7 @@ test_that("plant-concepts works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -581,13 +482,13 @@ test_that("parties works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "parties"
-  operator <- "party"
-  vb_code <- "py.1"
+  table_code <- "py"
+  vb_code <- "py.11"
   names <- c(
-    "contactinstructions",
-    "givenname",
-    "middlename",
-    "organizationname",
+    "contact_instructions",
+    "given_name",
+    "middle_name",
+    "organization_name",
     "py_code",
     "salutation",
     "surname"
@@ -595,7 +496,7 @@ test_that("parties works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -607,21 +508,21 @@ test_that("projects works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "projects"
-  operator <- "project"
+  table_code <- "pj"
   vb_code <- "pj.9300"
   names <- c(
-    "lastplotaddeddate",
-    "obscount",
+    "last_plot_added_date",
+    "obs_count",
     "pj_code",
-    "projectdescription",
-    "projectname",
-    "startdate",
-    "stopdate"
+    "project_description",
+    "project_name",
+    "start_date",
+    "stop_date"
   )
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -633,7 +534,7 @@ test_that("cover-methods works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "cover-methods"
-  operator <- "cover_method"
+  table_code <- "cm"
   vb_code <- "cm.1"
   names <- c(
     "cm_code",
@@ -650,7 +551,7 @@ test_that("cover-methods works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names, n=40)
   test_success_one_parquet(resource, vb_code, names, n=40)
   test_success_collection_json(resource, names)
@@ -662,7 +563,7 @@ test_that("stratum-methods works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "stratum-methods"
-  operator <- "stratum_method"
+  table_code <- "sm"
   vb_code <- "sm.622"
   names <- c(
     "rf_code",
@@ -679,7 +580,7 @@ test_that("stratum-methods works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names, n=3)
   test_success_one_parquet(resource, vb_code, names, n=3)
   test_success_collection_json(resource, names)
@@ -691,7 +592,7 @@ test_that("references works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "references"
-  operator <- "reference"
+  table_code <- "rf"
   vb_code <- "rf.1"
   names <- c(
     "degree",
@@ -712,7 +613,7 @@ test_that("references works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)

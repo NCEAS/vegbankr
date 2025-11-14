@@ -112,13 +112,13 @@ with_mock_api({
       req_headers(Accept = "application/json")
     response <- request |> req_perform()
     # canonicalize names
-    records_c <- vb_df_from_json(response)
+    records_c <- vb_df_from_json(response, clean_names = TRUE)
     expect_s3_class(records_c, "data.frame")
     expect_identical(nrow(records_c), 3L)
     expect_named(records_c,
       c("surname", "given_name"), ignore.order = TRUE)
     # don't canonicalize names
-    records_nc <- vb_df_from_json(response, clean_names = FALSE)
+    records_nc <- vb_df_from_json(response)
     expect_s3_class(records_nc, "data.frame")
     expect_identical(nrow(records_nc), 3L)
     expect_named(records_nc,
@@ -165,8 +165,7 @@ with_mock_api({
                     create_parquet = TRUE) |>
       req_perform()
     expect_message(
-      empty_vb_df <- vb_df_from_parquet(empty_parquet_response,
-                                        clean_names=FALSE),
+      empty_vb_df <- vb_df_from_parquet(empty_parquet_response),
       "No records returned")
     # response with invalid record count
     expect_s3_class(empty_vb_df, "data.frame")
@@ -181,8 +180,7 @@ with_mock_api({
                     offset = 0,
                     create_parquet = TRUE) |>
       req_perform()
-    vb_df <- vb_df_from_parquet(parquet_response,
-                                clean_names=FALSE)
+    vb_df <- vb_df_from_parquet(parquet_response)
     # response with invalid record count
     expect_s3_class(vb_df, "data.frame")
     expect_identical(ncol(vb_df), 8L)

@@ -4,13 +4,13 @@
         {
             "cl_code": "cl.1553",
             "cc_code": "cc.33859",
-            "commname": "Vaccinium angustifolium - Sorbus americana / Sibbaldiopsis tridentata Dwarf-shrubland",
+            "comm_name": "Vaccinium angustifolium - Sorbus americana / Sibbaldiopsis tridentata Dwarf-shrubland",
             "ob_code": "ob.2948"
         },
         {
             "cl_code": "cl.1554",
             "cc_code": "cc.34801",
-            "commname": "Typha (angustifolia, latifolia) - (Schoenoplectus spp.) Eastern Marsh",
+            "comm_name": "Typha (angustifolia, latifolia) - (Schoenoplectus spp.) Eastern Marsh",
             "ob_code": "ob.2949"
         }
     ]
