@@ -66,8 +66,8 @@ test_error_detail <- function(resource, must_be_full = TRUE) {
 }
 
 # Test invalid vb code
-test_error_vb_code <- function(resource, operator) {
-  error_msg <- paste("Invalid", operator, "code 'foo.123'.")
+test_error_vb_code <- function(resource, table_code) {
+  error_msg <- paste("Invalid", table_code, "code 'foo.123'.")
   expect_error(
     request(get_vb_base_url()) |>
       req_url_path_append(resource) |>
@@ -141,7 +141,7 @@ test_that("plot-observations works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "plot-observations"
-  operator <- "plot_observation"
+  table_code <- "ob"
   vb_code <- "ob.2948"
   names_one <- c(
     "area",
@@ -300,7 +300,7 @@ test_that("plot-observations works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource, must_be_full = FALSE)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names_one)
   test_success_one_parquet(resource, vb_code, names_one)
   test_success_collection_json(resource, names_collection)
@@ -314,7 +314,7 @@ test_that("taxon-observations works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "taxon-observations"
-  operator <- "taxon_observation"
+  table_code <- "to"
   vb_code <- "to.587096"
   names <- c(
     "authorplantname",
@@ -338,7 +338,7 @@ test_that("taxon-observations works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -350,7 +350,7 @@ test_that("community-classifications works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "community-classifications"
-  operator <- "community_classification"
+  table_code <- "cl"
   vb_code <- "cl.1553"
   names <- c(
     "cc_code",
@@ -385,7 +385,7 @@ test_that("community-classifications works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource, must_be_full = FALSE)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -399,7 +399,7 @@ test_that("community-concepts works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "community-concepts"
-  operator <- "community_concept"
+  table_code <- "cc"
   vb_code <- "cc.1324"
   names_one <- c(
     "children",
@@ -429,7 +429,7 @@ test_that("community-concepts works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names_one, n=1)
   test_success_one_parquet(resource, vb_code, names_one, n=1)
   test_success_collection_json(resource, names_collection)
@@ -441,7 +441,7 @@ test_that("plant-concepts works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "plant-concepts"
-  operator <- "plant_concept"
+  table_code <- "pc"
   vb_code <- "pc.193"
   names <- c(
     "children",
@@ -470,7 +470,7 @@ test_that("plant-concepts works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -482,7 +482,7 @@ test_that("parties works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "parties"
-  operator <- "party"
+  table_code <- "py"
   vb_code <- "py.1"
   names <- c(
     "contact_instructions",
@@ -496,7 +496,7 @@ test_that("parties works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -508,7 +508,7 @@ test_that("projects works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "projects"
-  operator <- "project"
+  table_code <- "pj"
   vb_code <- "pj.9300"
   names <- c(
     "last_plot_added_date",
@@ -522,7 +522,7 @@ test_that("projects works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
@@ -534,7 +534,7 @@ test_that("cover-methods works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "cover-methods"
-  operator <- "cover_method"
+  table_code <- "cm"
   vb_code <- "cm.1"
   names <- c(
     "cm_code",
@@ -551,7 +551,7 @@ test_that("cover-methods works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names, n=40)
   test_success_one_parquet(resource, vb_code, names, n=40)
   test_success_collection_json(resource, names)
@@ -563,7 +563,7 @@ test_that("stratum-methods works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "stratum-methods"
-  operator <- "stratum_method"
+  table_code <- "sm"
   vb_code <- "sm.622"
   names <- c(
     "rf_code",
@@ -580,7 +580,7 @@ test_that("stratum-methods works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names, n=3)
   test_success_one_parquet(resource, vb_code, names, n=3)
   test_success_collection_json(resource, names)
@@ -592,7 +592,7 @@ test_that("references works", {
   skip_on_cran()
   local_vb_debug(0)
   resource <- "references"
-  operator <- "reference"
+  table_code <- "rf"
   vb_code <- "rf.1"
   names <- c(
     "degree",
@@ -613,7 +613,7 @@ test_that("references works", {
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
-  test_error_vb_code(resource, operator)
+  test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names)
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
