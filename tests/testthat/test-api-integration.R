@@ -483,7 +483,7 @@ test_that("parties works", {
   local_vb_debug(0)
   resource <- "parties"
   table_code <- "py"
-  vb_code <- "py.1"
+  vb_code <- "py.11"
   names <- c(
     "contact_instructions",
     "given_name",
