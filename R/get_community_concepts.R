@@ -14,8 +14,7 @@
 #' @export
 get_community_concept <- function(comm_concept_code, parquet = FALSE) {
   resource <- "community-concepts"
-  get_resource_by_code(resource, comm_concept_code, parquet = parquet,
-                       clean_names = FALSE)
+  get_resource_by_code(resource, comm_concept_code, parquet = parquet)
 }
 
 #' Get all community concepts
@@ -35,6 +34,5 @@ get_all_community_concepts <- function(limit = 100, offset = 0,
                                        parquet = TRUE) {
   resource <- "community-concepts"
   detail <- "full"
-  get_all_resources(resource, limit, offset, detail,
-                    parquet = parquet, clean_names = FALSE)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet)
 }

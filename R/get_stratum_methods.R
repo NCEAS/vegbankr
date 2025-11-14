@@ -13,8 +13,7 @@
 #' @export
 get_stratum_method <- function(stratum_method_code, parquet = FALSE) {
   resource <- "stratum-methods"
-  get_resource_by_code(resource, stratum_method_code, parquet = parquet,
-                       clean_names = FALSE)
+  get_resource_by_code(resource, stratum_method_code, parquet = parquet)
 }
 
 #' Get all stratum methods
@@ -32,6 +31,5 @@ get_stratum_method <- function(stratum_method_code, parquet = FALSE) {
 get_all_stratum_methods <- function(limit = 100, offset = 0, parquet = TRUE) {
   resource <- "stratum-methods"
   detail <- "full"
-  get_all_resources(resource, limit, offset, detail,
-                    parquet = parquet, clean_names = FALSE)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet)
 }

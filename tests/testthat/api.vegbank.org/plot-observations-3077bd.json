@@ -2,14 +2,14 @@
     "count": 114635,
     "data": [
         {
-            "authorobscode": "ACAD.143",
-            "authorplotcode": "ACAD.143",
+            "author_obs_code": "ACAD.143",
+            "author_plot_code": "ACAD.143",
             "country": "United States",
             "latitude": 44.346509409,
             "longitude": -68.229339874,
             "ob_code": "ob.2948",
             "pl_code": "pl.3004",
-            "stateprovince": null
+            "state_province": null
         }
     ]
 }

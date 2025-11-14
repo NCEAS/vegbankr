@@ -13,8 +13,7 @@
 #' @export
 get_reference <- function(reference_code, parquet = FALSE) {
   resource <- "references"
-  get_resource_by_code(resource, reference_code, parquet = parquet,
-                       clean_names = FALSE)
+  get_resource_by_code(resource, reference_code, parquet = parquet)
 }
 
 #' Get all references
@@ -32,6 +31,5 @@ get_reference <- function(reference_code, parquet = FALSE) {
 get_all_references <- function(limit = 100, offset = 0, parquet = TRUE) {
   resource <- "references"
   detail <- "full"
-  get_all_resources(resource, limit, offset, detail,
-                    parquet = parquet, clean_names = FALSE)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet)
 }

@@ -189,8 +189,8 @@ canonicalize_names <- function(target_df, lookup_df) {
 
 #' Transform VegBank JSON response into a data frame
 #'
-#' Transforms a VegBank API JSON response into a data frame, canonicalizing
-#' names by default. This is intended for use on API responses in JSON
+#' Transforms a VegBank API JSON response into a data frame, optionally
+#' canonicalizing names. This is intended for use on API responses in JSON
 #' format with a top level "data" element containing a list of records
 #' coercible to a dataframe. If this element contains zero records
 #' (represented as an empty JSON array, an informative message is
@@ -198,11 +198,11 @@ canonicalize_names <- function(target_df, lookup_df) {
 #'
 #' @param response VegBank API response object
 #' @param clean_names (logical) Should names be canonicalized? Defaults
-#'        to `TRUE`.
+#'        to `FALSE`.
 #' @returns A data frame
 #'
 #' @noRd
-vb_df_from_json <- function(response, clean_names = TRUE) {
+vb_df_from_json <- function(response, clean_names = FALSE) {
   response_list <- response |>
     resp_body_string() |>
     jsonlite::fromJSON(flatten = TRUE)
@@ -230,19 +230,19 @@ vb_df_from_json <- function(response, clean_names = TRUE) {
 
 #' Transform VegBank parquet response into a data frame
 #'
-#' Transforms a VegBank API Parquet response into a data frame, canonicalizing
-#' names by default. This is intended for use on API responses in Parquet
+#' Transforms a VegBank API Parquet response into a data frame, optionally
+#' canonicalizing names. This is intended for use on API responses in Parquet
 #' format representing a single data table. If this element contains zero
 #' records, an informative message is displayed, and the empty data
 #' frame is returned.
 #'
 #' @param response VegBank API response object
 #' @param clean_names (logical) Should names be canonicalized? Defaults
-#'        to `TRUE`.
+#'        to `FALSE`.
 #' @returns A data frame
 #'
 #' @noRd
-vb_df_from_parquet <- function(response, clean_names = TRUE) {
+vb_df_from_parquet <- function(response, clean_names = FALSE) {
   temp_file <- tempfile(fileext = ".parquet")
   on.exit(unlink(temp_file))
   writeBin(resp_body_raw(response), temp_file)
@@ -278,7 +278,7 @@ vb_df_from_parquet <- function(response, clean_names = TRUE) {
 #'
 #' @noRd
 get_resource_by_code <- function(resource, vb_code,
-                                 parquet = FALSE, clean_names = TRUE) {
+                                 parquet = FALSE, clean_names = FALSE) {
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_path_append(vb_code) |>
@@ -314,7 +314,7 @@ get_resource_by_code <- function(resource, vb_code,
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
                               detail = c("minimal", "full"),
-                              parquet = FALSE, clean_names = TRUE, ...) {
+                              parquet = FALSE, clean_names = FALSE, ...) {
   if (!rlang::is_scalar_integerish(limit, finite=TRUE) ||
       limit <0) stop("limit must be a finite, non-negative integer")
   if (!rlang::is_scalar_integerish(offset, finite=TRUE) ||

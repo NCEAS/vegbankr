@@ -3,11 +3,11 @@
     "data": [
         {
             "ob_code": "ob.41618",
-            "authorobscode": "CO071903JS14",
-            "obsstartdate": "Sat, 19 Jul 2003 07:00:00 GMT",
-            "maxslopeaspect": -106.409918856452,
-            "maxslopegradient": null,
-            "totalcover": 45.0
+            "author_obs_code": "CO071903JS14",
+            "obs_start_date": "Sat, 19 Jul 2003 07:00:00 GMT",
+            "max_slope_aspect": -106.409918856452,
+            "max_slope_gradient": null,
+            "total_cover": 45.0
         }
     ]
 }
