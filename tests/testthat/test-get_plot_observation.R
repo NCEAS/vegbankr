@@ -8,14 +8,17 @@ with_mock_api({
     )
 
     expect_message(
-       zero_records <- get_plot_observation("zero_records"),
+       zero_records <- get_plot_observation("zero_records",
+                                            detail=NULL, with_nested=NULL,
+                                            num_taxa=NULL, num_comms=NULL),
        "No records returned",
        fixed = TRUE
     )
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    response <- get_plot_observation("ob.41618")
+    response <- get_plot_observation("ob.41618", detail=NULL, with_nested=NULL,
+                                     num_taxa=NULL, num_comms=NULL)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(

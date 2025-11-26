@@ -6,15 +6,13 @@ with_mock_api({
     expect_GET(
       get_all_projects(),
       paste0(endpoint,
-             "?detail=full",
-             "&limit=100",
+             "?limit=100",
              "&offset=0")
     )
     expect_GET(
       get_all_projects(limit=5, offset=10),
       paste0(endpoint,
-             "?detail=full",
-             "&limit=5",
+             "?limit=5",
              "&offset=10")
     )
 

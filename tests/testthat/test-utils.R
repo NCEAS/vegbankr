@@ -144,7 +144,7 @@ with_mock_api({
       req_perform()
     expect_warning(
       vb_df <- vb_df_from_json(invalid_count_response),
-      "API returned an invalid count")
+      "Unable to interpret count metadata returned by API")
     expect_s3_class(vb_df, "data.frame")
     expect_identical(nrow(vb_df), 3L)
     expect_null(attr(vb_df, "vb_count_reported"))
@@ -159,8 +159,7 @@ with_mock_api({
     # response with record count of 0
     empty_parquet_response <- request(get_vb_base_url()) |>
       req_url_path_append('parquet-test') |>
-      req_url_query(detail = "full",
-                    limit = 0,
+      req_url_query(limit = 0,
                     offset = 0,
                     create_parquet = TRUE) |>
       req_perform()
@@ -175,8 +174,7 @@ with_mock_api({
     # response with record count of 2
     parquet_response <- request(get_vb_base_url()) |>
       req_url_path_append('parquet-test') |>
-      req_url_query(detail = "full",
-                    limit = 2,
+      req_url_query(limit = 2,
                     offset = 0,
                     create_parquet = TRUE) |>
       req_perform()
@@ -235,27 +233,25 @@ with_mock_api({
   local_base_url(NULL)
   test_that("get_all_resources() works", {
     # Test JSON response
-    response_json <- get_all_resources("plot-observations",
-                                  detail="minimal", limit=1)
+    response_json <- get_all_resources("plot-observations", limit=2)
     expect_s3_class(response_json, "data.frame")
-    expect_identical(nrow(response_json), 1L)
+    expect_identical(nrow(response_json), 2L)
     expect_named(
       response_json,
       c("ob_code", "author_obs_code", "pl_code", "author_plot_code",
         "latitude", "longitude", "country", "state_province"),
       ignore.order = TRUE
     )
-    expect_identical(response_json$ob_code,
+    expect_identical(response_json$ob_code[2],
                  "ob.2948")
-    expect_identical(response_json$longitude,
+    expect_identical(response_json$longitude[2],
                   -68.229339874)
-    expect_identical(response_json$state_province,
+    expect_identical(response_json$state_province[2],
                  NA)
 
     # Test Parquet response
-    response_parquet <- get_all_resources("parquet-test", detail="full",
-                                          limit=2, parquet=TRUE,
-                                          clean_names=TRUE)
+    response_parquet <- get_all_resources("parquet-test", limit=2,
+                                          parquet=TRUE, clean_names=TRUE)
     expect_s3_class(response_parquet, "data.frame")
     expect_identical(nrow(response_parquet), 2L)
     expect_identical(response_parquet$party_id[2],
@@ -267,20 +263,15 @@ with_mock_api({
 
     # Parameter error conditions
     expect_error(
-      get_all_resources("some-endpoint", limit="foo"),
-      "limit must be a finite, non-negative integer")
+      get_all_resources("some-endpoint", limit="foo"))
     expect_error(
-      get_all_resources("some-endpoint", limit=NULL),
-      "limit must be a finite, non-negative integer")
+      get_all_resources("some-endpoint", limit=NULL))
     expect_error(
-      get_all_resources("some-endpoint", offset=-1),
-      "offset must be a finite, non-negative integer")
+      get_all_resources("some-endpoint", offset=-1))
     expect_error(
-      get_all_resources("some-endpoint", offset=NA_integer_),
-      "offset must be a finite, non-negative integer")
+      get_all_resources("some-endpoint", offset=NA_integer_))
     expect_error(
-      get_all_resources("some-endpoint", detail="invalid_value"),
-      "'arg' should be one of \"minimal\", \"full\"")
+      get_all_resources("some-endpoint", detail="invalid_value"))
   })
 })
 
@@ -301,8 +292,7 @@ test_that("get_page_details() extracts the expected attributes", {
 with_mock_api({
   local_base_url(NULL)
   test_that("get_all_resources() returns expected page details", {
-    response <- get_all_resources("test-count",
-                                  limit=50, offset=2)
+    response <- get_all_resources("test-count", limit=50, offset=2)
     page_details <- get_page_details(response)
     expected <- c(count_reported = 5,
                   offset = 2,

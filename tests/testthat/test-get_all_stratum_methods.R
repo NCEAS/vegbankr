@@ -6,18 +6,14 @@ with_mock_api({
     expect_GET(
       get_all_stratum_methods(),
       paste0(endpoint,
-             "?detail=full",
-             "&limit=100",
-             "&offset=0",
-             "&create_parquet=TRUE")
+             "?limit=100",
+             "&offset=0")
     )
     expect_GET(
       get_all_stratum_methods(limit=5, offset=10),
       paste0(endpoint,
-             "?detail=full",
-             "&limit=5",
-             "&offset=10",
-             "&create_parquet=TRUE")
+             "?limit=5",
+             "&offset=10")
     )
 
     response <- get_all_stratum_methods(limit=2, parquet=FALSE)
