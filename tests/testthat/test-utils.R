@@ -226,6 +226,16 @@ with_mock_api({
                      0.05)
     expect_identical(response_parquet$cover_estimation_method[1],
                      NA_integer_)
+
+    # Function parameter error conditions
+    expect_error(
+      get_resource_by_code("some-endpoint", parquet="not_logical"),
+      "argument 'parquet' must be TRUE or FALSE"
+    )
+    expect_error(
+      get_resource_by_code("some-endpoint", clean_names="not_logical"),
+      "argument 'clean_names' must be TRUE or FALSE"
+    )
   })
 })
 
@@ -261,7 +271,16 @@ with_mock_api({
     expect_identical(response_parquet$salutation[1],
                      NA_integer_)
 
-    # Parameter error conditions
+    # Function parameter error conditions
+    expect_error(
+      get_all_resources("some-endpoint", parquet="not_logical"),
+      "argument 'parquet' must be TRUE or FALSE"
+    )
+    expect_error(
+      get_all_resources("some-endpoint", clean_names="not_logical"),
+      "argument 'clean_names' must be TRUE or FALSE"
+    )
+    # API query parameter error conditions
     expect_error(
       get_all_resources("some-endpoint", limit="foo"))
     expect_error(

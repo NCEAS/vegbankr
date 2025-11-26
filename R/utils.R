@@ -301,12 +301,15 @@ extract_vb_count <- function(raw_count) {
 
 #' Request a VegBank resource by vb code
 #'
-#' Transforms a VegBank API response into a data frame, canonicalizing
-#' names by default. If the API returns an error (indicated by a
-#' top-level "error" key in the JSON response), the error message is
-#' displayed as an R warning, and `NULL` is returned. If API returns a
-#' non-error response with a reported record count of 0, an informative
-#' message is displayed, and an empty data frame is returned.
+#' Retrieves a dataframe containing a single record of the requested VegBank
+#' resource type, identified by its vb_code.
+#'
+#' The API response can be requested either as JSON or Parquet, and name
+#' canonicalization can optionally be applied to the dataframe (client-side).
+#' If the API returns an error (indicated by a top-level "error" key in a JSON
+#' response), the error message is displayed as an R warning, and `NULL` is
+#' returned. If API returns a non-error response with a reported record count of
+#' 0, an informative message is displayed, and an empty data frame is returned.
 #'
 #' @param resource VegBank API resource (e.g., `plot-observations`)
 #' @param vb_code Resource identifier
@@ -317,8 +320,14 @@ extract_vb_count <- function(raw_count) {
 #'
 #' @import httr2
 #' @noRd
-get_resource_by_code <- function(resource, vb_code, clean_names = FALSE,
-                                 parquet = FALSE, ...) {
+get_resource_by_code <- function(resource, vb_code, parquet = FALSE,
+                                 clean_names = FALSE, ...) {
+  if (!is.logical(parquet)) {
+    stop("argument 'parquet' must be TRUE or FALSE", call.=FALSE)
+  }
+  if (!is.logical(clean_names)) {
+    stop("argument 'clean_names' must be TRUE or FALSE", call.=FALSE)
+  }
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_path_append(vb_code) |>
@@ -338,14 +347,21 @@ get_resource_by_code <- function(resource, vb_code, clean_names = FALSE,
 
 #' Get all records for a VegBank resource
 #'
-#' Retrieves a dataframe containing "all" returned records (constrained
-#' by limit and offset) of the requested resource type, with possible
-#' control over the level of detail depending on the API endpoint.
+#' Retrieves a dataframe containing a collection of records of the
+#' requested VegBank resource type, where collection membership and size
+#' are potentially constrained by limit, offset, and any other passed
+#' API query parameters (e.g., `search`) that impose server-side filtering.
+#'
+#' The API response can be requested either as JSON or Parquet, and name
+#' canonicalization can optionally be applied to the dataframe (client-side).
+#' If the API returns an error (indicated by a top-level "error" key in a JSON
+#' response), the error message is displayed as an R warning, and `NULL` is
+#' returned. If API returns a non-error response with a reported record count of
+#' 0, an informative message is displayed, and an empty data frame is returned.
 #'
 #' @param resource VegBank API resource (e.g., `plot-observation`)
 #' @param limit Query result limit
 #' @param offset Query result offset
-#' @param detail Level of detail ("minimal", "full")
 #' @param parquet Request data in Parquet format? Defaults to `FALSE`.
 #' @param clean_names (logical) Should names be canonicalized? Defaults
 #'        to `TRUE`.
@@ -356,6 +372,12 @@ get_resource_by_code <- function(resource, vb_code, clean_names = FALSE,
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
                               parquet = FALSE, clean_names = FALSE, ...) {
+  if (!is.logical(parquet)) {
+    stop("argument 'parquet' must be TRUE or FALSE", call.=FALSE)
+  }
+  if (!is.logical(clean_names)) {
+    stop("argument 'clean_names' must be TRUE or FALSE", call.=FALSE)
+  }
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_headers(Accept = "application/json") |>
