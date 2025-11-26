@@ -4,12 +4,14 @@
 \alias{get_project}
 \title{Get a single project}
 \usage{
-get_project(project_code, parquet = FALSE)
+get_project(project_code, parquet = FALSE, ...)
 }
 \arguments{
 \item{project_code}{A project code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is

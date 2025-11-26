@@ -7,8 +7,13 @@
 get_all_plot_observations(
   limit = 100,
   offset = 0,
-  detail = c("minimal", "full"),
-  parquet = TRUE
+  parquet = TRUE,
+  search = NULL,
+  detail = "minimal",
+  with_nested = FALSE,
+  num_taxa = 5,
+  num_comms = 5,
+  ...
 )
 }
 \arguments{
@@ -16,9 +21,21 @@ get_all_plot_observations(
 
 \item{offset}{Number of records to skip}
 
-\item{detail}{Desired level of detail ("minimal", "full")}
-
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{search}{An optional text search term}
+
+\item{detail}{Desired level of detail ("minimal", "full", or "geo")}
+
+\item{with_nested}{Include nested fields in response?}
+
+\item{num_taxa}{Max number of taxon observations to return
+per plot observation, in descending order of reported cover}
+
+\item{num_comms}{Max number of community classifications to return
+per plot observation}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame

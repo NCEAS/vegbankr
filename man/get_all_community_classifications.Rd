@@ -7,8 +7,10 @@
 get_all_community_classifications(
   limit = 100,
   offset = 0,
-  detail = c("minimal", "full"),
-  parquet = TRUE
+  parquet = TRUE,
+  detail = "minimal",
+  with_nested = FALSE,
+  ...
 )
 }
 \arguments{
@@ -16,9 +18,13 @@ get_all_community_classifications(
 
 \item{offset}{Number of records to skip}
 
-\item{detail}{Desired level of detail ("minimal", "full")}
-
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{detail}{Desired level of detail ("minimal" or "full")}
+
+\item{with_nested}{Include nested fields in response?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame

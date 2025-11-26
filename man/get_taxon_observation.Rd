@@ -4,12 +4,16 @@
 \alias{get_taxon_observation}
 \title{Get a single taxon observation}
 \usage{
-get_taxon_observation(taxon_obs_code, parquet = FALSE)
+get_taxon_observation(taxon_obs_code, parquet = FALSE, with_nested = TRUE, ...)
 }
 \arguments{
 \item{taxon_obs_code}{A taxon observation code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{with_nested}{Include nested fields in response?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is

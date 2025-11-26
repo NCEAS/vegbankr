@@ -4,12 +4,14 @@
 \alias{get_cover_method}
 \title{Get a single cover method}
 \usage{
-get_cover_method(cover_method_code, parquet = FALSE)
+get_cover_method(cover_method_code, parquet = FALSE, ...)
 }
 \arguments{
 \item{cover_method_code}{A cover method code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is

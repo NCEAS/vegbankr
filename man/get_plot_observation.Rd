@@ -4,12 +4,32 @@
 \alias{get_plot_observation}
 \title{Get a single plot observation}
 \usage{
-get_plot_observation(plot_obs_code, parquet = FALSE)
+get_plot_observation(
+  plot_obs_code,
+  parquet = FALSE,
+  detail = "full",
+  with_nested = TRUE,
+  num_taxa = 5,
+  num_comms = 5,
+  ...
+)
 }
 \arguments{
 \item{plot_obs_code}{A plot observation code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{detail}{Desired level of detail ("minimal", "full", or "geo")}
+
+\item{with_nested}{Include nested fields in response?}
+
+\item{num_taxa}{Max number of taxon observations to return
+per plot observation, in descending order of reported cover}
+
+\item{num_comms}{Max number of community classifications to return
+per plot observation}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is

@@ -4,12 +4,14 @@
 \alias{get_plant_concept}
 \title{Get a single plant concept}
 \usage{
-get_plant_concept(plant_concept_code, parquet = FALSE)
+get_plant_concept(plant_concept_code, parquet = FALSE, ...)
 }
 \arguments{
 \item{plant_concept_code}{A plant concept code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is

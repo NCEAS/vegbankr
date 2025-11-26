@@ -4,12 +4,14 @@
 \alias{get_reference}
 \title{Get a single reference}
 \usage{
-get_reference(reference_code, parquet = FALSE)
+get_reference(reference_code, parquet = FALSE, ...)
 }
 \arguments{
 \item{reference_code}{A reference code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is
