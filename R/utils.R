@@ -320,10 +320,6 @@ get_resource_by_code <- function(resource, vb_code,
 get_all_resources <- function(resource, limit=100, offset=0,
                               detail = c("minimal", "full"),
                               parquet = FALSE, clean_names = FALSE, ...) {
-  if (!rlang::is_scalar_integerish(limit, finite=TRUE) ||
-      limit <0) stop("limit must be a finite, non-negative integer")
-  if (!rlang::is_scalar_integerish(offset, finite=TRUE) ||
-      offset <0) stop("offset must be a finite, non-negative integer")
   detail <- match.arg(detail)
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
