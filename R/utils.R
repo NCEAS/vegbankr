@@ -281,11 +281,12 @@ vb_df_from_parquet <- function(response, clean_names = FALSE) {
 #'
 #' @import httr2
 #' @noRd
-get_resource_by_code <- function(resource, vb_code,
-                                 parquet = FALSE, clean_names = FALSE) {
+get_resource_by_code <- function(resource, vb_code, clean_names = FALSE,
+                                 parquet = FALSE, ...) {
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_path_append(vb_code) |>
+    req_url_query(!!!list(...)) |>
     req_headers(Accept = "application/json")
   if (parquet) {
     request <- request |> req_url_query(create_parquet = parquet)
@@ -318,14 +319,11 @@ get_resource_by_code <- function(resource, vb_code,
 #' @import httr2
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
-                              detail = c("minimal", "full"),
                               parquet = FALSE, clean_names = FALSE, ...) {
-  detail <- match.arg(detail)
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_headers(Accept = "application/json") |>
-    req_url_query(detail = detail,
-                  limit = limit,
+    req_url_query(limit = limit,
                   offset = offset) |>
     req_url_query(!!!list(...))
   if (parquet) {

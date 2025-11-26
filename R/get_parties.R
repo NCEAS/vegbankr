@@ -4,15 +4,16 @@
 #'
 #' @param party_code A party code
 #' @param parquet Transfer data as Parquet (TRUE) or JSON (FALSE)?
+#' @param ... Additional query parameters passed to the VegBank API
 #' @return A data frame (one row), or an empty data frame if there is
 #' no matching record for the provided code
 #' @examples \dontrun{
 #' get_party("py.191378")
 #' }
 #' @export
-get_party <- function(party_code, parquet = FALSE) {
+get_party <- function(party_code, parquet = FALSE, ...) {
   resource <- "parties"
-  get_resource_by_code(resource, party_code, parquet = parquet)
+  get_resource_by_code(resource, party_code, parquet = parquet, ...)
 }
 
 #' Get all parties
@@ -23,15 +24,15 @@ get_party <- function(party_code, parquet = FALSE) {
 #' @param offset Number of records to skip
 #' @param parquet Transfer data as Parquet (TRUE) or JSON (FALSE)?
 #' @param search An optional text search term
+#' @param ... Additional query parameters passed to the VegBank API
 #' @return A data frame
 #' @examples \dontrun{
 #' get_all_parties()
 #' }
 #' @export
 get_all_parties <- function(limit=100, offset=0, parquet = TRUE,
-                            search = NULL) {
+                            search = NULL, ...) {
   resource <- "parties"
-  detail <- "full"
-  get_all_resources(resource, limit, offset, detail, parquet = parquet,
-                    search = search)
+  get_all_resources(resource, limit, offset, parquet = parquet,
+                    search = search, ...)
 }
