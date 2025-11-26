@@ -23,14 +23,17 @@ get_party <- function(party_code, parquet = FALSE) {
 #' @param limit Number of records to return
 #' @param offset Number of records to skip
 #' @param parquet Transfer data as Parquet (TRUE) or JSON (FALSE)?
+#' @param search An optional text search term
 #' @return A data frame
 #' @examples \dontrun{
 #' get_all_parties()
 #' }
 #' @import httr2
 #' @export
-get_all_parties <- function(limit=100, offset=0, parquet = TRUE) {
+get_all_parties <- function(limit=100, offset=0, parquet = TRUE,
+                            search = NULL) {
   resource <- "parties"
   detail <- "full"
-  get_all_resources(resource, limit, offset, detail, parquet = parquet)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet,
+                    search = search)
 }

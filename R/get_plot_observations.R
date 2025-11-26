@@ -25,6 +25,7 @@ get_plot_observation <- function(plot_obs_code, parquet = FALSE) {
 #' @param offset Number of records to skip
 #' @param detail Desired level of detail ("minimal", "full")
 #' @param parquet Transfer data as Parquet (TRUE) or JSON (FALSE)?
+#' @param search An optional text search term
 #' @return A data frame
 #' @examples \dontrun{
 #' get_all_plot_observations()
@@ -32,9 +33,10 @@ get_plot_observation <- function(plot_obs_code, parquet = FALSE) {
 #' @import httr2
 #' @export
 get_all_plot_observations <- function(limit=100, offset=0,
-    detail = c("minimal", "full"), parquet = TRUE) {
+    detail = c("minimal", "full"), parquet = TRUE, search = NULL) {
   resource <- "plot-observations"
-  get_all_resources(resource, limit, offset, detail, parquet = parquet)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet,
+                    search = search)
 }
 
 #' Get details for a plot observation

@@ -23,13 +23,16 @@ get_plant_concept <- function(plant_concept_code, parquet = FALSE) {
 #' @param limit Number of records to return
 #' @param offset Number of records to skip
 #' @param parquet Transfer data as Parquet (TRUE) or JSON (FALSE)?
+#' @param search An optional text search term
 #' @return A data frame
 #' @examples \dontrun{
 #' get_all_plant_concepts(limit = 10)
 #' }
 #' @export
-get_all_plant_concepts <- function(limit = 100, offset = 0, parquet = TRUE) {
+get_all_plant_concepts <- function(limit = 100, offset = 0, parquet = TRUE,
+                                   search = NULL) {
   resource <- "plant-concepts"
   detail <- "full"
-  get_all_resources(resource, limit, offset, detail, parquet = parquet)
+  get_all_resources(resource, limit, offset, detail, parquet = parquet,
+                    search = search)
 }
