@@ -195,7 +195,9 @@ canonicalize_names <- function(target_df, lookup_df) {
 #' format with a top level "data" element containing a list of records
 #' coercible to a dataframe. If this element contains zero records
 #' (represented as an empty JSON array, an informative message is
-#' displayed, and a data frame with zero columns and zero rows is returned.
+#' displayed, and a data frame with zero columns and zero rows is
+#' returned. If the API returns count information, this is packaged into
+#' data frame attributes that can be retrieved with get_page_details().
 #'
 #' @param response VegBank API response object
 #' @param clean_names (logical) Should names be canonicalized? Defaults
@@ -215,16 +217,12 @@ vb_df_from_json <- function(response, clean_names = FALSE) {
   } else if (clean_names) {
     response_data <- canonicalize_names(response_data)
   }
+  response_data <- dplyr::as_tibble(response_data)
   attr(response_data, "vb_count_returned") <- nrow(response_data)
   if ("count" %in% names(response_list)) {
-    count <- response_list[["count"]]
-    if (!is.atomic(count) || length(count) != 1 ||
-        is.na(count) || !is.numeric(count) || count < 0) {
-      warning("API returned an invalid count")
-      count <- NULL
-    }
+    count <- extract_vb_count(response_list[["count"]])
   } else {
-    count <- NULL
+    count <- NA_integer_
   }
   attr(response_data, "vb_count_reported") <- count
   return(response_data)
@@ -236,7 +234,8 @@ vb_df_from_json <- function(response, clean_names = FALSE) {
 #' canonicalizing names. This is intended for use on API responses in Parquet
 #' format representing a single data table. If this element contains zero
 #' records, an informative message is displayed, and the empty data
-#' frame is returned.
+#' frame is returned. If the API returns count information, this is packaged
+#' into data frame attributes that can be retrieved with get_page_details().
 #'
 #' @param response VegBank API response object
 #' @param clean_names (logical) Should names be canonicalized? Defaults
@@ -260,7 +259,44 @@ vb_df_from_parquet <- function(response, clean_names = FALSE) {
     message("No records returned")
   }
   vb_data <- dplyr::as_tibble(vb_data)
+  attr(vb_data, "vb_count_returned") <- nrow(vb_data)
+  # extract record count reported by VegBank
+  raw_count <- DBI::dbGetQuery(conn,
+    paste0("SELECT CAST(value AS VARCHAR)::INTEGER AS count",
+           "  FROM parquet_kv_metadata('", temp_file, "')",
+           "  WHERE key = 'vb_count'"))$count
+  count <- extract_vb_count(raw_count)
+  attr(vb_data, "vb_count_reported") <- count
+
   return(vb_data)
+}
+
+#' Validate and interpret VegBank reported count
+#'
+#' Takes a `raw_count` value (intended to be a count returned by
+#' VegBank), checks that it meets structural expectations, then either
+#' (1) returns it if it's a single non-negative number, (2) silently
+#' returns NA if it's a length-0 numeric vector, or (3) returns NULL
+#' with a warning otherwise.
+#'
+#' @param raw_count Count value extracted from an API response
+#' @returns A number, which may be `NA` or `NULL`
+#'
+#' @noRd
+extract_vb_count <- function(raw_count) {
+    is_valid_structure <- is.atomic(raw_count) &&
+                          length(raw_count) <= 1 &&
+                          is.numeric(raw_count)
+
+    if (is_valid_structure && length(raw_count) == 0) {
+        count <- NA_integer_
+    } else if (is_valid_structure && 0 <= raw_count) {
+        count <- raw_count
+    } else {
+        warning("Unable to interpret count metadata returned by API")
+        count <- NULL
+    }
+    return(count)
 }
 
 #' Request a VegBank resource by vb code
