@@ -10,7 +10,6 @@
 #' @examples \dontrun{
 #' get_community_concept("cc.30617")
 #' }
-#' @import httr2
 #' @export
 get_community_concept <- function(comm_concept_code, parquet = FALSE) {
   resource <- "community-concepts"
@@ -29,7 +28,6 @@ get_community_concept <- function(comm_concept_code, parquet = FALSE) {
 #' @examples \dontrun{
 #' get_all_community_concepts()
 #' }
-#' @import httr2
 #' @export
 get_all_community_concepts <- function(limit = 100, offset = 0, parquet = TRUE,
                                        search = NULL) {

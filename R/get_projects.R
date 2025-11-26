@@ -9,7 +9,6 @@
 #' @examples \dontrun{
 #' get_project("pj.340")
 #' }
-#' @import httr2
 #' @export
 get_project <- function(project_code, parquet = FALSE) {
   resource <- "projects"
@@ -28,7 +27,6 @@ get_project <- function(project_code, parquet = FALSE) {
 #' @examples \dontrun{
 #' get_all_projects()
 #' }
-#' @import httr2
 #' @export
 get_all_projects <- function(limit=100, offset=0, parquet = TRUE,
                              search = NULL) {

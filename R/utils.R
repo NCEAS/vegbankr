@@ -116,6 +116,7 @@ vb_verbosity <- function() {
 #' @param request An httr2 request
 #' @return An httr2 response
 #'
+#' @import httr2
 #' @noRd
 send <- function(request) {
   error_body <- function(resp) {
@@ -201,6 +202,7 @@ canonicalize_names <- function(target_df, lookup_df) {
 #'        to `FALSE`.
 #' @returns A data frame
 #'
+#' @import httr2
 #' @noRd
 vb_df_from_json <- function(response, clean_names = FALSE) {
   response_list <- response |>
@@ -241,6 +243,7 @@ vb_df_from_json <- function(response, clean_names = FALSE) {
 #'        to `FALSE`.
 #' @returns A data frame
 #'
+#' @import httr2
 #' @noRd
 vb_df_from_parquet <- function(response, clean_names = FALSE) {
   temp_file <- tempfile(fileext = ".parquet")
@@ -276,6 +279,7 @@ vb_df_from_parquet <- function(response, clean_names = FALSE) {
 #'        to `TRUE`.
 #' @return VegBank query results as a dataframe
 #'
+#' @import httr2
 #' @noRd
 get_resource_by_code <- function(resource, vb_code,
                                  parquet = FALSE, clean_names = FALSE) {
@@ -311,6 +315,7 @@ get_resource_by_code <- function(resource, vb_code,
 #' @param ... Additional API query parameters
 #' @return VegBank query results as a dataframe
 #'
+#' @import httr2
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
                               detail = c("minimal", "full"),

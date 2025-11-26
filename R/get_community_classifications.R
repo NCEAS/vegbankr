@@ -10,7 +10,6 @@
 #' @examples \dontrun{
 #' get_community_classification("cl.1553")
 #' }
-#' @import httr2
 #' @export
 get_community_classification <- function(comm_class_code,
                                          parquet = FALSE) {
@@ -30,7 +29,6 @@ get_community_classification <- function(comm_class_code,
 #' @examples \dontrun{
 #' get_all_community_classifications()
 #' }
-#' @import httr2
 #' @export
 get_all_community_classifications <- function(limit=100, offset=0,
                                               detail = c("minimal", "full"),

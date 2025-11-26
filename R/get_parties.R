@@ -9,7 +9,6 @@
 #' @examples \dontrun{
 #' get_party("py.191378")
 #' }
-#' @import httr2
 #' @export
 get_party <- function(party_code, parquet = FALSE) {
   resource <- "parties"
@@ -28,7 +27,6 @@ get_party <- function(party_code, parquet = FALSE) {
 #' @examples \dontrun{
 #' get_all_parties()
 #' }
-#' @import httr2
 #' @export
 get_all_parties <- function(limit=100, offset=0, parquet = TRUE,
                             search = NULL) {

@@ -10,7 +10,6 @@
 #' @examples \dontrun{
 #' get_plot_observation("ob.2948")
 #' }
-#' @import httr2
 #' @export
 get_plot_observation <- function(plot_obs_code, parquet = FALSE) {
   resource <- "plot-observations"
@@ -30,7 +29,6 @@ get_plot_observation <- function(plot_obs_code, parquet = FALSE) {
 #' @examples \dontrun{
 #' get_all_plot_observations()
 #' }
-#' @import httr2
 #' @export
 get_all_plot_observations <- function(limit=100, offset=0,
     detail = c("minimal", "full"), parquet = TRUE, search = NULL) {
@@ -51,7 +49,6 @@ get_all_plot_observations <- function(limit=100, offset=0,
 #' @examples \dontrun{
 #' get_plot_observation_details("ob.2948")
 #' }
-#' @import httr2
 #' @export
 get_plot_observation_details <- function(plot_obs_code) {
   resource <- "get_observation_details"

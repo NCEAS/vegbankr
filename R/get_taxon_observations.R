@@ -10,7 +10,6 @@
 #' @examples \dontrun{
 #' get_taxon_observation("to.64992")
 #' }
-#' @import httr2
 #' @export
 get_taxon_observation <- function(taxon_obs_code, parquet = FALSE) {
   resource <- "taxon-observations"
@@ -31,7 +30,6 @@ get_taxon_observation <- function(taxon_obs_code, parquet = FALSE) {
 #' @examples \dontrun{
 #' get_all_taxon_observations()
 #' }
-#' @import httr2
 #' @export
 get_all_taxon_observations <- function(max_taxa_per_plot = 5, limit=100,
                                        offset=0, parquet = TRUE) {
