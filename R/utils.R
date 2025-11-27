@@ -116,6 +116,7 @@ vb_verbosity <- function() {
 #' @param request An httr2 request
 #' @return An httr2 response
 #'
+#' @import httr2
 #' @noRd
 send <- function(request) {
   error_body <- function(resp) {
@@ -194,13 +195,16 @@ canonicalize_names <- function(target_df, lookup_df) {
 #' format with a top level "data" element containing a list of records
 #' coercible to a dataframe. If this element contains zero records
 #' (represented as an empty JSON array, an informative message is
-#' displayed, and a data frame with zero columns and zero rows is returned.
+#' displayed, and a data frame with zero columns and zero rows is
+#' returned. If the API returns count information, this is packaged into
+#' data frame attributes that can be retrieved with get_page_details().
 #'
 #' @param response VegBank API response object
 #' @param clean_names (logical) Should names be canonicalized? Defaults
 #'        to `FALSE`.
 #' @returns A data frame
 #'
+#' @import httr2
 #' @noRd
 vb_df_from_json <- function(response, clean_names = FALSE) {
   response_list <- response |>
@@ -213,16 +217,12 @@ vb_df_from_json <- function(response, clean_names = FALSE) {
   } else if (clean_names) {
     response_data <- canonicalize_names(response_data)
   }
+  response_data <- dplyr::as_tibble(response_data)
   attr(response_data, "vb_count_returned") <- nrow(response_data)
   if ("count" %in% names(response_list)) {
-    count <- response_list[["count"]]
-    if (!is.atomic(count) || length(count) != 1 ||
-        is.na(count) || !is.numeric(count) || count < 0) {
-      warning("API returned an invalid count")
-      count <- NULL
-    }
+    count <- extract_vb_count(response_list[["count"]])
   } else {
-    count <- NULL
+    count <- NA_integer_
   }
   attr(response_data, "vb_count_reported") <- count
   return(response_data)
@@ -234,13 +234,15 @@ vb_df_from_json <- function(response, clean_names = FALSE) {
 #' canonicalizing names. This is intended for use on API responses in Parquet
 #' format representing a single data table. If this element contains zero
 #' records, an informative message is displayed, and the empty data
-#' frame is returned.
+#' frame is returned. If the API returns count information, this is packaged
+#' into data frame attributes that can be retrieved with get_page_details().
 #'
 #' @param response VegBank API response object
 #' @param clean_names (logical) Should names be canonicalized? Defaults
 #'        to `FALSE`.
 #' @returns A data frame
 #'
+#' @import httr2
 #' @noRd
 vb_df_from_parquet <- function(response, clean_names = FALSE) {
   temp_file <- tempfile(fileext = ".parquet")
@@ -257,17 +259,57 @@ vb_df_from_parquet <- function(response, clean_names = FALSE) {
     message("No records returned")
   }
   vb_data <- dplyr::as_tibble(vb_data)
+  attr(vb_data, "vb_count_returned") <- nrow(vb_data)
+  # extract record count reported by VegBank
+  raw_count <- DBI::dbGetQuery(conn,
+    paste0("SELECT CAST(value AS VARCHAR)::INTEGER AS count",
+           "  FROM parquet_kv_metadata('", temp_file, "')",
+           "  WHERE key = 'vb_count'"))$count
+  count <- extract_vb_count(raw_count)
+  attr(vb_data, "vb_count_reported") <- count
+
   return(vb_data)
+}
+
+#' Validate and interpret VegBank reported count
+#'
+#' Takes a `raw_count` value (intended to be a count returned by
+#' VegBank), checks that it meets structural expectations, then either
+#' (1) returns it if it's a single non-negative number, (2) silently
+#' returns NA if it's a length-0 numeric vector, or (3) returns NULL
+#' with a warning otherwise.
+#'
+#' @param raw_count Count value extracted from an API response
+#' @returns A number, which may be `NA` or `NULL`
+#'
+#' @noRd
+extract_vb_count <- function(raw_count) {
+    is_valid_structure <- is.atomic(raw_count) &&
+                          length(raw_count) <= 1 &&
+                          is.numeric(raw_count)
+
+    if (is_valid_structure && length(raw_count) == 0) {
+        count <- NA_integer_
+    } else if (is_valid_structure && 0 <= raw_count) {
+        count <- raw_count
+    } else {
+        warning("Unable to interpret count metadata returned by API")
+        count <- NULL
+    }
+    return(count)
 }
 
 #' Request a VegBank resource by vb code
 #'
-#' Transforms a VegBank API response into a data frame, canonicalizing
-#' names by default. If the API returns an error (indicated by a
-#' top-level "error" key in the JSON response), the error message is
-#' displayed as an R warning, and `NULL` is returned. If API returns a
-#' non-error response with a reported record count of 0, an informative
-#' message is displayed, and an empty data frame is returned.
+#' Retrieves a dataframe containing a single record of the requested VegBank
+#' resource type, identified by its vb_code.
+#'
+#' The API response can be requested either as JSON or Parquet, and name
+#' canonicalization can optionally be applied to the dataframe (client-side).
+#' If the API returns an error (indicated by a top-level "error" key in a JSON
+#' response), the error message is displayed as an R warning, and `NULL` is
+#' returned. If API returns a non-error response with a reported record count of
+#' 0, an informative message is displayed, and an empty data frame is returned.
 #'
 #' @param resource VegBank API resource (e.g., `plot-observations`)
 #' @param vb_code Resource identifier
@@ -276,12 +318,20 @@ vb_df_from_parquet <- function(response, clean_names = FALSE) {
 #'        to `TRUE`.
 #' @return VegBank query results as a dataframe
 #'
+#' @import httr2
 #' @noRd
-get_resource_by_code <- function(resource, vb_code,
-                                 parquet = FALSE, clean_names = FALSE) {
+get_resource_by_code <- function(resource, vb_code, parquet = FALSE,
+                                 clean_names = FALSE, ...) {
+  if (!is.logical(parquet)) {
+    stop("argument 'parquet' must be TRUE or FALSE", call.=FALSE)
+  }
+  if (!is.logical(clean_names)) {
+    stop("argument 'clean_names' must be TRUE or FALSE", call.=FALSE)
+  }
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_path_append(vb_code) |>
+    req_url_query(!!!list(...)) |>
     req_headers(Accept = "application/json")
   if (parquet) {
     request <- request |> req_url_query(create_parquet = parquet)
@@ -297,34 +347,41 @@ get_resource_by_code <- function(resource, vb_code,
 
 #' Get all records for a VegBank resource
 #'
-#' Retrieves a dataframe containing "all" returned records (constrained
-#' by limit and offset) of the requested resource type, with possible
-#' control over the level of detail depending on the API endpoint.
+#' Retrieves a dataframe containing a collection of records of the
+#' requested VegBank resource type, where collection membership and size
+#' are potentially constrained by limit, offset, and any other passed
+#' API query parameters (e.g., `search`) that impose server-side filtering.
+#'
+#' The API response can be requested either as JSON or Parquet, and name
+#' canonicalization can optionally be applied to the dataframe (client-side).
+#' If the API returns an error (indicated by a top-level "error" key in a JSON
+#' response), the error message is displayed as an R warning, and `NULL` is
+#' returned. If API returns a non-error response with a reported record count of
+#' 0, an informative message is displayed, and an empty data frame is returned.
 #'
 #' @param resource VegBank API resource (e.g., `plot-observation`)
 #' @param limit Query result limit
 #' @param offset Query result offset
-#' @param detail Level of detail ("minimal", "full")
 #' @param parquet Request data in Parquet format? Defaults to `FALSE`.
 #' @param clean_names (logical) Should names be canonicalized? Defaults
 #'        to `TRUE`.
 #' @param ... Additional API query parameters
 #' @return VegBank query results as a dataframe
 #'
+#' @import httr2
 #' @noRd
 get_all_resources <- function(resource, limit=100, offset=0,
-                              detail = c("minimal", "full"),
                               parquet = FALSE, clean_names = FALSE, ...) {
-  if (!rlang::is_scalar_integerish(limit, finite=TRUE) ||
-      limit <0) stop("limit must be a finite, non-negative integer")
-  if (!rlang::is_scalar_integerish(offset, finite=TRUE) ||
-      offset <0) stop("offset must be a finite, non-negative integer")
-  detail <- match.arg(detail)
+  if (!is.logical(parquet)) {
+    stop("argument 'parquet' must be TRUE or FALSE", call.=FALSE)
+  }
+  if (!is.logical(clean_names)) {
+    stop("argument 'clean_names' must be TRUE or FALSE", call.=FALSE)
+  }
   request <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_headers(Accept = "application/json") |>
-    req_url_query(detail = detail,
-                  limit = limit,
+    req_url_query(limit = limit,
                   offset = offset) |>
     req_url_query(!!!list(...))
   if (parquet) {

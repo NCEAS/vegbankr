@@ -4,12 +4,14 @@
 \alias{get_party}
 \title{Get a single party}
 \usage{
-get_party(party_code, parquet = FALSE)
+get_party(party_code, parquet = FALSE, ...)
 }
 \arguments{
 \item{party_code}{A party code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is

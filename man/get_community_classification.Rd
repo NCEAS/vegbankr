@@ -4,12 +4,24 @@
 \alias{get_community_classification}
 \title{Get a single community classification}
 \usage{
-get_community_classification(comm_class_code, parquet = FALSE)
+get_community_classification(
+  comm_class_code,
+  parquet = FALSE,
+  detail = "full",
+  with_nested = TRUE,
+  ...
+)
 }
 \arguments{
 \item{comm_class_code}{A community classification code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{detail}{Desired level of detail ("minimal" or "full")}
+
+\item{with_nested}{Include nested fields in response?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is

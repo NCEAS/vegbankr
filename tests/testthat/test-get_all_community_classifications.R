@@ -6,29 +6,29 @@ with_mock_api({
     expect_GET(
       get_all_community_classifications(),
       paste0(endpoint,
-             "?detail=minimal",
-             "&limit=100",
+             "?limit=100",
              "&offset=0")
     )
     expect_GET(
-      get_all_community_classifications(limit=5, offset=10, detail="full"),
+      get_all_community_classifications(limit=5, offset=10),
       paste0(endpoint,
-             "?detail=full",
-             "&limit=5",
+             "?limit=5",
              "&offset=10")
     )
 
     expect_message(
        zero_records <- get_all_community_classifications(limit=0,
-                                                         parquet=FALSE),
+                                                         parquet=FALSE,
+                                                         detail=NULL,
+                                                         with_nested=NULL),
        "No records returned",
        fixed = TRUE
     )
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    response <- get_all_community_classifications(detail="minimal",
-                                                  limit=2, parquet=FALSE)
+    response <- get_all_community_classifications(limit=2, parquet=FALSE,
+                                                  detail=NULL, with_nested=NULL)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 2L)
     expect_named(

@@ -4,7 +4,7 @@
 \alias{get_all_projects}
 \title{Get all projects}
 \usage{
-get_all_projects(limit = 100, offset = 0, parquet = TRUE)
+get_all_projects(limit = 100, offset = 0, parquet = TRUE, search = NULL, ...)
 }
 \arguments{
 \item{limit}{Number of records to return}
@@ -12,6 +12,10 @@ get_all_projects(limit = 100, offset = 0, parquet = TRUE)
 \item{offset}{Number of records to skip}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{search}{An optional text search term}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame

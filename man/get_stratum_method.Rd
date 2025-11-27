@@ -4,12 +4,14 @@
 \alias{get_stratum_method}
 \title{Get a single stratum method}
 \usage{
-get_stratum_method(stratum_method_code, parquet = FALSE)
+get_stratum_method(stratum_method_code, parquet = FALSE, ...)
 }
 \arguments{
 \item{stratum_method_code}{A stratum method code}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame (one row), or an empty data frame if there is

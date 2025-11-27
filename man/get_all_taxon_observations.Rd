@@ -2,24 +2,26 @@
 % Please edit documentation in R/get_taxon_observations.R
 \name{get_all_taxon_observations}
 \alias{get_all_taxon_observations}
-\title{Get all plot observations}
+\title{Get all taxon observations}
 \usage{
 get_all_taxon_observations(
-  max_taxa_per_plot = 5,
   limit = 100,
   offset = 0,
-  parquet = TRUE
+  parquet = TRUE,
+  with_nested = FALSE,
+  ...
 )
 }
 \arguments{
-\item{max_taxa_per_plot}{Max number of taxon observations to return
-per plot observation, in descending order of reported cover}
-
 \item{limit}{Number of records to return}
 
 \item{offset}{Number of records to skip}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{with_nested}{Include nested fields in response?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame

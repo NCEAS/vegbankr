@@ -19,13 +19,13 @@ test_error_limit <- function(resource) {
       req_url_path_append(resource) |>
       req_url_query(limit = "-1") |>
       send(),
-    "When provided, 'offset' and 'limit' must be non-negative integers.")
+    "When provided, limit must be a non-negative integer.")
   expect_error(
     request(get_vb_base_url()) |>
       req_url_path_append(resource) |>
       req_url_query(limit = "foo") |>
       send(),
-    "When provided, 'offset' and 'limit' must be non-negative integers.")
+    "When provided, limit must be a non-negative integer.")
 }
 
 # Test invalid offset parameter
@@ -35,18 +35,20 @@ test_error_offset <- function(resource) {
       req_url_path_append(resource) |>
       req_url_query(offset = "-1") |>
       send(),
-    "When provided, 'offset' and 'limit' must be non-negative integers.")
+    "When provided, offset must be a non-negative integer.")
   expect_error(
     request(get_vb_base_url()) |>
       req_url_path_append(resource) |>
       req_url_query(offset = "foo") |>
       send(),
-    "When provided, 'offset' and 'limit' must be non-negative integers.")
+    "When provided, offset must be a non-negative integer.")
 }
 
 # Test invalid detail parameter
-test_error_detail <- function(resource, must_be_full = TRUE) {
-  if (must_be_full) {
+test_error_detail <- function(resource, must_be_full = TRUE, msg = NULL) {
+  if (!is.null(msg)) {
+    error_msg = msg
+  } else if (must_be_full) {
     error_msg <- "When provided, 'detail' must be 'full'"
     expect_error(
       request(get_vb_base_url()) |>
@@ -86,6 +88,7 @@ test_success_one_json <- function(resource, vb_code, names, n=1) {
   expect_s3_class(df, "data.frame")
   expect_equal(nrow(df), n)
   expect_named(df, names, ignore.order = TRUE)
+  expect_equal(get_page_details(df)[["count_reported"]], 1)
 }
 
 # Test successful query by code, returning Parquet
@@ -99,16 +102,19 @@ test_success_one_parquet <- function(resource, vb_code, names, n=1) {
   expect_s3_class(df, "data.frame")
   expect_equal(nrow(df), n)
   expect_named(df, names, ignore.order = TRUE)
+  expect_equal(get_page_details(df)[["count_reported"]], 1)
 }
 
 # Test successful collection query, returning JSON
 test_success_collection_json <- function(resource, names, limit = 10,
-                                         offset = 15, detail = "full") {
+                                         offset = 5, detail = "full",
+                                         with_nested = NULL) {
   df <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_query(limit = limit) |>
     req_url_query(offset = offset) |>
     req_url_query(detail = detail) |>
+    req_url_query(with_nested = with_nested) |>
     send() |>
     vb_df_from_json(clean_names = FALSE)
   expect_s3_class(df, "data.frame")
@@ -118,13 +124,15 @@ test_success_collection_json <- function(resource, names, limit = 10,
 
 # Test successful collection query, returning Parquet
 test_success_collection_parquet <- function(resource, names, limit = 10,
-                                            offset = 15, detail = NULL) {
+                                            offset = 5, detail = NULL,
+                                            with_nested = NULL) {
   df <- request(get_vb_base_url()) |>
     req_url_path_append(resource) |>
     req_url_query(create_parquet = TRUE) |>
-    req_url_query(limit = 10) |>
-    req_url_query(offset = 15) |>
+    req_url_query(limit = limit) |>
+    req_url_query(offset = offset) |>
     req_url_query(detail = detail) |>
+    req_url_query(with_nested = with_nested) |>
     send() |>
     vb_df_from_parquet(clean_names = FALSE)
   expect_s3_class(df, "data.frame")
@@ -284,22 +292,36 @@ test_that("plot-observations works", {
     "tree_cover",
     "tree_ht",
     "water_depth",
-    "water_salinity"
+    "water_salinity",
+    "year"
   )
   names_collection <- names_one
   names_coll_min <- c(
+    "area",
     "author_obs_code",
     "author_plot_code",
     "country",
+    "elevation",
     "latitude",
     "longitude",
     "ob_code",
     "pl_code",
-    "state_province"
+    "state_province",
+    "year"
   )
+  names_coll_nested <- c(names_collection, c("taxon_count",
+                                             "taxon_importance_count",
+                                             "taxon_importance_count_returned",
+                                             "top_classifications",
+                                             "top_taxon_observations"))
+  names_coll_min_nested <- c(names_coll_min, c("taxon_count",
+                                               "taxon_count_returned",
+                                               "top_classifications",
+                                               "top_taxon_observations"))
   test_error_limit(resource)
   test_error_offset(resource)
-  test_error_detail(resource, must_be_full = FALSE)
+  test_error_detail(resource,
+      msg = "When provided, 'detail' must be 'minimal', 'full', or 'geo'.")
   test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names_one)
   test_success_one_parquet(resource, vb_code, names_one)
@@ -307,6 +329,14 @@ test_that("plot-observations works", {
   test_success_collection_parquet(resource, names_collection)
   test_success_collection_json(resource, names_coll_min, detail = "minimal")
   test_success_collection_parquet(resource, names_coll_min, detail = "minimal")
+  test_success_collection_json(resource, names_coll_nested,
+                               detail="full", with_nested = TRUE)
+  test_success_collection_parquet(resource, names_coll_nested,
+                                  detail="full", with_nested = TRUE)
+  test_success_collection_json(resource, names_coll_min_nested,
+                               detail="minimal", with_nested = TRUE)
+  test_success_collection_parquet(resource, names_coll_min_nested,
+                                  detail="minimal", with_nested = TRUE)
 })
 
 test_that("taxon-observations works", {
@@ -317,24 +347,25 @@ test_that("taxon-observations works", {
   table_code <- "to"
   vb_code <- "to.587096"
   names <- c(
-    "authorplantname",
-    "emb_taxonobservation",
+    "author_plant_name",
     "int_curr_pc_code",
-    "int_currplantcode",
-    "int_currplantcommon",
-    "int_currplantscifull",
-    "int_currplantscinamenoauth",
+    "int_curr_plant_code",
+    "int_curr_plant_common",
+    "int_curr_plant_sci_full",
+    "int_curr_plant_sci_name_no_auth",
     "int_orig_pc_code",
-    "int_origplantcode",
-    "int_origplantcommon",
-    "int_origplantscifull",
-    "int_origplantscinamenoauth",
-    "maxcover",
+    "int_orig_plant_code",
+    "int_orig_plant_common",
+    "int_orig_plant_sci_full",
+    "int_orig_plant_sci_name_no_auth",
     "ob_code",
     "rf_code",
-    "taxoninferencearea",
+    "rf_label",
+    "taxon_inference_area",
     "to_code"
   )
+  nested_field_names <- c("taxon_importance")
+  names_nested <- c(names, nested_field_names)
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
@@ -343,6 +374,8 @@ test_that("taxon-observations works", {
   test_success_one_parquet(resource, vb_code, names)
   test_success_collection_json(resource, names)
   test_success_collection_parquet(resource, names)
+  test_success_collection_json(resource, names_nested, with_nested = TRUE)
+  test_success_collection_parquet(resource, names_nested, with_nested = TRUE)
 })
 
 test_that("community-classifications works", {
@@ -352,46 +385,32 @@ test_that("community-classifications works", {
   resource <- "community-classifications"
   table_code <- "cl"
   vb_code <- "cl.1553"
-  names <- c(
-    "cc_code",
+  names_one <- c(
     "cl_code",
-    "class_confidence",
-    "class_fit",
     "class_notes",
+    "class_publication_rf_code",
+    "class_publication_rf_label",
     "class_start_date",
     "class_stop_date",
-    "comm_authority_rf_code",
-    "comm_code",
-    "comm_framework",
-    "comm_level",
-    "comm_name",
-    "emb_comm_class",
-    "emb_comm_interpretation",
     "expert_system",
     "inspection",
-    "interpretation_nomenclatural_type",
-    "interpretation_notes",
-    "interpretation_type",
     "multivariate_analysis",
     "ob_code",
     "table_analysis"
   )
-  names_coll_min <- c(
-    "cc_code",
-    "cl_code",
-    "comm_name",
-    "ob_code"
-  )
+  names_coll <- names_one
+  nested_field_names <- c("interpretations", "contributors")
+  names_coll_nested <- c(names_coll, nested_field_names)
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource, must_be_full = FALSE)
   test_error_vb_code(resource, table_code)
-  test_success_one_json(resource, vb_code, names)
-  test_success_one_parquet(resource, vb_code, names)
-  test_success_collection_json(resource, names)
-  test_success_collection_parquet(resource, names)
-  test_success_collection_json(resource, names_coll_min, detail = "minimal")
-  test_success_collection_parquet(resource, names_coll_min, detail = "minimal")
+  test_success_one_json(resource, vb_code, names_one)
+  test_success_one_parquet(resource, vb_code, names_one)
+  test_success_collection_json(resource, names_coll)
+  test_success_collection_parquet(resource, names_coll)
+  test_success_collection_json(resource, names_coll_nested, with_nested = TRUE)
+  test_success_collection_parquet(resource, names_coll_nested, with_nested = TRUE)
 })
 
 test_that("community-concepts works", {
@@ -488,6 +507,7 @@ test_that("parties works", {
     "contact_instructions",
     "given_name",
     "middle_name",
+    "obs_count",
     "organization_name",
     "py_code",
     "salutation",
@@ -538,22 +558,18 @@ test_that("cover-methods works", {
   vb_code <- "cm.1"
   names <- c(
     "cm_code",
-    "cover_code",
     "cover_estimation_method",
-    "cover_percent",
     "cover_type",
-    "index_description",
-    "lower_limit",
     "rf_code",
     "rf_name",
-    "upper_limit"
+    "cover_indexes"
   )
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
   test_error_vb_code(resource, table_code)
-  test_success_one_json(resource, vb_code, names, n=40)
-  test_success_one_parquet(resource, vb_code, names, n=40)
+  test_success_one_json(resource, vb_code, names, n=1)
+  test_success_one_parquet(resource, vb_code, names, n=1)
   test_success_collection_json(resource, names)
   test_success_collection_parquet(resource, names)
 })
@@ -570,19 +586,16 @@ test_that("stratum-methods works", {
     "rf_name",
     "sm_code",
     "stratum_assignment",
-    "stratum_description",
-    "stratum_index",
     "stratum_method_description",
     "stratum_method_name",
-    "stratum_name",
-    "sy_code"
+    "stratum_types"
   )
   test_error_limit(resource)
   test_error_offset(resource)
   test_error_detail(resource)
   test_error_vb_code(resource, table_code)
-  test_success_one_json(resource, vb_code, names, n=3)
-  test_success_one_parquet(resource, vb_code, names, n=3)
+  test_success_one_json(resource, vb_code, names, n=1)
+  test_success_one_parquet(resource, vb_code, names, n=1)
   test_success_collection_json(resource, names)
   test_success_collection_parquet(resource, names)
 })

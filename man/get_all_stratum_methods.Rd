@@ -4,7 +4,7 @@
 \alias{get_all_stratum_methods}
 \title{Get all stratum methods}
 \usage{
-get_all_stratum_methods(limit = 100, offset = 0, parquet = TRUE)
+get_all_stratum_methods(limit = 100, offset = 0, parquet = TRUE, ...)
 }
 \arguments{
 \item{limit}{Number of records to return}
@@ -12,6 +12,8 @@ get_all_stratum_methods(limit = 100, offset = 0, parquet = TRUE)
 \item{offset}{Number of records to skip}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame

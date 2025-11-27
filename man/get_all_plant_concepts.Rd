@@ -4,7 +4,13 @@
 \alias{get_all_plant_concepts}
 \title{Get all plant concepts}
 \usage{
-get_all_plant_concepts(limit = 100, offset = 0, parquet = TRUE)
+get_all_plant_concepts(
+  limit = 100,
+  offset = 0,
+  parquet = TRUE,
+  search = NULL,
+  ...
+)
 }
 \arguments{
 \item{limit}{Number of records to return}
@@ -12,6 +18,10 @@ get_all_plant_concepts(limit = 100, offset = 0, parquet = TRUE)
 \item{offset}{Number of records to skip}
 
 \item{parquet}{Transfer data as Parquet (TRUE) or JSON (FALSE)?}
+
+\item{search}{An optional text search term}
+
+\item{...}{Additional query parameters passed to the VegBank API}
 }
 \value{
 A data frame

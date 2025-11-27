@@ -6,29 +6,31 @@ with_mock_api({
     expect_GET(
       get_all_plot_observations(),
       paste0(endpoint,
-             "?detail=minimal",
-             "&limit=100",
+             "?limit=100",
              "&offset=0")
     )
     expect_GET(
       get_all_plot_observations(limit=5, offset=10),
       paste0(endpoint,
-             "?detail=minimal",
-             "&limit=5",
+             "?limit=5",
              "&offset=10")
     )
 
     expect_message(
-       zero_records <- get_all_plot_observations(limit=0, parquet=FALSE),
+       zero_records <- get_all_plot_observations(limit=0, parquet=FALSE,
+                                                 detail=NULL, with_nested=NULL,
+                                                 num_taxa=NULL, num_comms=NULL),
        "No records returned",
        fixed = TRUE
     )
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    response <- get_all_plot_observations(detail="minimal", limit=1, parquet=FALSE)
+    response <- get_all_plot_observations(limit=2, parquet=FALSE,
+                                          detail=NULL, with_nested=NULL,
+                                          num_taxa=NULL, num_comms=NULL)
     expect_s3_class(response, "data.frame")
-    expect_identical(nrow(response), 1L)
+    expect_identical(nrow(response), 2L)
     expect_named(
       response,
       c("ob_code", "author_obs_code",
@@ -36,21 +38,11 @@ with_mock_api({
         "latitude", "longitude", "country", "state_province"),
       ignore.order = TRUE
     )
-    expect_identical(response$ob_code,
+    expect_identical(response$ob_code[2],
                  "ob.2948")
-    expect_identical(response$longitude,
+    expect_identical(response$longitude[2],
                   -68.229339874)
-    expect_identical(response$state_province,
+    expect_identical(response$state_province[2],
                  NA)
-
-    expect_error(
-      get_all_plot_observations(limit="foo"),
-      "limit must be a finite, non-negative integer")
-    expect_error(
-      get_all_plot_observations(offset=-1),
-      "offset must be a finite, non-negative integer")
-    expect_error(
-      get_all_plot_observations(detail="invalid_value"),
-      "'arg' should be one of \"minimal\", \"full\"")
   })
 })

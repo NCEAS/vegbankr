@@ -161,21 +161,25 @@ test_that("Getting plot observations works", {
     "tree_cover",
     "tree_ht",
     "water_depth",
-    "water_salinity"
+    "water_salinity",
+    "year"
   )
   names_obs_all_full <- names_obs_one
   names_obs_all_minimal <- c(
+    "area",
     "author_obs_code",
     "author_plot_code",
     "country",
+    "elevation",
     "latitude",
     "longitude",
     "ob_code",
     "pl_code",
-    "state_province"
+    "state_province",
+    "year"
   )
 
-  obs_one <- get_plot_observation("ob.41618")
+  obs_one <- get_plot_observation("ob.41618", with_nested=FALSE)
   expect_identical(nrow(obs_one), 1L)
   expect_named(obs_one, names_obs_one, ignore.order = TRUE)
 
@@ -300,7 +304,6 @@ test_that("Getting taxon observations works", {
 
   names_txo_one <- c(
     "author_plant_name",
-    "emb_taxon_observation",
     "int_curr_pc_code",
     "int_curr_plant_code",
     "int_curr_plant_common",
@@ -311,15 +314,17 @@ test_that("Getting taxon observations works", {
     "int_orig_plant_common",
     "int_orig_plant_sci_full",
     "int_orig_plant_sci_name_no_auth",
-    "max_cover",
     "ob_code",
     "rf_code",
+    "rf_label",
     "taxon_inference_area",
     "to_code"
   )
   names_txo_all_full <- names_txo_one
+  nested_field_names <- c("taxon_importance")
+  names_txo_all_full_nested <- c(names_txo_all_full, nested_field_names)
 
-  txo_one <- get_taxon_observation("to.693826")
+  txo_one <- get_taxon_observation("to.693826", with_nested=FALSE)
   expect_identical(nrow(txo_one), 1L)
   expect_named(txo_one, names_txo_one, ignore.order = TRUE)
 
@@ -327,8 +332,10 @@ test_that("Getting taxon observations works", {
   expect_identical(nrow(txo_all_full), 5L)
   expect_named(txo_all_full, names_txo_all_full, ignore.order = TRUE)
 
-  txo_all_max2 <- get_all_taxon_observations(max_taxa_per_plot = 2, limit = 500)
-  expect_identical(max(table(txo_all_max2$ob_code)), 2L)
+  txo_all_full_nested <- get_all_taxon_observations(detail = "full",
+      with_nested = TRUE, limit = 5)
+  expect_identical(nrow(txo_all_full_nested), 5L)
+  expect_named(txo_all_full_nested, names_txo_all_full_nested, ignore.order = TRUE)
 
 })
 
@@ -345,38 +352,25 @@ test_that("Getting community classifications works", {
   expect_identical(nrow(cl_zero), 0L)
 
   names_cl_one <- c(
-    "cc_code",
     "cl_code",
-    "class_confidence",
-    "class_fit",
     "class_notes",
+    "class_publication_rf_code",
+    "class_publication_rf_label",
     "class_start_date",
     "class_stop_date",
-    "comm_authority_rf_code",
-    "comm_code",
-    "comm_framework",
-    "comm_level",
-    "comm_name",
-    "emb_comm_class",
-    "emb_comm_interpretation",
     "expert_system",
     "inspection",
-    "interpretation_nomenclatural_type",
-    "interpretation_notes",
-    "interpretation_type",
     "multivariate_analysis",
     "ob_code",
     "table_analysis"
   )
   names_cl_all_full <- names_cl_one
-  names_cl_all_minimal <- c(
-    "cl_code",
-    "cc_code",
-    "comm_name",
-    "ob_code"
-  )
+  names_cl_all_minimal <- names_cl_all_full
+  nested_field_names <- c("interpretations", "contributors")
+  names_cl_all_full_nested <- c(names_cl_all_full, nested_field_names)
+  names_cl_all_minimal_nested <- names_cl_all_full_nested
 
-  cl_one <- get_community_classification("cl.34809")
+  cl_one <- get_community_classification("cl.34809", with_nested=FALSE)
   expect_identical(nrow(cl_one), 1L)
   expect_named(cl_one, names_cl_one, ignore.order = TRUE)
 
@@ -384,9 +378,19 @@ test_that("Getting community classifications works", {
   expect_identical(nrow(cl_all_full), 5L)
   expect_named(cl_all_full, names_cl_all_full, ignore.order = TRUE)
 
+  cl_all_full_nested <- get_all_community_classifications(detail = "full",
+      with_nested = TRUE, limit = 5)
+  expect_identical(nrow(cl_all_full_nested), 5L)
+  expect_named(cl_all_full_nested, names_cl_all_full_nested, ignore.order = TRUE)
+
   cl_all_minimal <- get_all_community_classifications(detail = "minimal", limit = 5)
   expect_identical(nrow(cl_all_minimal), 5L)
   expect_named(cl_all_minimal, names_cl_all_minimal, ignore.order = TRUE)
+
+  cl_all_minimal_nested <- get_all_community_classifications(detail = "minimal",
+      with_nested = TRUE, limit = 5)
+  expect_identical(nrow(cl_all_minimal_nested), 5L)
+  expect_named(cl_all_minimal_nested, names_cl_all_minimal_nested, ignore.order = TRUE)
 
 })
 
@@ -452,21 +456,16 @@ test_that("Getting cover methods works", {
 
   names_cm_one <- c(
     "cm_code",
-    "cover_code",
     "cover_estimation_method",
-    "cover_percent",
     "cover_type",
-    "index_description",
-    "lower_limit",
     "rf_code",
     "rf_name",
-    "upper_limit"
+    "cover_indexes"
   )
   names_cm_all <- names_cm_one
 
   cm_one <- get_cover_method("cm.1")
-  # Note that `cm.1` has 40 associated cover indices
-  expect_identical(nrow(cm_one), 40L)
+  expect_identical(nrow(cm_one), 1L)
   expect_named(cm_one, names_cm_one, ignore.order = TRUE)
 
   cm_all <- get_all_cover_methods(limit = 5)
@@ -492,18 +491,14 @@ test_that("Getting stratum methods works", {
     "rf_name",
     "sm_code",
     "stratum_assignment",
-    "stratum_description",
-    "stratum_index",
     "stratum_method_description",
     "stratum_method_name",
-    "stratum_name",
-    "sy_code"
+    "stratum_types"
   )
   names_sm_all <- names_sm_one
 
   sm_one <- get_stratum_method("sm.1")
-  # Note that `sm.1` has 11 associated stratum types
-  expect_identical(nrow(sm_one), 11L)
+  expect_identical(nrow(sm_one), 1L)
   expect_named(sm_one, names_sm_one, ignore.order = TRUE)
 
   sm_all <- get_all_stratum_methods(limit = 5)
@@ -576,6 +571,7 @@ test_that("Getting parties works", {
     "contact_instructions",
     "given_name",
     "middle_name",
+    "obs_count",
     "organization_name",
     "py_code",
     "salutation",
