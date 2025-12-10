@@ -1,0 +1,31 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "author_obs_code": "ACAD.143",
+            "cc_code": "cc.46260",
+            "ci_code": "ci.297",
+            "cl_code": "cl.1553",
+            "class_confidence": null,
+            "class_fit": null,
+            "class_notes": null,
+            "class_start_date": "Thu, 01 Oct 1998 07:00:00 GMT",
+            "class_stop_date": null,
+            "comm_authority_name": null,
+            "comm_authority_rf_code": null,
+            "comm_code": "CEGL005094",
+            "comm_framework": null,
+            "comm_label": "Vaccinium angustifolium - Sorbus americana / Sibbaldiopsis tridentata Dwarf-shrubland [NatureServe Biotics 2019]",
+            "comm_level": null,
+            "comm_name": "Vaccinium angustifolium - Sorbus americana / Sibbaldiopsis tridentata Dwarf-shrubland",
+            "expert_system": null,
+            "inspection": false,
+            "multivariate_analysis": true,
+            "nomenclatural_type": false,
+            "notes": "Low Sweet Blueberry Granite Barrens",
+            "ob_code": "ob.2948",
+            "table_analysis": false,
+            "type": false
+        }
+    ]
+}

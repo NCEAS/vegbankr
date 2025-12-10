@@ -115,6 +115,20 @@ vb_get_community_classifications <- function(vb_code = NULL, limit = 100,
          with_nested = with_nested, limit = limit, offset = offset, ...)
 }
 
+vb_get_community_interpretations <- function(vb_code = NULL, limit = 100,
+                                             offset = 0, parquet = NULL,
+                                             detail = NULL, with_nested = NULL,
+                                             ...) {
+  resource <- "community-interpretations"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  if (missing(detail)) detail <- if (is_collection) "minimal" else "full"
+  if (missing(with_nested)) with_nested <- if (is_collection) FALSE else TRUE
+  vb_get(resource, vb_code, parquet = parquet, detail = detail,
+         with_nested = with_nested, limit = limit, offset = offset, ...)
+}
+
 vb_get_plot_observations <- function(vb_code = NULL, limit = 100, offset = 0,
                                      parquet = NULL, search = NULL,
                                      detail = NULL, with_nested = NULL,
