@@ -8,6 +8,16 @@ vb_get_projects <- function(vb_code = NULL, limit = 100, offset = 0,
          sort = sort, limit = limit, offset = offset, ...)
 }
 
+vb_get_parties <- function(vb_code = NULL, limit = 100, offset = 0,
+                            parquet = NULL, search = NULL, sort = NULL, ...) {
+  resource <- "parties"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, search = search,
+         sort = sort, limit = limit, offset = offset, ...)
+}
+
 vb_get_plot_observations <- function(vb_code = NULL, limit = 100, offset = 0,
                                      parquet = NULL, search = NULL,
                                      detail = NULL, with_nested = NULL,
