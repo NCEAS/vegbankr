@@ -20,7 +20,7 @@
 #' @importFrom rlang !!!
 #' @export
 vb_count <- function(resource, ...) {
-  request <- request(get_vb_base_url()) |>
+  request <- request(vb_get_base_url()) |>
     req_url_path_append(resource) |>
     req_headers(Accept = "application/json") |>
     req_url_query(count = TRUE) |>

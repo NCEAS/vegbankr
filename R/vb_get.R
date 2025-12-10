@@ -338,7 +338,7 @@ vb_get <- function(resource, vb_code = NULL, by = NULL, parquet = TRUE,
     stop("argument 'clean_names' must be TRUE or FALSE", call.=FALSE)
   }
   query_params <- list(...)
-  request <- request(get_vb_base_url())
+  request <- request(vb_get_base_url())
   if (is.null(vb_code)) {
     request <- request |> req_url_path_append(resource)
   } else {

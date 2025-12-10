@@ -1,17 +1,17 @@
 test_that("default vb_base_url is used", {
   local_base_url(NULL)
-  expect_identical(get_vb_base_url(), "https://api.vegbank.org")
-  suppressMessages(set_vb_base_url(""))
-  expect_identical(get_vb_base_url(), "https://api.vegbank.org")
+  expect_identical(vb_get_base_url(), "https://api.vegbank.org")
+  suppressMessages(vb_set_base_url(""))
+  expect_identical(vb_get_base_url(), "https://api.vegbank.org")
 })
 test_that("vb_base_url option set", {
   local_base_url(NULL)
-  suppressMessages(set_vb_base_url("http://localhost", 8080))
-  expect_identical(get_vb_base_url(), "http://localhost:8080")
+  suppressMessages(vb_set_base_url("http://localhost", 8080))
+  expect_identical(vb_get_base_url(), "http://localhost:8080")
 })
-test_that("set_vb_base_url(NULL) reports default URL", {
+test_that("vb_set_base_url(NULL) reports default URL", {
   local_base_url(NULL)
-  expect_message(set_vb_base_url(NULL),
+  expect_message(vb_set_base_url(NULL),
                  "Using https://api.vegbank.org as base URL")
 })
 
@@ -19,7 +19,7 @@ with_mock_api({
   test_that("send() works", {
 
     local_base_url(NULL)
-    test_request <- request(get_vb_base_url()) |>
+    test_request <- request(vb_get_base_url()) |>
       req_url_path_append('json-test') |>
       req_url_path_append('zero-records')
 
@@ -50,7 +50,7 @@ with_mock_api({
     }
 
     local_base_url(NULL)
-    base_request <- request(get_vb_base_url()) |>
+    base_request <- request(vb_get_base_url()) |>
       req_url_path_append('api-error-test')
 
     # error handling -- HTTP 400 with JSON error message
@@ -106,7 +106,7 @@ with_mock_api({
     local_base_url(NULL)
 
     # responses with record count of 3
-    request <- request(get_vb_base_url()) |>
+    request <- request(vb_get_base_url()) |>
       req_url_path_append('json-test') |>
       req_url_path_append('three-records') |>
       req_headers(Accept = "application/json")
@@ -125,7 +125,7 @@ with_mock_api({
       c("surname", "givenname"), ignore.order = TRUE)
 
     # response with record count of 0
-    zero_response <- request(get_vb_base_url()) |>
+    zero_response <- request(vb_get_base_url()) |>
       req_url_path_append('json-test') |>
       req_url_path_append('zero-records') |>
       req_headers(Accept = "application/json") |>
@@ -137,7 +137,7 @@ with_mock_api({
     expect_identical(nrow(zero_records), 0L)
 
     # response with invalid record count
-    invalid_count_response <- request(get_vb_base_url()) |>
+    invalid_count_response <- request(vb_get_base_url()) |>
       req_url_path_append('json-test') |>
       req_url_path_append('invalid-count') |>
       req_headers(Accept = "application/json") |>
@@ -157,7 +157,7 @@ with_mock_api({
     local_base_url(NULL)
 
     # response with record count of 0
-    empty_parquet_response <- request(get_vb_base_url()) |>
+    empty_parquet_response <- request(vb_get_base_url()) |>
       req_url_path_append('parquet-test') |>
       req_url_query(limit = 0,
                     offset = 0,
@@ -172,7 +172,7 @@ with_mock_api({
     expect_identical(nrow(empty_vb_df), 0L)
 
     # response with record count of 2
-    parquet_response <- request(get_vb_base_url()) |>
+    parquet_response <- request(vb_get_base_url()) |>
       req_url_path_append('parquet-test') |>
       req_url_query(limit = 2,
                     offset = 0,
