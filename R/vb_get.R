@@ -77,6 +77,18 @@ vb_get_taxon_observations <- function(vb_code = NULL, limit = 100,
          with_nested = with_nested, limit = limit, offset = offset, ...)
 }
 
+vb_get_community_concepts <- function(vb_code = NULL, limit = 100, offset = 0,
+                                      parquet = NULL, search = NULL,
+                                      with_nested = NULL, ...) {
+  resource <- "community-concepts"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  if (missing(with_nested)) with_nested <- if (is_collection) FALSE else TRUE
+  vb_get(resource, vb_code, parquet = parquet, search = search,
+         with_nested = with_nested, limit = limit, offset = offset, ...)
+}
+
 vb_get_plot_observations <- function(vb_code = NULL, limit = 100, offset = 0,
                                      parquet = NULL, search = NULL,
                                      detail = NULL, with_nested = NULL,
