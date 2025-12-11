@@ -1,17 +1,17 @@
 test_that("default vb_base_url is used", {
   local_base_url(NULL)
-  expect_identical(get_vb_base_url(), "https://api.vegbank.org")
-  suppressMessages(set_vb_base_url(""))
-  expect_identical(get_vb_base_url(), "https://api.vegbank.org")
+  expect_identical(vb_get_base_url(), "https://api.vegbank.org")
+  suppressMessages(vb_set_base_url(""))
+  expect_identical(vb_get_base_url(), "https://api.vegbank.org")
 })
 test_that("vb_base_url option set", {
   local_base_url(NULL)
-  suppressMessages(set_vb_base_url("http://localhost", 8080))
-  expect_identical(get_vb_base_url(), "http://localhost:8080")
+  suppressMessages(vb_set_base_url("http://localhost", 8080))
+  expect_identical(vb_get_base_url(), "http://localhost:8080")
 })
-test_that("set_vb_base_url(NULL) reports default URL", {
+test_that("vb_set_base_url(NULL) reports default URL", {
   local_base_url(NULL)
-  expect_message(set_vb_base_url(NULL),
+  expect_message(vb_set_base_url(NULL),
                  "Using https://api.vegbank.org as base URL")
 })
 
@@ -19,7 +19,7 @@ with_mock_api({
   test_that("send() works", {
 
     local_base_url(NULL)
-    test_request <- request(get_vb_base_url()) |>
+    test_request <- request(vb_get_base_url()) |>
       req_url_path_append('json-test') |>
       req_url_path_append('zero-records')
 
@@ -50,7 +50,7 @@ with_mock_api({
     }
 
     local_base_url(NULL)
-    base_request <- request(get_vb_base_url()) |>
+    base_request <- request(vb_get_base_url()) |>
       req_url_path_append('api-error-test')
 
     # error handling -- HTTP 400 with JSON error message
@@ -106,7 +106,7 @@ with_mock_api({
     local_base_url(NULL)
 
     # responses with record count of 3
-    request <- request(get_vb_base_url()) |>
+    request <- request(vb_get_base_url()) |>
       req_url_path_append('json-test') |>
       req_url_path_append('three-records') |>
       req_headers(Accept = "application/json")
@@ -125,7 +125,7 @@ with_mock_api({
       c("surname", "givenname"), ignore.order = TRUE)
 
     # response with record count of 0
-    zero_response <- request(get_vb_base_url()) |>
+    zero_response <- request(vb_get_base_url()) |>
       req_url_path_append('json-test') |>
       req_url_path_append('zero-records') |>
       req_headers(Accept = "application/json") |>
@@ -137,7 +137,7 @@ with_mock_api({
     expect_identical(nrow(zero_records), 0L)
 
     # response with invalid record count
-    invalid_count_response <- request(get_vb_base_url()) |>
+    invalid_count_response <- request(vb_get_base_url()) |>
       req_url_path_append('json-test') |>
       req_url_path_append('invalid-count') |>
       req_headers(Accept = "application/json") |>
@@ -157,7 +157,7 @@ with_mock_api({
     local_base_url(NULL)
 
     # response with record count of 0
-    empty_parquet_response <- request(get_vb_base_url()) |>
+    empty_parquet_response <- request(vb_get_base_url()) |>
       req_url_path_append('parquet-test') |>
       req_url_query(limit = 0,
                     offset = 0,
@@ -172,7 +172,7 @@ with_mock_api({
     expect_identical(nrow(empty_vb_df), 0L)
 
     # response with record count of 2
-    parquet_response <- request(get_vb_base_url()) |>
+    parquet_response <- request(vb_get_base_url()) |>
       req_url_path_append('parquet-test') |>
       req_url_query(limit = 2,
                     offset = 0,
@@ -192,108 +192,6 @@ with_mock_api({
   })
 })
 
-with_mock_api({
-  local_base_url(NULL)
-  test_that("get_resource_by_code() works", {
-    # Test JSON response
-    response_json <- get_resource_by_code("plot-observations",
-                                     "ob.41618")
-    expect_s3_class(response_json, "data.frame")
-    expect_identical(nrow(response_json), 1L)
-    expect_named(
-      response_json,
-      c("ob_code", "author_obs_code",
-        "obs_start_date", "max_slope_aspect", "max_slope_gradient",
-        "total_cover"),
-      ignore.order = TRUE
-    )
-    expect_identical(response_json$ob_code,
-                 "ob.41618")
-    expect_identical(response_json$max_slope_aspect,
-                 -106.409918856452)
-    expect_identical(response_json$max_slope_gradient,
-                 NA)
-
-    # Test Parquet response
-    response_parquet <- get_resource_by_code("parquet-test", "vb.1",
-                                             parquet=TRUE,
-                                             clean_names=FALSE)
-    expect_s3_class(response_parquet, "data.frame")
-    expect_identical(nrow(response_parquet), 40L)
-    expect_identical(response_parquet$cm_code[1],
-                     "cm.1")
-    expect_identical(response_parquet$cover_percent[1],
-                     0.05)
-    expect_identical(response_parquet$cover_estimation_method[1],
-                     NA_integer_)
-
-    # Function parameter error conditions
-    expect_error(
-      get_resource_by_code("some-endpoint", parquet="not_logical"),
-      "argument 'parquet' must be TRUE or FALSE"
-    )
-    expect_error(
-      get_resource_by_code("some-endpoint", clean_names="not_logical"),
-      "argument 'clean_names' must be TRUE or FALSE"
-    )
-  })
-})
-
-with_mock_api({
-  local_base_url(NULL)
-  test_that("get_all_resources() works", {
-    # Test JSON response
-    response_json <- get_all_resources("plot-observations", limit=2)
-    expect_s3_class(response_json, "data.frame")
-    expect_identical(nrow(response_json), 2L)
-    expect_named(
-      response_json,
-      c("ob_code", "author_obs_code", "pl_code", "author_plot_code",
-        "latitude", "longitude", "country", "state_province"),
-      ignore.order = TRUE
-    )
-    expect_identical(response_json$ob_code[2],
-                 "ob.2948")
-    expect_identical(response_json$longitude[2],
-                  -68.229339874)
-    expect_identical(response_json$state_province[2],
-                 NA)
-
-    # Test Parquet response
-    response_parquet <- get_all_resources("parquet-test", limit=2,
-                                          parquet=TRUE, clean_names=TRUE)
-    expect_s3_class(response_parquet, "data.frame")
-    expect_identical(nrow(response_parquet), 2L)
-    expect_identical(response_parquet$party_id[2],
-                     199335)
-    expect_identical(response_parquet$given_name[2],
-                     "Chris")
-    expect_identical(response_parquet$salutation[1],
-                     NA_integer_)
-
-    # Function parameter error conditions
-    expect_error(
-      get_all_resources("some-endpoint", parquet="not_logical"),
-      "argument 'parquet' must be TRUE or FALSE"
-    )
-    expect_error(
-      get_all_resources("some-endpoint", clean_names="not_logical"),
-      "argument 'clean_names' must be TRUE or FALSE"
-    )
-    # API query parameter error conditions
-    expect_error(
-      get_all_resources("some-endpoint", limit="foo"))
-    expect_error(
-      get_all_resources("some-endpoint", limit=NULL))
-    expect_error(
-      get_all_resources("some-endpoint", offset=-1))
-    expect_error(
-      get_all_resources("some-endpoint", offset=NA_integer_))
-    expect_error(
-      get_all_resources("some-endpoint", detail="invalid_value"))
-  })
-})
-
 test_that("get_page_details() extracts the expected attributes", {
   df <- data.frame()
   attr(df, "vb_offset") <- 100
@@ -306,19 +204,6 @@ test_that("get_page_details() extracts the expected attributes", {
                 limit = 50,
                 count_returned = 25)
   expect_identical(page_details, expected)
-})
-
-with_mock_api({
-  local_base_url(NULL)
-  test_that("get_all_resources() returns expected page details", {
-    response <- get_all_resources("test-count", limit=50, offset=2)
-    page_details <- get_page_details(response)
-    expected <- c(count_reported = 5,
-                  offset = 2,
-                  limit = 50,
-                  count_returned = 3)
-    expect_identical(page_details, expected)
-  })
 })
 
 test_that("parse_json_column() works", {
