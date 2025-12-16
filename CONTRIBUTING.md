@@ -79,8 +79,9 @@ next release number (e.g., `2.9.0`), or the planned next release number
 with a `beta` designator or release candidate `rc` designator appended
 as appropriate. For example, `2.8.6-beta1` or `2.9.0-rc1`.
 
-**feature**. To isolate development on a specific set of capabilities, especially if it may be disruptive to other 
-developers working on the `develop` branch, feature branches should be created.
+**feature**. To isolate development on a specific set of capabilities,
+especially if it may be disruptive to other developers working on the
+`develop` branch, feature branches should be created.
 
 Feature branches are named as `feature-` + `{issue}` +
 `-{short-description}`, with `{issue}` being the GitHub issue number
@@ -171,8 +172,8 @@ Code should be written to professional standards to enable clean,
 well-documented, readable, and maintainable software. While there has
 been significant variability in the coding styles applied historically,
 new contributions should strive for clean code formatting. We generally
-follow PEP8 guidelines for Python code formatting, typically enforced
-through the `black` code formatting package.
+lean toward (but do not automatically enforce)`tidyverse` styling, which
+can be applied using the `styler` code formatting package.
 
 ## 📄 Contributor license agreement
 
