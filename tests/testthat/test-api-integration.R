@@ -202,6 +202,7 @@ test_that("parties works", {
     "middle_name",
     "obs_count",
     "organization_name",
+    "party_label",
     "py_code",
     "salutation",
     "surname"
@@ -237,6 +238,7 @@ test_that("references works", {
     "publisher",
     "reference_type",
     "rf_code",
+    "rf_label",
     "short_name",
     "title",
     "total_pages",
@@ -264,7 +266,7 @@ test_that("cover-methods works", {
     "cover_estimation_method",
     "cover_type",
     "rf_code",
-    "rf_name"
+    "rf_label"
   )
   names_full_nest <- c(
     names_full,
@@ -290,7 +292,7 @@ test_that("stratum-methods works", {
   vb_code <- "sm.622"
   names_full <- c(
     "rf_code",
-    "rf_name",
+    "rf_label",
     "sm_code",
     "stratum_assignment",
     "stratum_method_description",
@@ -320,12 +322,12 @@ test_that("plant-concepts works", {
   vb_code <- "pc.193"
   names_full <- c(
     "concept_rf_code",
-    "concept_rf_name",
+    "concept_rf_label",
     "current_accepted",
     "obs_count",
     "parent_name",
     "parent_pc_code",
-    "party",
+    "party_label",
     "pc_code",
     "plant_code",
     "plant_description",
@@ -336,7 +338,7 @@ test_that("plant-concepts works", {
     "start_date",
     "status",
     "status_rf_code",
-    "status_rf_name",
+    "status_rf_label",
     "stop_date"
   )
   names_full_nest <- c(
@@ -418,6 +420,7 @@ test_that("taxon-interpretations works", {
     "notes_public",
     "pc_code",
     "py_code",
+    "rf_code",
     "taxon_confidence",
     "taxon_fit",
     "ti_code",
@@ -428,7 +431,8 @@ test_that("taxon-interpretations works", {
     "author_obs_code",
     "author_plant_name",
     "ob_code",
-    "party",
+    "party_label",
+    "rf_label",
     "plant_code",
     "plant_label",
     "plant_name",
@@ -458,12 +462,12 @@ test_that("community-concepts works", {
   vb_code <- "cc.1324"
   names_full <- c(
     "concept_rf_code",
-    "concept_rf_name",
+    "concept_rf_label",
     "current_accepted",
     "obs_count",
     "parent_name",
     "parent_cc_code",
-    "party",
+    "party_label",
     "cc_code",
     "comm_code",
     "comm_description",
@@ -474,7 +478,7 @@ test_that("community-concepts works", {
     "start_date",
     "status",
     "status_rf_code",
-    "status_rf_name",
+    "status_rf_label",
     "stop_date"
   )
   names_full_nest <- c(
@@ -570,7 +574,7 @@ test_that("community-interpretations works", {
     "class_notes",
     "class_start_date",
     "class_stop_date",
-    "comm_authority_name",
+    "comm_authority_rf_label",
     "comm_code",
     "comm_framework",
     "comm_label",
@@ -640,6 +644,7 @@ test_that("plot-observations works", {
     "cm_code",
     "confidentiality_status",
     "cover_dispersion",
+    "cover_method_name",
     "date_accuracy",
     "date_entered",
     "dominant_stratum",
@@ -718,8 +723,10 @@ test_that("plot-observations works", {
     "pl_revisions",
     "plot_validation_level",
     "previous_ob_code",
+    "project_name",
     "representativeness",
     "rf_code",
+    "rf_label",
     "rock_type",
     "shape",
     "shore_distance",
