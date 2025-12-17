@@ -43,8 +43,23 @@ remotes::install_github("nceas/vegbankr")
 
 ## Usage examples
 
-To view more details about the VegBank API ... you'll just have to wait.
-It's still in development!
+To view more details about the VegBank API ... you'll have to be a
+little patient. It's still in development! Keep an eye on the core
+VegBank repo at https://github.com/NCEAS/vegbank2 for developments and
+announcements.
+
+On that note, prior to its production release, the main VegBank API
+(https://api.vegbank.org) may or may not be available at any given time.
+However, until then, you should be able to explore and prototype against
+the development API (https://api-dev.vegbank.org). Configure `vegbankr`
+to use the dev API using the following expression:
+
+```r
+library(vegbankr)
+
+# the package default URL is https://api.vegbank.org
+vb_set_base_url("https://api-dev.vegbank.org")
+```
 
 How many projects are currently registered in VegBank?
 ```r
