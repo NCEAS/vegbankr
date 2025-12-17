@@ -1,0 +1,29 @@
+{
+    "count": 400,
+    "data": [
+        {
+            "cm_code": "cm.1",
+            "cover_code": "1",
+            "cover_estimation_method": null,
+            "cover_percent": 0.05,
+            "cover_type": "Carolina Vegetation Survey",
+            "index_description": "trace",
+            "lower_limit": 0.0,
+            "rf_code": "rf.27",
+            "rf_name": "CVS Protocol",
+            "upper_limit": 0.1
+        },
+        {
+            "cm_code": "cm.1",
+            "cover_code": "2",
+            "cover_estimation_method": null,
+            "cover_percent": 0.505,
+            "cover_type": "Carolina Vegetation Survey",
+            "index_description": "0-1 percent",
+            "lower_limit": 0.1,
+            "rf_code": "rf.27",
+            "rf_name": "CVS Protocol",
+            "upper_limit": 1.0
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "count": 21,
+    "data": [
+        {
+            "rf_code": null,
+            "rf_name": null,
+            "sm_code": "sm.2038",
+            "stratum_assignment": null,
+            "stratum_description": null,
+            "stratum_index": "Emg",
+            "stratum_method_description": null,
+            "stratum_method_name": "Sharitz",
+            "stratum_name": "Emg",
+            "sy_code": "sy.217679"
+        },
+        {
+            "rf_code": null,
+            "rf_name": null,
+            "sm_code": "sm.2038",
+            "stratum_assignment": null,
+            "stratum_description": null,
+            "stratum_index": "Cnpy",
+            "stratum_method_description": null,
+            "stratum_method_name": "Sharitz",
+            "stratum_name": "Cnpy",
+            "sy_code": "sy.217680"
+        }
+    ]
+}

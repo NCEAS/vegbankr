@@ -1,0 +1,56 @@
+with_mock_api({
+  test_that("vb_get_projects() works", {
+    local_base_url(NULL)
+
+    endpoint <- "https://api.vegbank.org/projects"
+    expect_GET(
+      vb_get_projects("some_vb_code"),
+      paste0(endpoint, "/some_vb_code")
+    )
+    expect_GET(
+      vb_get_projects(),
+      paste0(endpoint, "?limit=100&offset=0")
+    )
+    expect_GET(
+      vb_get_projects(limit=5, offset=10),
+      paste0(endpoint, "?limit=5&offset=10")
+    )
+
+    response <- vb_get_projects("pj.10508", limit=NULL, offset=NULL)
+    expect_s3_class(response, "data.frame")
+    expect_identical(nrow(response), 1L)
+    expect_named(
+      response,
+      c("last_plot_added_date", "obs_count", "pj_code",
+        "project_description", "project_name",
+        "start_date", "stop_date"),
+      ignore.order = TRUE
+    )
+    expect_identical(response$pj_code, "pj.10508")
+    expect_identical(response$obs_count, 5286L)
+    expect_identical(response$start_date, NA)
+
+    expect_message(
+      zero_records <- vb_get_projects(limit=0, parquet=FALSE),
+      "No records returned",
+      fixed = TRUE
+    )
+    expect_s3_class(zero_records, "data.frame")
+    expect_identical(nrow(zero_records), 0L)
+
+    response <- vb_get_projects(limit=2, parquet=FALSE)
+    expect_s3_class(response, "data.frame")
+    expect_identical(nrow(response), 2L)
+    expect_named(
+      response,
+      c("last_plot_added_date", "obs_count", "pj_code",
+        "project_description", "project_name",
+        "start_date", "stop_date"),
+      ignore.order = TRUE
+    )
+    expect_identical(response$pj_code[2], "pj.49")
+    expect_identical(response$obs_count[2], 56L)
+    expect_identical(response$last_plot_added_date[2], "Fri, 11 Dec 2015")
+    expect_identical(response$start_date[2], NA)
+  })
+})

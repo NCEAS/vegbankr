@@ -1,0 +1,31 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "author_obs_code": "ACAD.143",
+            "author_plant_name": "Lichen",
+            "collection_number": null,
+            "group_type": null,
+            "interpretation_date": "Tue, 04 Aug 1998",
+            "interpretation_type": "Author",
+            "is_curr": true,
+            "is_orig": true,
+            "notes": null,
+            "notes_mgt": false,
+            "notes_public": false,
+            "ob_code": "ob.2948",
+            "party": "Gawler, Sue",
+            "pc_code": "pc.92413",
+            "plant_code": "2LICHN",
+            "plant_label": "Lichen [USDA Plants 2002]",
+            "plant_name": "Lichen",
+            "py_code": "py.605",
+            "revisions": false,
+            "role": "Plot author",
+            "taxon_confidence": null,
+            "taxon_fit": null,
+            "ti_code": "ti.64550",
+            "to_code": "to.64982"
+        }
+    ]
+}

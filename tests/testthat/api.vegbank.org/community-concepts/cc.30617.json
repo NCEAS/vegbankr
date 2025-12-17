@@ -1,0 +1,32 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "cc_code": "cc.19437",
+            "children": [
+                {
+                    "cc_code": "cc.24958",
+                    "comm_name": "Eriogonum sphaerocephalum / Poa secunda Dwarf-shrub Herbaceous Vegetation"
+                },
+                {
+                    "cc_code": "cc.19436",
+                    "comm_name": "Eriogonum thymoides / Poa secunda Dwarf-shrub Herbaceous Vegetation"
+                }
+            ],
+            "comm_description": null,
+            "obs_count": 0,
+            "usages": [
+                {
+                    "class_system": "Code",
+                    "comm_name": "A.1568",
+                    "status": "standard"
+                },
+                {
+                    "class_system": "Scientific",
+                    "comm_name": "Poa secunda Dwarf-shrub Herbaceous Alliance",
+                    "status": "standard"
+                }
+            ]
+        }
+    ]
+}
