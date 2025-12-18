@@ -11,46 +11,109 @@
 - [VegBank discussions](https://github.com/NCEAS/vegbank2/discussions)
 
 This package is an R client for VegBank, the vegetation plot database of
-the Ecological Society of America's Panel on Vegetation Classification,
-hosted by the [National Center for Ecological Analysis and
-Synthesis](https://www.nceas.ucsb.edu) (NCEAS). VegBank contains
-vegetation plot data, community types recognized by the U.S.  National
+the Ecological Society of America's [Panel on Vegetation
+Classification](https://esa.org/vegpanel/), hosted by the [National Center for
+Ecological Analysis and Synthesis](https://www.nceas.ucsb.edu) (NCEAS). VegBank
+contains vegetation plot data, community types recognized by the U.S.  National
 Vegetation Classification and others, and all ITIS/USDA plant taxa along
 with other taxa recorded in plot records. As a VegBank API client, the
-'vegbankr' package supports querying, downloading, validating, and
-uploading vegetation plot records and other supporting information to
-and from the VegBank database.
+`vegbankr` package currently supports querying and downloading vegetation plot
+records and other supporting information from the VegBank database, and will
+soon support validating and uploading new data to the VegBank database as well.
 
-VegBank in general, and the vegbankr package in particular, are open
+VegBank in general, and the `vegbankr` package in particular, are open
 source, community projects. We [welcome contributions](./CONTRIBUTING.md)
 in many forms, including code, data, documentation, bug reports,
 testing, etc. Use the [VegBank
 discussions](https://github.com/NCEAS/vegbank2/discussions) to discuss
 these contributions with us.
 
-## Documentation
+## Installation
 
-Documentation is a work in progress, and is included in the package
-using standard R package documentation mechanisms.
-
-## Development build
-
-This is an R package, and built using ...
-
-To install locally, ...
-
-To run tests, ...
-
-## Usage Example
-
-To view more details about the VegBank API ... you'll just have to wait.
-It's still in development!
+The `vegbankr` package is not yet available on CRAN, but you can install
+it directly from this GitHub repository using either the
+[`remotes`](https://github.com/r-lib/remotes) or
+[`devtools`](https://github.com/r-lib/devtools/) package. First install one of
+those packages, and then use it to install `vegbankr` as follows:
 
 ```r
-# Don't try this at home yet
+# or use `devtools::` if you prefer
+remotes::install_github("nceas/vegbankr")
+```
+
+## Usage examples
+
+To view more details about the VegBank API ... you'll have to be a
+little patient. It's still in development! Keep an eye on the core
+VegBank repo at https://github.com/NCEAS/vegbank2 for developments and
+announcements.
+
+On that note, prior to its production release, the main VegBank API
+(https://api.vegbank.org) may or may not be available at any given time.
+However, until then, you should be able to explore and prototype against
+the development API (https://api-dev.vegbank.org). Configure `vegbankr`
+to use the dev API using the following expression:
+
+```r
 library(vegbankr)
 
-plot_observation <- get_plot_observation("<ob_code>")
+# the package default URL is https://api.vegbank.org
+vb_set_base_url("https://api-dev.vegbank.org")
+```
+
+How many projects are currently registered in VegBank?
+```r
+vb_count_projects()
+```
+
+Search for "_GAP_" related projects, returning them sorted in descending order
+by observation count.
+
+```r
+vb_get_projects(search = "GAP", sort = "-obs_count") |>
+  dplyr::select(pj_code, project_name, obs_count)
+```
+
+ Get the first 100 plot observations associated with project `pj.11044`
+ (_Pennsylvania HP Delaware Water Gap_), sorted by author_obs_code, then check
+ out where they are located.
+
+```r
+obs <- vb_get_plot_observations("pj.11044", sort = "author_obs_code",
+  limit = 100)
+obs |> dplyr::count(state_province)
+```
+
+Grab a single plot observation record based on its "ob" code.
+```r
+ob.135454 <- vb_get_plot_observations("ob.135454", detail = "full",
+  with_nested = TRUE)
+```
+
+Get the taxon (plant) observations associated with this plot obseration,
+displaying them in order based on the plant code of the current taxon
+interpretation.
+
+```r
+vb_get_taxon_observations("ob.135454") |>
+  dplyr::arrange(int_curr_plant_code) |>
+  print(n = 35)
+```
+
+Now search for community concepts with the string "_sequoiadendron_".
+```r
+sequoia_communities <- vb_get_community_concepts(search = "sequoiadendron")
+```
+
+Determine which concept has the most plot observations, then retrieve
+all of those plot obervations from VegBank.
+
+```r
+sequoia_plots <- sequoia_communities |>
+  dplyr::arrange(-obs_count) |>
+  dplyr::slice(1) |>
+  dplyr::pull(cc_code) |>
+  vb_get_plot_observations()
 ```
 
 ## License
