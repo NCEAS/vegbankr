@@ -1,0 +1,24 @@
+{
+  "dry_run_data": {
+    "counts": {
+      "ob": {
+        "inserted": 2
+      }
+    },
+    "resources": {
+      "ob": [
+        {
+          "action": "inserted",
+          "user_ob_code": "1",
+          "vb_ob_code": "ob.1"
+        },
+        {
+          "action": "inserted",
+          "user_ob_code": "2",
+          "vb_ob_code": "ob.2"
+        }
+      ]
+    }
+  },
+  "message": "dry run, transaction was rolled back"
+}

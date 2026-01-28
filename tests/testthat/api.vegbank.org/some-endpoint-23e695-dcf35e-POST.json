@@ -1,0 +1,36 @@
+{
+  "counts": {
+    "ob": {
+      "inserted": 5
+    }
+  },
+  "resources": {
+    "ob": [
+      {
+        "action": "inserted",
+        "user_ob_code": "1",
+        "vb_ob_code": "ob.1"
+      },
+      {
+        "action": "inserted",
+        "user_ob_code": "2",
+        "vb_ob_code": "ob.2"
+      },
+      {
+        "action": "inserted",
+        "user_ob_code": "3",
+        "vb_ob_code": "ob.3"
+      },
+      {
+        "action": "inserted",
+        "user_ob_code": "4",
+        "vb_ob_code": "ob.4"
+      },
+      {
+        "action": "inserted",
+        "user_ob_code": "5",
+        "vb_ob_code": "ob.5"
+      }
+    ]
+  }
+}
