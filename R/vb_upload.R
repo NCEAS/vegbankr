@@ -3,6 +3,9 @@
 #' @description
 #' Upload data to VegBank via the REST API. `vb_upload()` is the core
 #' function that can upload to any of the supported `POST` endpoints.
+#' Resource-specific functions like `vb_upload_plot_observations()` are
+#' convenience wrappers that apply resource-specific validation. For
+#' typical usage, the resource-specific functions should be preferred.
 #'
 #' @param resource \emph{Available only for `vb_upload()`.} Character string
 #'   specifying the VegBank resource type to upload (e.g., "plot-observations",
@@ -13,9 +16,44 @@
 #' @param dry_run Logical indicating whether to perform a dry run. If `TRUE`,
 #'   the API will validate the data without committing changes to the database.
 #'   Default is `FALSE`.
+#' @param plot_observations A data frame containing details about plot
+#'   observations
+#' @param projects A data frame containing details about new projects
+#' @param parties A data frame containing details about new parties
+#' @param references A data frame containing details about new references
+#' @param soils A data frame containing details about observed soils
+#' @param disturbances A data frame containing details about observed
+#'   disturbances
+#' @param community_classifications A data frame containing community
+#'   classifications of observed plots
+#' @param strata A data frame containing details about strata defined for plot
+#'   observations
+#' @param strata_cover_data A data frame containing details about plant cover as
+#' observed in different strata of a plot
+#' @param stem_data A data frame containing details about counts and/or
+#'   other details about stems observed on a plot
+#' @param taxon_interpretations A data frame containing taxon interpretations of
+#'   plants observed on a plot
+#' @param contributors A data frame associating parties with their contributions
+#'   to plot observations, projects, and/or community classifications
 #'
 #' @return The processed response object from the VegBank API documenting what
 #'   (if anything) was successfully uploaded to VegBank.
+#'
+#' @details
+#'
+#' The `vb_upload*()` family of functions can all be used to upload data to
+#' VegBank queries, with each one differing in terms of what input dataframes
+#' are expected (and, in some case, required).
+#'
+#' ## Available resource-specific functions:
+#'
+#' 1. `vb_upload_plot_observations()` - Plot observational data, including
+#   ' contextual detail (associated projects, parties, references), detailed
+#'    soil and disturbance observations, plant taxon observations and importance
+#'    assessments (potentially including stem-level details) within any defined
+#'    strata, and both individual plant taxon and overall vegetation community
+#'    interpretation.
 #'
 #' If `vb_debug()` is enabled, additional debugging details will be reported to
 #' the console, primarily focused on the data being uploaded.
@@ -132,4 +170,27 @@ handle_vb_upload_response <- function(response) {
   print(resources_peek)
 
   invisible(response)
+}
+
+#' @rdname vb_upload
+#' @export
+vb_upload_plot_observations <- function(plot_observations,
+    projects = NULL, parties = NULL, references = NULL, soils = NULL,
+    disturbances = NULL, community_classifications = NULL, strata = NULL,
+    strata_cover_data = NULL, stem_data = NULL, taxon_interpretations = NULL,
+    contributors = NULL, dry_run = FALSE) {
+  vb_upload("plot-observations",
+            plot_observations = plot_observations,
+            projects = projects,
+            parties = parties,
+            references = references,
+            soils = soils,
+            disturbances = disturbances,
+            community_classifications = community_classifications,
+            strata = strata,
+            strata_cover_data = strata_cover_data,
+            stem_data = stem_data,
+            taxon_interpretations = taxon_interpretations,
+            contributors = contributors,
+            dry_run = dry_run)
 }

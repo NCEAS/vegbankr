@@ -83,3 +83,21 @@ with_mock_api({
     )
   })
 })
+
+with_mock_api({
+  local_base_url(NULL)
+  test_that("specific vb_upload_*() methods work", {
+
+    endpoint <- "https://api.vegbank.org/plot-observations"
+    expect_error(
+      vb_upload_plot_observations(),
+      "argument \"plot_observations\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_plot_observations(
+        plot_observations = data.frame(a=1)),
+      paste0(endpoint)
+    )
+
+  })
+})
