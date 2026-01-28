@@ -31,10 +31,12 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
     DBI,
+    curl,
     dplyr,
     duckdb,
     httr2,
     jsonlite,
+    nanoparquet,
     purrr,
     rlang
 Suggests:
