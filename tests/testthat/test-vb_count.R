@@ -40,6 +40,10 @@ with_mock_api({
       paste0(endpoint, "cover-methods", count_param)
     )
     expect_GET(
+      vb_count_named_places(),
+      paste0(endpoint, "named-places", count_param)
+    )
+    expect_GET(
       vb_count_parties(),
       paste0(endpoint, "parties", count_param)
     )

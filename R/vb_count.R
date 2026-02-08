@@ -56,6 +56,12 @@ vb_count_cover_methods <- function(...) {
 
 #' @rdname vb_count
 #' @export
+vb_count_named_places <- function(...) {
+  vb_count("named-places", ...)
+}
+
+#' @rdname vb_count
+#' @export
 vb_count_parties <- function(...) {
   vb_count("parties", ...)
 }
