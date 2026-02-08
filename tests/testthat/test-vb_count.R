@@ -64,6 +64,10 @@ with_mock_api({
       paste0(endpoint, "stem-counts", count_param)
     )
     expect_GET(
+      vb_count_strata(),
+      paste0(endpoint, "strata", count_param)
+    )
+    expect_GET(
       vb_count_stratum_methods(),
       paste0(endpoint, "stratum-methods", count_param)
     )

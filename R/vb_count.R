@@ -98,6 +98,12 @@ vb_count_taxon_importances <- function(...) {
 
 #' @rdname vb_count
 #' @export
+vb_count_strata <- function(...) {
+  vb_count("strata", ...)
+}
+
+#' @rdname vb_count
+#' @export
 vb_count_stratum_methods <- function(...) {
   vb_count("stratum-methods", ...)
 }
