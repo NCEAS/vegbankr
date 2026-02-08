@@ -304,6 +304,36 @@ test_that("Getting stem counts works", {
   expect_named(all, names, ignore.order = TRUE)
 })
 
+test_that("Getting strata works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_strata("sr.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "base",
+    "cover",
+    "description",
+    "height",
+    "name",
+    "ob_code",
+    "sm_code",
+    "sr_code",
+    "stratum_method_name",
+    "stratum_type_name",
+    "sy_code"
+  )
+  one <- vb_get_strata("sr.22374")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names, ignore.order = TRUE)
+  all <- vb_get_strata(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
 test_that("Getting taxon interpretations works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()

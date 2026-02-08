@@ -1,0 +1,31 @@
+{
+    "count": 347097,
+    "data": [
+        {
+            "base": null,
+            "cover": 0.0,
+            "description": null,
+            "height": null,
+            "name": "Tall Shrub",
+            "ob_code": "ob.2948",
+            "sm_code": "sm.5",
+            "sr_code": "sr.17456",
+            "stratum_method_name": "National Park Service",
+            "stratum_type_name": "Tall Shrub",
+            "sy_code": "sy.36"
+        },
+        {
+            "base": null,
+            "cover": 0.0,
+            "description": null,
+            "height": null,
+            "name": "Short Shrub",
+            "ob_code": "ob.2948",
+            "sm_code": "sm.5",
+            "sr_code": "sr.17457",
+            "stratum_method_name": "National Park Service",
+            "stratum_type_name": "Short Shrub",
+            "sy_code": "sy.37"
+        }
+    ]
+}
