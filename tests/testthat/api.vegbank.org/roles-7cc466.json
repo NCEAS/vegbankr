@@ -1,0 +1,15 @@
+{
+    "count": 21,
+    "data": [
+        {
+            "ar_code": "ar.16",
+            "description": null,
+            "name": "Author"
+        },
+        {
+            "ar_code": "ar.17",
+            "description": "VegBank Contact Party",
+            "name": "Contact"
+        }
+    ]
+}

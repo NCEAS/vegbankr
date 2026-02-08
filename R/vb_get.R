@@ -105,6 +105,8 @@
 #'   vegetation plot data
 #' * `vb_get_parties()` - Information about people and organizations who have
 #'   contributed to the collection or interpretation of a plot
+#' * `vb_get_roles()` - VegBank-defined role types, which can be used to define
+#'   the role of a party contributing to a plot observation, classification, etc
 #'
 #' ## Query types
 #'
@@ -184,6 +186,18 @@ vb_get_parties <- function(vb_code = NULL, limit = 100, offset = 0,
   if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
   vb_get(resource, vb_code, parquet = parquet, search = search,
          sort = sort, limit = limit, offset = offset, ...)
+}
+
+#' @rdname vb_get
+#' @export
+vb_get_roles <- function(vb_code = NULL, limit = 100, offset = 0,
+                         parquet = NULL, ...) {
+  resource <- "roles"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...)
 }
 
 #' @rdname vb_get
@@ -440,6 +454,7 @@ vb_get <- function(resource, vb_code = NULL, by = NULL, parquet = TRUE,
 
 # Internal mapping table between vb_code prefixes and resource names
 vb_resource_lookup <- c(
+  ar = "roles",
   cl = "community-classifications",
   cc = "community-concepts",
   ci = "community-interpretations",

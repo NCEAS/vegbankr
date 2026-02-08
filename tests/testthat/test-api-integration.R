@@ -220,6 +220,28 @@ test_that("parties works", {
   test_cross_resource(resource, "projects", "pj.11057")
 })
 
+test_that("roles works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "roles"
+  table_code <- "ar"
+  vb_code <- "ar.16"
+  names_full <- c(
+    "ar_code",
+    "description",
+    "name"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+})
+
 test_that("references works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()
