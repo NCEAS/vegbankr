@@ -988,6 +988,7 @@ test_that("plot-observations works", {
   test_success_collection_parquet(resource, names_mini_nest,
                                   detail="minimal", with_nested=TRUE)
   test_success_collection_parquet(resource, names_geo, detail="geo")
+  test_cross_resource(resource, "user-datasets", "ds.199635")
   test_cross_resource(resource, "named-places", "np.1000")
   test_cross_resource(resource, "projects", "pj.340")
   test_cross_resource(resource, "parties", "py.192036")
