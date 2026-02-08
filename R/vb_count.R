@@ -92,6 +92,12 @@ vb_count_references <- function(...) {
 
 #' @rdname vb_count
 #' @export
+vb_count_roles <- function(...) {
+  vb_count("roles", ...)
+}
+
+#' @rdname vb_count
+#' @export
 vb_count_stem_counts <- function(...) {
   vb_count("stem-counts", ...)
 }

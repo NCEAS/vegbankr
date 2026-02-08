@@ -64,6 +64,10 @@ with_mock_api({
       paste0(endpoint, "references", count_param)
     )
     expect_GET(
+      vb_count_roles(),
+      paste0(endpoint, "roles", count_param)
+    )
+    expect_GET(
       vb_count_stem_counts(),
       paste0(endpoint, "stem-counts", count_param)
     )
