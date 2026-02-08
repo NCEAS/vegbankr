@@ -1,0 +1,15 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "code": "NP",
+            "description": null,
+            "name": "Someplace",
+            "np_code": "np.1",
+            "obs_count": 8,
+            "owner": "US NPS",
+            "rf_label": null,
+            "system": "Geographic Name"
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "count": 64563,
+    "data": [
+        {
+            "code": "NP",
+            "description": null,
+            "name": "Someplace",
+            "np_code": "np.1",
+            "obs_count": 8,
+            "owner": "US NPS",
+            "rf_label": null,
+            "system": "Geographic Name"
+        },
+        {
+            "code": "fc",
+            "description": null,
+            "name": "Africa, Central",
+            "np_code": "np.2",
+            "obs_count": 0,
+            "owner": null,
+            "rf_label": "USLC place names",
+            "system": "area|country|territory"
+        }
+    ]
+}

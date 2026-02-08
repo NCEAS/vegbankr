@@ -515,6 +515,33 @@ test_that("Getting community interpretations works", {
   expect_named(all, names_mini, ignore.order = TRUE)
 })
 
+test_that("Getting named places works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_named_places("np.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "code",
+    "description",
+    "name",
+    "np_code",
+    "obs_count",
+    "owner",
+    "rf_label",
+    "system"
+  )
+  one <- vb_get_named_places("np.1")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names, ignore.order = TRUE)
+  all <- vb_get_named_places(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
 test_that("Getting plot observations works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()

@@ -98,6 +98,8 @@
 #' * `vb_get_cover_methods()` - Information about registered coverclass methods
 #' * `vb_get_stratum_methods()` - Information about registered strata sampling
 #'   protocols
+#' * `vb_get_named_places()` - Information about named places registered in
+#'   VegBank
 #' * `vb_get_references()` - Information about references cited within VegBank
 #' * `vb_get_projects()` - Information about projects established to collect
 #'   vegetation plot data
@@ -194,6 +196,18 @@ vb_get_references <- function(vb_code = NULL, limit = 100, offset = 0,
   if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
   vb_get(resource, vb_code, parquet = parquet, search = search,
          sort = sort, limit = limit, offset = offset, ...)
+}
+
+#' @rdname vb_get
+#' @export
+vb_get_named_places <- function(vb_code = NULL, limit = 100, offset = 0,
+                                parquet = NULL, ...) {
+  resource <- "named-places"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...)
 }
 
 #' @rdname vb_get
@@ -430,6 +444,7 @@ vb_resource_lookup <- c(
   cc = "community-concepts",
   ci = "community-interpretations",
   cm = "cover-methods",
+  np = "named-places",
   py = "parties",
   pc = "plant-concepts",
   ob = "plot-observations",
