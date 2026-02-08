@@ -238,6 +238,41 @@ test_that("Getting taxon observations works", {
   expect_named(all, names, ignore.order = TRUE)
 })
 
+test_that("Getting taxon importances works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_taxon_importances("tm.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "basal_area",
+    "biomass",
+    "cover",
+    "cover_code",
+    "inference_area",
+    "ob_code",
+    "sr_code",
+    "stratum_base",
+    "stratum_height",
+    "stratum_name",
+    "tm_code",
+    "to_code"
+  )
+  names_nest <- c(
+    names,
+    "stems"
+  )
+  one <- vb_get_taxon_importances("tm.74081")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names_nest, ignore.order = TRUE)
+  all <- vb_get_taxon_importances(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
 test_that("Getting taxon interpretations works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()

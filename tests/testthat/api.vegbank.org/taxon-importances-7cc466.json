@@ -1,0 +1,33 @@
+{
+    "count": 3599929,
+    "data": [
+        {
+            "basal_area": null,
+            "biomass": null,
+            "cover": 63.3125,
+            "cover_code": "05",
+            "inference_area": null,
+            "ob_code": "ob.2948",
+            "sr_code": "sr.17458",
+            "stratum_base": null,
+            "stratum_height": null,
+            "stratum_name": "Nonvascular",
+            "tm_code": "tm.67083",
+            "to_code": "to.64982"
+        },
+        {
+            "basal_area": null,
+            "biomass": null,
+            "cover": 63.3125,
+            "cover_code": "05",
+            "inference_area": null,
+            "ob_code": "ob.2948",
+            "sr_code": null,
+            "stratum_base": null,
+            "stratum_height": null,
+            "stratum_name": "<All>",
+            "tm_code": "tm.67084",
+            "to_code": "to.64982"
+        }
+    ]
+}

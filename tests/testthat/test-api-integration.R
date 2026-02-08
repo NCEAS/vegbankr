@@ -401,6 +401,45 @@ test_that("taxon-observations works", {
   test_cross_resource(resource, "plant-concepts", "pc.110944")
 })
 
+test_that("taxon-importances works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "taxon-importances"
+  table_code <- "tm"
+  vb_code <- "tm.74081"
+  names_full <- c(
+    "basal_area",
+    "biomass",
+    "cover",
+    "cover_code",
+    "inference_area",
+    "ob_code",
+    "sr_code",
+    "stratum_base",
+    "stratum_height",
+    "stratum_name",
+    "tm_code",
+    "to_code"
+  )
+  names_full_nest <- c(
+    names_full,
+    "stems"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+  test_success_collection_parquet(resource, names_full_nest, with_nested=TRUE)
+  test_cross_resource(resource, "plot-observations", "ob.3062")
+  test_cross_resource(resource, "taxon-observations", "to.68185")
+  test_cross_resource(resource, "plant-concepts", "pc.45236")
+})
+
 test_that("taxon-interpretations works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()
