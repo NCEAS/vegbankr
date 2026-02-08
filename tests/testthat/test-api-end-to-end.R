@@ -709,6 +709,7 @@ test_that("Getting plot observations works", {
     "plot_validation_level",
     "previous_ob_code",
     "project_name",
+    "replaced_by_ob_code",
     "representativeness",
     "rf_code",
     "rf_label",
@@ -752,6 +753,9 @@ test_that("Getting plot observations works", {
   )
   names_full_nest <- c(
     names_full,
+    "disturbances",
+    "named_places",
+    "soils",
     "taxon_count",
     "taxon_importance_count",
     "taxon_importance_count_returned",
