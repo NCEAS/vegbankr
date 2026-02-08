@@ -107,6 +107,8 @@
 #'   contributed to the collection or interpretation of a plot
 #' * `vb_get_roles()` - VegBank-defined role types, which can be used to define
 #'   the role of a party contributing to a plot observation, classification, etc
+#' * `vb_get_user_datasets()` - Information about people and organizations who have
+#'   contributed to the collection or interpretation of a plot
 #'
 #' ## Query types
 #'
@@ -399,6 +401,17 @@ vb_get_plot_observations <- function(vb_code = NULL, limit = 100, offset = 0,
 }
 
 #' @rdname vb_get
+#' @export
+vb_get_user_datasets <- function(vb_code = NULL, limit = 100, offset = 0,
+                                 parquet = NULL, ...) {
+  resource <- "user-datasets"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...) }
+
+#' @rdname vb_get
 #' @import httr2
 #' @importFrom rlang !!!
 #' @export
@@ -459,6 +472,7 @@ vb_resource_lookup <- c(
   cc = "community-concepts",
   ci = "community-interpretations",
   cm = "cover-methods",
+  ds = "user-datasets",
   np = "named-places",
   py = "parties",
   pc = "plant-concepts",

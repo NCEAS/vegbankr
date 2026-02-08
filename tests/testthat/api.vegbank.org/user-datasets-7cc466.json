@@ -1,0 +1,29 @@
+{
+    "count": 56,
+    "data": [
+        {
+            "accession_code": "VB.ds.122.foo",
+            "description": "some plots",
+            "ds_code": "ds.122",
+            "name": "dataset 1",
+            "obs_count": 7,
+            "owner_email": "owner@email.com",
+            "owner_label": "Owner, The",
+            "start": "Sat, 13 Aug 2005 23:49:13 GMT",
+            "stop": null,
+            "type": "normal"
+        },
+        {
+            "accession_code": "VB.ds.123.foo",
+            "description": "some plots",
+            "ds_code": "ds.123",
+            "name": "datasets map 2",
+            "obs_count": 6,
+            "owner_email": "owner@email.comnc.edu",
+            "owner_label": "Owner, The",
+            "start": "Sat, 13 Aug 2005 23:51:54 GMT",
+            "stop": null,
+            "type": "normal"
+        }
+    ]
+}

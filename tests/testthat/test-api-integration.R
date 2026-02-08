@@ -738,6 +738,35 @@ test_that("community-interpretations works", {
   test_cross_resource(resource, "community-concepts", "cc.38712")
 })
 
+test_that("user-datasets works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "user-datasets"
+  table_code <- "ds"
+  vb_code <- "ds.196903"
+  names_full <- c(
+    "accession_code",
+    "description",
+    "ds_code",
+    "name",
+    "obs_count",
+    "owner_email",
+    "owner_label",
+    "start",
+    "stop",
+    "type"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+})
+
 test_that("named-places works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()
