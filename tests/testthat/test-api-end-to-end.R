@@ -273,6 +273,37 @@ test_that("Getting taxon importances works", {
   expect_named(all, names, ignore.order = TRUE)
 })
 
+test_that("Getting stem counts works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_stem_counts("sc.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "count",
+    "diameter",
+    "diameter_accuracy",
+    "height",
+    "height_accuracy",
+    "ob_code",
+    "sc_code",
+    "sr_code",
+    "stratum_name",
+    "taxon_area",
+    "tm_code",
+    "to_code"
+  )
+  one <- vb_get_stem_counts("sc.2056")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names, ignore.order = TRUE)
+  all <- vb_get_stem_counts(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
 test_that("Getting taxon interpretations works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()

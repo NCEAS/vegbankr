@@ -88,6 +88,8 @@
 #'   observed on a plot, and the overall cover of those taxa
 #' * `vb_get_taxon_importances()` - Cover/etc, and optionally stem counts,
 #'   of taxa observed on a plot, overall and by stratum if so defined
+#' * `vb_get_stem_counts()` - Stem counts of observed taxa, overall and by
+#'    stratum if so defined
 #' * `vb_get_taxon_interpretations()` - Assignments of taxon names and
 #'   authorities (i.e., plant concepts) to specific taxon observations
 #' * `vb_get_cover_methods()` - Information about registered coverclass methods
@@ -264,6 +266,18 @@ vb_get_taxon_importances <- function(vb_code = NULL, limit = 100,
 
 #' @rdname vb_get
 #' @export
+vb_get_stem_counts <- function(vb_code = NULL, limit = 100, offset = 0,
+                               parquet = NULL, ...) {
+  resource <- "stem-counts"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...)
+}
+
+#' @rdname vb_get
+#' @export
 vb_get_taxon_interpretations <- function(vb_code = NULL, limit = 100,
                                          offset = 0, parquet = NULL,
                                          detail = NULL, ...) {
@@ -406,6 +420,7 @@ vb_resource_lookup <- c(
   ob = "plot-observations",
   pj = "projects",
   rf = "references",
+  sc = "stem-counts",
   sm = "stratum-methods",
   tm = "taxon-importances",
   ti = "taxon-interpretations",
