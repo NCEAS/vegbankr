@@ -86,6 +86,12 @@ vb_count_references <- function(...) {
 
 #' @rdname vb_count
 #' @export
+vb_count_stem_counts <- function(...) {
+  vb_count("stem-counts", ...)
+}
+
+#' @rdname vb_count
+#' @export
 vb_count_taxon_importances <- function(...) {
   vb_count("taxon-importances", ...)
 }
