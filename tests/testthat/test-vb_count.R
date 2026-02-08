@@ -64,6 +64,10 @@ with_mock_api({
       paste0(endpoint, "stratum-methods", count_param)
     )
     expect_GET(
+      vb_count_taxon_importances(),
+      paste0(endpoint, "taxon-importances", count_param)
+    )
+    expect_GET(
       vb_count_taxon_observations(),
       paste0(endpoint, "taxon-observations", count_param)
     )
