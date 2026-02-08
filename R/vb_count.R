@@ -125,3 +125,9 @@ vb_count_stratum_methods <- function(...) {
 vb_count_taxon_observations <- function(...) {
   vb_count("taxon-observations", ...)
 }
+
+#' @rdname vb_count
+#' @export
+vb_count_user_datasets <- function(...) {
+  vb_count("user-datasets", ...)
+}

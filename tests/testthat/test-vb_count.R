@@ -87,5 +87,9 @@ with_mock_api({
       vb_count_taxon_observations(),
       paste0(endpoint, "taxon-observations", count_param)
     )
+    expect_GET(
+      vb_count_user_datasets(),
+      paste0(endpoint, "user-datasets", count_param)
+    )
   })
 })
