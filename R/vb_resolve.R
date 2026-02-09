@@ -11,12 +11,10 @@
 #' @return A list containing the resolved identifier details with the following
 #'   components:
 #'   \describe{
-#'     \item{identifier_id}{Internal numeric identifier}
-#'     \item{identifier_type}{Type of identifier (e.g., "accession_code")}
 #'     \item{identifier_value}{The original identifier value provided}
+#'     \item{identifier_type}{Type of identifier (e.g., "accession_code")}
 #'     \item{vb_code}{VegBank code for the resource}
-#'     \item{vb_record_id}{Numeric record ID}
-#'     \item{vb_table_code}{Table code indicating resource type}
+#'     \item{vb_resource_type}{VegBank resource type}
 #'   }
 #'
 #' @examples
@@ -28,12 +26,24 @@
 #'
 #' @export
 vb_resolve <- function(identifier) {
-  request(vb_get_base_url()) |>
+  response <- request(vb_get_base_url()) |>
     req_url_path_append("identifiers") |>
     req_url_path_append(identifier) |>
     req_headers(Accept = "application/json") |>
     send() |>
     resp_body_json()
+  if (response$vb_table_code %in% names(vb_resource_lookup)) {
+      vb_resource_type <- vb_resource_lookup[[response$vb_table_code]]
+  } else {
+    warning("Unknown resource type code ", dQuote(response$vb_table_code))
+    vb_resource_type <- "unknown"
+  }
+  list(
+    identifier_value = response$identifier_value,
+    identifier_type = response$identifier_type,
+    vb_code = response$vb_code,
+    vb_resource_type = vb_resource_type
+  )
 }
 
 #' Retrieve a VegBank resource by identifier
@@ -67,11 +77,19 @@ vb_resolve <- function(identifier) {
 #'
 #' @export
 vb_get_by_id <- function(identifier, ..., verbose = FALSE) {
-  id_map <- vb_resolve(identifier)
-  data <- vb_get(vb_resource_lookup[id_map$vb_table_code],
-                 id_map$vb_code, ...)
+  id_map <- tryCatch(
+    expr = vb_resolve(identifier),
+    warning = function(w) {
+      stop("Can't retrieve identifier ", dQuote(identifier),
+           ": ", conditionMessage(w), call. = FALSE)
+    },
+    error = function(e) {
+      stop(conditionMessage(e), call. = FALSE)
+    }
+  )
+  data <- vb_get(id_map$vb_resource_type, id_map$vb_code, ...)
   if (verbose) {
-      message("Retrieved ", vb_resource_lookup[id_map$vb_table_code],
+      message("Retrieved ", id_map$vb_resource_type,
               " record ", id_map$vb_code)
   }
   return(data)
