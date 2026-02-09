@@ -1,0 +1,8 @@
+{
+    "identifier_id": 123,
+    "identifier_type": "some_identifier_type",
+    "identifier_value": "some_identifier",
+    "vb_code": "ob.1",
+    "vb_record_id": 1,
+    "vb_table_code": "ob"
+}
