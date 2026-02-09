@@ -5,13 +5,19 @@
 \alias{vb_count_community_classifications}
 \alias{vb_count_community_concepts}
 \alias{vb_count_cover_methods}
+\alias{vb_count_named_places}
 \alias{vb_count_parties}
 \alias{vb_count_plant_concepts}
 \alias{vb_count_plot_observations}
 \alias{vb_count_projects}
 \alias{vb_count_references}
+\alias{vb_count_roles}
+\alias{vb_count_stem_counts}
+\alias{vb_count_taxon_importances}
+\alias{vb_count_strata}
 \alias{vb_count_stratum_methods}
 \alias{vb_count_taxon_observations}
+\alias{vb_count_user_datasets}
 \title{Get record count for a VegBank resource}
 \usage{
 vb_count(resource, ...)
@@ -21,6 +27,8 @@ vb_count_community_classifications(...)
 vb_count_community_concepts(...)
 
 vb_count_cover_methods(...)
+
+vb_count_named_places(...)
 
 vb_count_parties(...)
 
@@ -32,9 +40,19 @@ vb_count_projects(...)
 
 vb_count_references(...)
 
+vb_count_roles(...)
+
+vb_count_stem_counts(...)
+
+vb_count_taxon_importances(...)
+
+vb_count_strata(...)
+
 vb_count_stratum_methods(...)
 
 vb_count_taxon_observations(...)
+
+vb_count_user_datasets(...)
 }
 \arguments{
 \item{resource}{VegBank API resource (e.g., \code{plot-observation})}

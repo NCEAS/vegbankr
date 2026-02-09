@@ -1,0 +1,18 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "base": null,
+            "cover": 0.0,
+            "description": null,
+            "height": null,
+            "name": "Shrub",
+            "ob_code": "ob.1",
+            "sm_code": "sm.1",
+            "sr_code": "sr.1",
+            "stratum_method_name": "National Park Service",
+            "stratum_type_name": "Shrub",
+            "sy_code": "sy.1"
+        }
+    ]
+}

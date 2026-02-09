@@ -1,0 +1,19 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "count": 1,
+            "diameter": 22.0,
+            "diameter_accuracy": null,
+            "height": null,
+            "height_accuracy": null,
+            "ob_code": "ob.1",
+            "sc_code": "sc.1",
+            "sr_code": "sr.1",
+            "stratum_name": "Canopy",
+            "taxon_area": null,
+            "tm_code": "tm.1",
+            "to_code": "to.1"
+        }
+    ]
+}

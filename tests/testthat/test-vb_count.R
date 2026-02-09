@@ -40,6 +40,10 @@ with_mock_api({
       paste0(endpoint, "cover-methods", count_param)
     )
     expect_GET(
+      vb_count_named_places(),
+      paste0(endpoint, "named-places", count_param)
+    )
+    expect_GET(
       vb_count_parties(),
       paste0(endpoint, "parties", count_param)
     )
@@ -60,12 +64,32 @@ with_mock_api({
       paste0(endpoint, "references", count_param)
     )
     expect_GET(
+      vb_count_roles(),
+      paste0(endpoint, "roles", count_param)
+    )
+    expect_GET(
+      vb_count_stem_counts(),
+      paste0(endpoint, "stem-counts", count_param)
+    )
+    expect_GET(
+      vb_count_strata(),
+      paste0(endpoint, "strata", count_param)
+    )
+    expect_GET(
       vb_count_stratum_methods(),
       paste0(endpoint, "stratum-methods", count_param)
     )
     expect_GET(
+      vb_count_taxon_importances(),
+      paste0(endpoint, "taxon-importances", count_param)
+    )
+    expect_GET(
       vb_count_taxon_observations(),
       paste0(endpoint, "taxon-observations", count_param)
+    )
+    expect_GET(
+      vb_count_user_datasets(),
+      paste0(endpoint, "user-datasets", count_param)
     )
   })
 })

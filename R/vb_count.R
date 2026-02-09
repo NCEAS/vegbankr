@@ -56,6 +56,12 @@ vb_count_cover_methods <- function(...) {
 
 #' @rdname vb_count
 #' @export
+vb_count_named_places <- function(...) {
+  vb_count("named-places", ...)
+}
+
+#' @rdname vb_count
+#' @export
 vb_count_parties <- function(...) {
   vb_count("parties", ...)
 }
@@ -86,6 +92,30 @@ vb_count_references <- function(...) {
 
 #' @rdname vb_count
 #' @export
+vb_count_roles <- function(...) {
+  vb_count("roles", ...)
+}
+
+#' @rdname vb_count
+#' @export
+vb_count_stem_counts <- function(...) {
+  vb_count("stem-counts", ...)
+}
+
+#' @rdname vb_count
+#' @export
+vb_count_taxon_importances <- function(...) {
+  vb_count("taxon-importances", ...)
+}
+
+#' @rdname vb_count
+#' @export
+vb_count_strata <- function(...) {
+  vb_count("strata", ...)
+}
+
+#' @rdname vb_count
+#' @export
 vb_count_stratum_methods <- function(...) {
   vb_count("stratum-methods", ...)
 }
@@ -94,4 +124,10 @@ vb_count_stratum_methods <- function(...) {
 #' @export
 vb_count_taxon_observations <- function(...) {
   vb_count("taxon-observations", ...)
+}
+
+#' @rdname vb_count
+#' @export
+vb_count_user_datasets <- function(...) {
+  vb_count("user-datasets", ...)
 }
