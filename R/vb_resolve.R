@@ -35,3 +35,44 @@ vb_resolve <- function(identifier) {
     send() |>
     resp_body_json()
 }
+
+#' Retrieve a VegBank resource by identifier
+#'
+#' @description
+#' Fetches a VegBank resource using any supported identifier. This function
+#' first resolves the identifier to determine the resource type and internal
+#' code, then retrieves the full resource data.
+#'
+#' @param identifier A character string specifying the VegBank identifier.
+#'   This can be an accession code, DOI, or other supported identifier type.
+#' @param verbose Logical. If `TRUE`, prints a message indicating which resource
+#'   was retrieved. Default is `FALSE`.
+#' @param ... Additional query parameters passed to `vb_get()` as
+#'   key-value pairs. E.g., foo="bar" will add a URL query parameter
+#'   "?foo=bar" to the API GET request.
+#'
+#' @return A data frame containing the requested resource data. The structure
+#'   depends on the resource type.
+#'
+#' @examples
+#' \dontrun{
+#' # Retrieve a dataset silently
+#' data <- vb_get_by_id("VB.Ob.2948.ACAD143")
+#'
+#' # Retrieve with informational message
+#' data <- vb_get_by_id("VB.Ob.2948.ACAD143", verbose = TRUE)
+#' }
+#'
+#' @seealso [vb_resolve()] for identifier resolution details
+#'
+#' @export
+vb_get_by_id <- function(identifier, ..., verbose = FALSE) {
+  id_map <- vb_resolve(identifier)
+  data <- vb_get(vb_resource_lookup[id_map$vb_table_code],
+                 id_map$vb_code, ...)
+  if (verbose) {
+      message("Retrieved ", vb_resource_lookup[id_map$vb_table_code],
+              " record ", id_map$vb_code)
+  }
+  return(data)
+}
