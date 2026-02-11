@@ -8,6 +8,25 @@
 
 ENABLED <- FALSE
 
+test_that("Getting overview stats works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  names <- c(
+    "core_counts",
+    "latest_n_projects",
+    "top_n_community_concepts",
+    "top_n_contributors",
+    "top_n_named_places",
+    "top_n_plant_concepts",
+    "top_n_projects"
+  )
+  overview <- vb_overview(limit=4)
+  expect_named(overview, names, ignore.order = TRUE)
+  expect_true(all(sapply(overview, is.data.frame)))
+  expect_equal(nrow(overview$top_n_projects), 4)
+})
+
 test_that("Getting projects works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()
