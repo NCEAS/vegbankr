@@ -39,6 +39,20 @@
 #'   plants observed on a plot
 #' @param contributors A data frame associating parties with their contributions
 #'   to plot observations, projects, and/or community classifications
+#' @param plant_concepts A data frame containing plant concepts as plant names
+#'   associated with references, along with with status details and taxonomic
+#'   parents
+#' @param plant_names A data frame containing plant name usages associated with
+#'   specific classification systems for new plant concepts
+#' @param plant_correlations A data frame defining correlations between plant
+#'   concepts
+#' @param community_concepts A data frame containing community concepts as
+#'   community names associated with references, along with with status details
+#'   and taxonomic parents
+#' @param community_names A data frame containing community name usages
+#'   associated with specific classification systems for new community concepts
+#' @param community_correlations A data frame defining correlations between
+#'   community concepts
 #' @param what_to_deactivate \emph{Available only for `vb_upload_plant_concepts()`
 #'   and `vb_upload_community_concepts()`.} Character string specifying what
 #'   existing concepts to deactivate in VegBank. Supported values are "none" and

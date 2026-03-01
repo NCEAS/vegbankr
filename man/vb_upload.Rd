@@ -94,11 +94,31 @@ plants observed on a plot}
 \item{contributors}{A data frame associating parties with their contributions
 to plot observations, projects, and/or community classifications}
 
+\item{plant_concepts}{A data frame containing plant concepts as plant names
+associated with references, along with with status details and taxonomic
+parents}
+
+\item{plant_names}{A data frame containing plant name usages associated with
+specific classification systems for new plant concepts}
+
+\item{plant_correlations}{A data frame defining correlations between plant
+concepts}
+
 \item{what_to_deactivate}{\emph{Available only for \code{vb_upload_plant_concepts()}
 and \code{vb_upload_community_concepts()}.} Character string specifying what
 existing concepts to deactivate in VegBank. Supported values are "none" and
 "by_party", along with "by_party_below_order" for plant uploads only.
 VegBank default is \code{none}.}
+
+\item{community_concepts}{A data frame containing community concepts as
+community names associated with references, along with with status details
+and taxonomic parents}
+
+\item{community_names}{A data frame containing community name usages
+associated with specific classification systems for new community concepts}
+
+\item{community_correlations}{A data frame defining correlations between
+community concepts}
 }
 \value{
 The processed response object from the VegBank API documenting what
