@@ -64,6 +64,26 @@ with_mock_api({
           "5   inserted            5       ob.5",
           ""))
 
+    # Test JSON response with zero returned records
+    printed <- capture.output({
+      response <- suppressMessages(
+        vb_upload("some-endpoint", data = data.frame(a=0))
+      )
+    })
+    response_list <- response |> resp_body_json()
+    expect_type(response_list, "list")
+    expect_named(
+      response_list,
+      c("counts", "resources"),
+      ignore.order = TRUE
+    )
+    expect_identical(response_list$counts$ob$inserted, 0L)
+    expect_identical(response_list$resources$ob, list())
+    expect_equal(printed,
+        c("$ob",
+          "data frame with 0 columns and 0 rows",
+          ""))
+
     # Function parameter error conditions
     expect_error(
       vb_upload("some-endpoint", dry_run=TRUE),

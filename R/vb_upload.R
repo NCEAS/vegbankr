@@ -159,7 +159,9 @@ handle_vb_upload_response <- function(response) {
   # and last 2 rows for those with 5+ rows
   resources_peek <- lapply(resources,
     function(df) {
-      if (nrow(df) <= 4) {
+      if (length(df) == 0) {
+        data.frame()
+      } else if (nrow(df) <= 4) {
         df
       } else {
         rbind(head(df, 2),
