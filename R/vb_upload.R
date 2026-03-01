@@ -39,6 +39,11 @@
 #'   plants observed on a plot
 #' @param contributors A data frame associating parties with their contributions
 #'   to plot observations, projects, and/or community classifications
+#' @param what_to_deactivate \emph{Available only for
+#'  `vb_upload_plant_concepts()`}. Character string specifying what
+#'   existing concepts to deactivate in VegBank. Supported values are "none" and
+#'   "by_party", along with "by_party_below_order" for plant uploads only.
+#'   VegBank default is `none`.
 #'
 #' @return The processed response object from the VegBank API documenting what
 #'   (if anything) was successfully uploaded to VegBank.
@@ -57,6 +62,8 @@
 #'    assessments (potentially including stem-level details) within any defined
 #'    strata, and both individual plant taxon and overall vegetation community
 #'    interpretation.
+#' 2. `vb_upload_plant_concepts()` - Plant concepts linked to plant names
+#'    through usages, with some status designation
 #'
 #' If `vb_debug()` is enabled, additional debugging details will be reported to
 #' the console, primarily focused on the data being uploaded.
@@ -206,5 +213,26 @@ vb_upload_plot_observations <- function(plot_observations,
             stem_data = stem_data,
             taxon_interpretations = taxon_interpretations,
             contributors = contributors,
+            dry_run = dry_run)
+}
+
+#' @rdname vb_upload
+#' @export
+vb_upload_plant_concepts <- function(plant_concepts,
+    plant_names = NULL, plant_correlations = NULL, parties = NULL,
+    references = NULL, what_to_deactivate = NULL, dry_run = FALSE) {
+
+  if (!is.null(what_to_deactivate)) {
+    query_params = list("deactivation" = what_to_deactivate)
+  } else {
+    query_params = NULL
+  }
+  vb_upload("plant-concepts",
+            plant_concepts = plant_concepts,
+            plant_names = plant_names,
+            plant_correlations = plant_correlations,
+            parties = parties,
+            references = references,
+            query_params = query_params,
             dry_run = dry_run)
 }

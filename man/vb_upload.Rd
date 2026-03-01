@@ -3,6 +3,7 @@
 \name{vb_upload}
 \alias{vb_upload}
 \alias{vb_upload_plot_observations}
+\alias{vb_upload_plant_concepts}
 \title{Upload data to VegBank}
 \usage{
 vb_upload(resource, ..., query_params = NULL, dry_run = FALSE)
@@ -20,6 +21,16 @@ vb_upload_plot_observations(
   stem_data = NULL,
   taxon_interpretations = NULL,
   contributors = NULL,
+  dry_run = FALSE
+)
+
+vb_upload_plant_concepts(
+  plant_concepts,
+  plant_names = NULL,
+  plant_correlations = NULL,
+  parties = NULL,
+  references = NULL,
+  what_to_deactivate = NULL,
   dry_run = FALSE
 )
 }
@@ -71,6 +82,12 @@ plants observed on a plot}
 
 \item{contributors}{A data frame associating parties with their contributions
 to plot observations, projects, and/or community classifications}
+
+\item{what_to_deactivate}{\emph{Available only for
+\code{vb_upload_plant_concepts()}}. Character string specifying what
+existing concepts to deactivate in VegBank. Supported values are "none" and
+"by_party", along with "by_party_below_order" for plant uploads only.
+VegBank default is \code{none}.}
 }
 \value{
 The processed response object from the VegBank API documenting what
@@ -94,6 +111,8 @@ soil and disturbance observations, plant taxon observations and importance
 assessments (potentially including stem-level details) within any defined
 strata, and both individual plant taxon and overall vegetation community
 interpretation.
+\item \code{vb_upload_plant_concepts()} - Plant concepts linked to plant names
+through usages, with some status designation
 }
 
 If \code{vb_debug()} is enabled, additional debugging details will be reported to
