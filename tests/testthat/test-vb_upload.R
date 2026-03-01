@@ -152,5 +152,22 @@ with_mock_api({
       paste0(endpoint, "?dry_run=FALSE&deactivation=none")
     )
 
+    endpoint <- "https://api.vegbank.org/community-concepts"
+    expect_error(
+      vb_upload_community_concepts(),
+      "argument \"community_concepts\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_community_concepts(
+        community_concepts = data.frame(a=1)),
+      paste0(endpoint)
+    )
+    expect_POST(
+      vb_upload_community_concepts(
+        community_concepts = data.frame(a=1),
+        what_to_deactivate = "none"),
+      paste0(endpoint, "?dry_run=FALSE&deactivation=none")
+    )
+
   })
 })
