@@ -4,7 +4,7 @@
 <!-- badges: end -->
 
 - **Authors**: Jim Regetz, Matthew B. Jones
-- **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
+- **License**: [Apache 2](https://opensource.org/license/apache-2-0)
 - [Package source code on GitHub](https://github.com/NCEAS/vegbankr)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/vegbankr/issues)
 - Contact us: help@vegbank.org
