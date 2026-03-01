@@ -8,7 +8,7 @@ vb_overview(limit = 5)
 }
 \arguments{
 \item{limit}{Integer specifying maximum number of records to return
-in the "top_n" and "latest_n" tables. Default is 5 Set to \code{NULL}
+in the "top_n" and "latest_n" tables. Default is 5. Set to \code{NULL}
 to use API default.}
 }
 \value{
@@ -16,7 +16,7 @@ A list of data frames corresponding to the returned summary tables
 }
 \description{
 Gets basic summary stats from VegBank as a list of data frames,
-including a table of high level counts and a few tables reporting
+including a table of high level counts and a few tables with
 "top N" (by count) or "latest N" (by upload date) reports.
 }
 \examples{

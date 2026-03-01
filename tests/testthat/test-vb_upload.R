@@ -27,6 +27,22 @@ with_mock_api({
           "2 inserted            2       ob.2",
           ""))
 
+    # Test that query_params argument works
+    endpoint <- "https://api.vegbank.org/some-endpoint"
+    expect_POST(
+      vb_upload("some-endpoint",
+                some_dataset = data.frame(a=1),
+                query_params = list(some_param = "some_value")),
+      paste0(endpoint, "?dry_run=FALSE&some_param=some_value")
+    )
+    # Test error with bad query_params argument
+    expect_error(
+      vb_upload("some-endpoint",
+                dat = data.frame(a=1),
+                query_params = TRUE),
+      "`query_params` must be a named list, or NULL."
+    )
+
     # Test messages without debugging enabled
     printed <- capture.output({
       msgs <- capture_messages(

@@ -13,6 +13,9 @@
 #' @param ... Named data frames to upload. Each data frame should correspond to
 #'   a table expected by the VegBank API for the specified resource. All
 #'   arguments must be named, and at least one data frame must be provided.
+#' @param query_params A named list of parameter names and values to pass to the
+#'   API as query parameters. For example, `list(foo="bar")` will be treated as
+#'   `?foo=bar` in the request URL.
 #' @param dry_run Logical indicating whether to perform a dry run. If `TRUE`,
 #'   the API will validate the data without committing changes to the database.
 #'   Default is `FALSE`.
@@ -64,7 +67,7 @@
 #' @import nanoparquet
 #' @importFrom rlang !!!
 #' @export
-vb_upload <- function(resource, ..., dry_run = FALSE) {
+vb_upload <- function(resource, ..., query_params = NULL, dry_run = FALSE) {
   # Capture the named data frames
   dfs <- list(...)
 
@@ -121,6 +124,17 @@ vb_upload <- function(resource, ..., dry_run = FALSE) {
     req_url_query(dry_run = dry_run) |>
     req_body_multipart(!!!form_data)
 
+  if (!is.null(query_params)) {
+    if (!is.list(query_params) ||
+        is.data.frame(query_params) ||
+        is.null(names(query_params)) ||
+        any(names(query_params) == "")) {
+      stop("`query_params` must be a named list, or NULL.")
+    }
+    request <- request |>
+      req_url_query(!!!query_params)
+  }
+
   response <- send(request)
   handle_vb_upload_response(response)
 }
@@ -143,8 +157,6 @@ handle_vb_upload_response <- function(response) {
   } else {
     message("Upload complete")
   }
-  resp |>
-    purrr::pluck("dry_run_data", "resources")
 
   counts <- resp$counts
   resources <- resp$resources

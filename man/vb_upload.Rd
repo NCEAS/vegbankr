@@ -5,7 +5,7 @@
 \alias{vb_upload_plot_observations}
 \title{Upload data to VegBank}
 \usage{
-vb_upload(resource, ..., dry_run = FALSE)
+vb_upload(resource, ..., query_params = NULL, dry_run = FALSE)
 
 vb_upload_plot_observations(
   plot_observations,
@@ -31,6 +31,10 @@ specifying the VegBank resource type to upload (e.g., "plot-observations",
 \item{...}{Named data frames to upload. Each data frame should correspond to
 a table expected by the VegBank API for the specified resource. All
 arguments must be named, and at least one data frame must be provided.}
+
+\item{query_params}{A named list of parameter names and values to pass to the
+API as query parameters. For example, \code{list(foo="bar")} will be treated as
+\code{?foo=bar} in the request URL.}
 
 \item{dry_run}{Logical indicating whether to perform a dry run. If \code{TRUE},
 the API will validate the data without committing changes to the database.
