@@ -13,6 +13,9 @@
 #' @param ... Named data frames to upload. Each data frame should correspond to
 #'   a table expected by the VegBank API for the specified resource. All
 #'   arguments must be named, and at least one data frame must be provided.
+#' @param query_params A named list of parameter names and values to pass to the
+#'   API as query parameters. For example, `list(foo="bar")` will be treated as
+#'   `?foo=bar` in the request URL.
 #' @param dry_run Logical indicating whether to perform a dry run. If `TRUE`,
 #'   the API will validate the data without committing changes to the database.
 #'   Default is `FALSE`.
@@ -36,6 +39,25 @@
 #'   plants observed on a plot
 #' @param contributors A data frame associating parties with their contributions
 #'   to plot observations, projects, and/or community classifications
+#' @param plant_concepts A data frame containing plant concepts as plant names
+#'   associated with references, along with with status details and taxonomic
+#'   parents
+#' @param plant_names A data frame containing plant name usages associated with
+#'   specific classification systems for new plant concepts
+#' @param plant_correlations A data frame defining correlations between plant
+#'   concepts
+#' @param community_concepts A data frame containing community concepts as
+#'   community names associated with references, along with with status details
+#'   and taxonomic parents
+#' @param community_names A data frame containing community name usages
+#'   associated with specific classification systems for new community concepts
+#' @param community_correlations A data frame defining correlations between
+#'   community concepts
+#' @param what_to_deactivate \emph{Available only for `vb_upload_plant_concepts()`
+#'   and `vb_upload_community_concepts()`.} Character string specifying what
+#'   existing concepts to deactivate in VegBank. Supported values are "none" and
+#'   "by_party", along with "by_party_below_order" for plant uploads only.
+#'   VegBank default is `none`.
 #'
 #' @return The processed response object from the VegBank API documenting what
 #'   (if anything) was successfully uploaded to VegBank.
@@ -54,6 +76,10 @@
 #'    assessments (potentially including stem-level details) within any defined
 #'    strata, and both individual plant taxon and overall vegetation community
 #'    interpretation.
+#' 2. `vb_upload_plant_concepts()` - Plant concepts linked to plant names
+#'    through usages, with some status designation
+#' 3. `vb_upload_community_concepts()` - Community concepts linked to community
+#'    names through usages, with some status designation
 #'
 #' If `vb_debug()` is enabled, additional debugging details will be reported to
 #' the console, primarily focused on the data being uploaded.
@@ -64,7 +90,7 @@
 #' @import nanoparquet
 #' @importFrom rlang !!!
 #' @export
-vb_upload <- function(resource, ..., dry_run = FALSE) {
+vb_upload <- function(resource, ..., query_params = NULL, dry_run = FALSE) {
   # Capture the named data frames
   dfs <- list(...)
 
@@ -121,6 +147,17 @@ vb_upload <- function(resource, ..., dry_run = FALSE) {
     req_url_query(dry_run = dry_run) |>
     req_body_multipart(!!!form_data)
 
+  if (!is.null(query_params)) {
+    if (!is.list(query_params) ||
+        is.data.frame(query_params) ||
+        is.null(names(query_params)) ||
+        any(names(query_params) == "")) {
+      stop("`query_params` must be a named list, or NULL.")
+    }
+    request <- request |>
+      req_url_query(!!!query_params)
+  }
+
   response <- send(request)
   handle_vb_upload_response(response)
 }
@@ -143,8 +180,6 @@ handle_vb_upload_response <- function(response) {
   } else {
     message("Upload complete")
   }
-  resp |>
-    purrr::pluck("dry_run_data", "resources")
 
   counts <- resp$counts
   resources <- resp$resources
@@ -159,7 +194,9 @@ handle_vb_upload_response <- function(response) {
   # and last 2 rows for those with 5+ rows
   resources_peek <- lapply(resources,
     function(df) {
-      if (nrow(df) <= 4) {
+      if (length(df) == 0) {
+        data.frame()
+      } else if (nrow(df) <= 4) {
         df
       } else {
         rbind(head(df, 2),
@@ -192,5 +229,47 @@ vb_upload_plot_observations <- function(plot_observations,
             stem_data = stem_data,
             taxon_interpretations = taxon_interpretations,
             contributors = contributors,
+            dry_run = dry_run)
+}
+
+#' @rdname vb_upload
+#' @export
+vb_upload_plant_concepts <- function(plant_concepts,
+    plant_names = NULL, plant_correlations = NULL, parties = NULL,
+    references = NULL, what_to_deactivate = NULL, dry_run = FALSE) {
+
+  if (!is.null(what_to_deactivate)) {
+    query_params = list("deactivation" = what_to_deactivate)
+  } else {
+    query_params = NULL
+  }
+  vb_upload("plant-concepts",
+            plant_concepts = plant_concepts,
+            plant_names = plant_names,
+            plant_correlations = plant_correlations,
+            parties = parties,
+            references = references,
+            query_params = query_params,
+            dry_run = dry_run)
+}
+
+#' @rdname vb_upload
+#' @export
+vb_upload_community_concepts <- function(community_concepts,
+    community_names = NULL, community_correlations = NULL, parties = NULL,
+    references = NULL, what_to_deactivate = NULL, dry_run = FALSE) {
+
+  if (!is.null(what_to_deactivate)) {
+    query_params = list("deactivation" = what_to_deactivate)
+  } else {
+    query_params = NULL
+  }
+  vb_upload("community-concepts",
+            community_concepts = community_concepts,
+            community_names = community_names,
+            community_correlations = community_correlations,
+            parties = parties,
+            references = references,
+            query_params = query_params,
             dry_run = dry_run)
 }

@@ -3,9 +3,11 @@
 \name{vb_upload}
 \alias{vb_upload}
 \alias{vb_upload_plot_observations}
+\alias{vb_upload_plant_concepts}
+\alias{vb_upload_community_concepts}
 \title{Upload data to VegBank}
 \usage{
-vb_upload(resource, ..., dry_run = FALSE)
+vb_upload(resource, ..., query_params = NULL, dry_run = FALSE)
 
 vb_upload_plot_observations(
   plot_observations,
@@ -22,6 +24,26 @@ vb_upload_plot_observations(
   contributors = NULL,
   dry_run = FALSE
 )
+
+vb_upload_plant_concepts(
+  plant_concepts,
+  plant_names = NULL,
+  plant_correlations = NULL,
+  parties = NULL,
+  references = NULL,
+  what_to_deactivate = NULL,
+  dry_run = FALSE
+)
+
+vb_upload_community_concepts(
+  community_concepts,
+  community_names = NULL,
+  community_correlations = NULL,
+  parties = NULL,
+  references = NULL,
+  what_to_deactivate = NULL,
+  dry_run = FALSE
+)
 }
 \arguments{
 \item{resource}{\emph{Available only for \code{vb_upload()}.} Character string
@@ -31,6 +53,10 @@ specifying the VegBank resource type to upload (e.g., "plot-observations",
 \item{...}{Named data frames to upload. Each data frame should correspond to
 a table expected by the VegBank API for the specified resource. All
 arguments must be named, and at least one data frame must be provided.}
+
+\item{query_params}{A named list of parameter names and values to pass to the
+API as query parameters. For example, \code{list(foo="bar")} will be treated as
+\code{?foo=bar} in the request URL.}
 
 \item{dry_run}{Logical indicating whether to perform a dry run. If \code{TRUE},
 the API will validate the data without committing changes to the database.
@@ -67,6 +93,32 @@ plants observed on a plot}
 
 \item{contributors}{A data frame associating parties with their contributions
 to plot observations, projects, and/or community classifications}
+
+\item{plant_concepts}{A data frame containing plant concepts as plant names
+associated with references, along with with status details and taxonomic
+parents}
+
+\item{plant_names}{A data frame containing plant name usages associated with
+specific classification systems for new plant concepts}
+
+\item{plant_correlations}{A data frame defining correlations between plant
+concepts}
+
+\item{what_to_deactivate}{\emph{Available only for \code{vb_upload_plant_concepts()}
+and \code{vb_upload_community_concepts()}.} Character string specifying what
+existing concepts to deactivate in VegBank. Supported values are "none" and
+"by_party", along with "by_party_below_order" for plant uploads only.
+VegBank default is \code{none}.}
+
+\item{community_concepts}{A data frame containing community concepts as
+community names associated with references, along with with status details
+and taxonomic parents}
+
+\item{community_names}{A data frame containing community name usages
+associated with specific classification systems for new community concepts}
+
+\item{community_correlations}{A data frame defining correlations between
+community concepts}
 }
 \value{
 The processed response object from the VegBank API documenting what
@@ -90,6 +142,10 @@ soil and disturbance observations, plant taxon observations and importance
 assessments (potentially including stem-level details) within any defined
 strata, and both individual plant taxon and overall vegetation community
 interpretation.
+\item \code{vb_upload_plant_concepts()} - Plant concepts linked to plant names
+through usages, with some status designation
+\item \code{vb_upload_community_concepts()} - Community concepts linked to community
+names through usages, with some status designation
 }
 
 If \code{vb_debug()} is enabled, additional debugging details will be reported to

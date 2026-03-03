@@ -27,6 +27,22 @@ with_mock_api({
           "2 inserted            2       ob.2",
           ""))
 
+    # Test that query_params argument works
+    endpoint <- "https://api.vegbank.org/some-endpoint"
+    expect_POST(
+      vb_upload("some-endpoint",
+                some_dataset = data.frame(a=1),
+                query_params = list(some_param = "some_value")),
+      paste0(endpoint, "?dry_run=FALSE&some_param=some_value")
+    )
+    # Test error with bad query_params argument
+    expect_error(
+      vb_upload("some-endpoint",
+                dat = data.frame(a=1),
+                query_params = TRUE),
+      "`query_params` must be a named list, or NULL."
+    )
+
     # Test messages without debugging enabled
     printed <- capture.output({
       msgs <- capture_messages(
@@ -64,6 +80,26 @@ with_mock_api({
           "5   inserted            5       ob.5",
           ""))
 
+    # Test JSON response with zero returned records
+    printed <- capture.output({
+      response <- suppressMessages(
+        vb_upload("some-endpoint", data = data.frame(a=0))
+      )
+    })
+    response_list <- response |> resp_body_json()
+    expect_type(response_list, "list")
+    expect_named(
+      response_list,
+      c("counts", "resources"),
+      ignore.order = TRUE
+    )
+    expect_identical(response_list$counts$ob$inserted, 0L)
+    expect_identical(response_list$resources$ob, list())
+    expect_equal(printed,
+        c("$ob",
+          "data frame with 0 columns and 0 rows",
+          ""))
+
     # Function parameter error conditions
     expect_error(
       vb_upload("some-endpoint", dry_run=TRUE),
@@ -97,6 +133,40 @@ with_mock_api({
       vb_upload_plot_observations(
         plot_observations = data.frame(a=1)),
       paste0(endpoint)
+    )
+
+    endpoint <- "https://api.vegbank.org/plant-concepts"
+    expect_error(
+      vb_upload_plant_concepts(),
+      "argument \"plant_concepts\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_plant_concepts(
+        plant_concepts = data.frame(a=1)),
+      paste0(endpoint)
+    )
+    expect_POST(
+      vb_upload_plant_concepts(
+        plant_concepts = data.frame(a=1),
+        what_to_deactivate = "none"),
+      paste0(endpoint, "?dry_run=FALSE&deactivation=none")
+    )
+
+    endpoint <- "https://api.vegbank.org/community-concepts"
+    expect_error(
+      vb_upload_community_concepts(),
+      "argument \"community_concepts\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_community_concepts(
+        community_concepts = data.frame(a=1)),
+      paste0(endpoint)
+    )
+    expect_POST(
+      vb_upload_community_concepts(
+        community_concepts = data.frame(a=1),
+        what_to_deactivate = "none"),
+      paste0(endpoint, "?dry_run=FALSE&deactivation=none")
     )
 
   })
