@@ -116,6 +116,53 @@ sequoia_plots <- sequoia_communities |>
   vb_get_plot_observations()
 ```
 
+## Authentication
+
+Vegbank API `write` endpoints require a Bearer token. Set it once per session and all subsequent API calls include it automatically.
+
+**Step 1 — Get your token**
+
+Visit the VegBank [login page](https://api.vegbank.org/login) and authenticate with your ORCID credentials. You will receive a JSON response — copy the `access_token` value:
+
+   Response example:
+   ```json
+   {
+     "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI...",
+   }
+   ```
+
+For more details see the [API authorization docs](https://github.com/NCEAS/vegbank2/blob/develop/helm/docs/api-authorization.md).
+
+**Step 2 — Set the token in R**
+
+```r
+vb_set_token("eyJhbGciOiJSUzI1NiIsInR5cCI...")
+```
+
+**Step 3 — Upload data**
+
+```r
+# dry_run = TRUE validates the payload without committing to the database
+vb_upload_plant_concepts(plant_concepts =
+  data.frame(
+    user_pc_code = "PC_1",
+    name = "Test concept",
+    vb_rf_code = "rf.33",
+    vb_status_py_code = "py.511",
+    plant_concept_status = "test status",
+    start_date = '2026-03-01'
+  ), dry_run=TRUE)
+```
+
+**Clear the token**
+
+```r
+vb_set_token(NULL)
+```
+
+A `401 Unauthorized` response means the token is missing or expired — repeat Steps 1–2 to reauthenticate.
+
+
 ## License
 ```
 Copyright [2025] [Regents of the University of California]
