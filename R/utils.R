@@ -122,6 +122,14 @@ vb_set_token <- function(token) {
   if (is.null(token)) message("VegBank token cleared") else message("VegBank token set")
 }
 
+#' Retrieve the currently stored Bearer token
+#'
+#' @returns The token string, or NULL if none is set
+#' @noRd
+vb_token <- function() {
+  getOption("vegbank.token", default = NULL)
+}
+
 #' Send a request
 #'
 #' Light wrapper of httr::req_perform() that performs the request with
@@ -147,6 +155,11 @@ send <- function(request) {
     )
   }
   request <- request |> req_error(body = error_body)
+
+  token <- vb_token()
+  if (!is.null(token)) {
+    request <- request |> req_headers(Authorization = paste("Bearer", token))
+  }
 
   verbosity <- vb_verbosity()
   if (verbosity == 0) {
