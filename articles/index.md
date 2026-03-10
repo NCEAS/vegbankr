@@ -2,5 +2,5 @@
 
 ### All vignettes
 
-- [Getting Started with
-  vegbankr](https://nceas.github.io/vegbankr/articles/vegbankr.md):
+- [Uploading data with
+  vegbankr](https://nceas.github.io/vegbankr/articles/upload.md):
