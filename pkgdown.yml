@@ -1,0 +1,9 @@
+pandoc: 3.1.11
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  vegbankr: vegbankr.html
+last_built: 2026-03-10T22:39Z
+urls:
+  reference: https://nceas.github.io/vegbankr/reference
+  article: https://nceas.github.io/vegbankr/articles

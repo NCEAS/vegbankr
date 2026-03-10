@@ -1,0 +1,23 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://nceas.github.io/vegbankr/404.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/CONTRIBUTING.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/LICENSE-text.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/articles/index.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/articles/vegbankr.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/authors.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/index.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/canonicalize_names.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/get_page_details.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/index.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_count.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_debug.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_get.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_get_base_url.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_get_by_id.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_overview.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_resolve.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_set_base_url.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_undebug.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_upload.html</loc></url>
+</urlset>
+
