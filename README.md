@@ -1,7 +1,16 @@
 ## vegbankr: An R client for the VegBank API
+
+<div align="center">
+<br />
+<a href='https://rstudio.github.io/vegbankr/'><img src="man/figures/logo_vegbank_high_res.svg" alt="vegbank" width="200px"/></a>
+
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/NCEAS/vegbankr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NCEAS/vegbankr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
+<hr style="color:transparent" />
+<br />
+</div>
+
 
 - **Authors**: Jim Regetz, Matthew B. Jones
 - **License**: [Apache 2](https://opensource.org/license/apache-2-0)
