@@ -20,4 +20,8 @@ with other taxa recorded in plot records. As a VegBank API client, the
 records and other supporting information from the VegBank database, and will
 soon support validating and uploading new data to the VegBank database as well.
 
-To use `vegbankr` 
+To use `vegbankr` to upload data, there are 3 key steps:
+
+1. Model and transform your data to the vegbank loader table format
+2. Validate your data
+3. Upload your data using `vb_upload_plot_observations(...)`
