@@ -1,0 +1,11 @@
+---
+title: "Getting Started with vegbankr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with vegbankr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction to `vegbankr`
+
