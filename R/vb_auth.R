@@ -204,7 +204,6 @@ vb_refresh_token_is_valid <- function() {
 #' vb_refresh_tokens()
 #' }
 #' @seealso [vb_set_token()], [vb_unset_token()]
-#' @import httr2
 #' @export
 vb_refresh_tokens <- function() {
   if (!vb_refresh_token_is_valid()) {
@@ -231,7 +230,7 @@ vb_refresh_tokens <- function() {
 #' on malformed or unrecognised input.
 #'
 #' @param tokens Named list or JSON string
-#' @return Named list with `access_token` and/or `refresh_token`
+#' @returns Named list with `access_token` and/or `refresh_token`
 #' @noRd
 parse_tokens_dict <- function(tokens) {
   if (is.character(tokens) && length(tokens) == 1) {

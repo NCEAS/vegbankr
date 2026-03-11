@@ -118,28 +118,52 @@ sequoia_plots <- sequoia_communities |>
 
 ## Authentication
 
-Vegbank API `write` endpoints require a Bearer token. Set it once per session and all subsequent API calls include it automatically.
+VegBank API `write` endpoints require a Bearer token. Set it once per
+session and all subsequent API calls include it automatically.
 
-**Step 1 — Get your token**
+### Step 1 — Obtain your tokens
 
-Visit the VegBank [login page](https://api.vegbank.org/login) and authenticate with your ORCID credentials. You will receive a JSON response — copy the `access_token` value:
+Visit the VegBank [login page](https://api.vegbank.org/login) and
+authenticate with your ORCID credentials. You will receive a JSON
+response containing an `access_token` and a `refresh_token`:
 
-   Response example:
-   ```json
-   {
-     "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI...",
-   }
-   ```
-
-For more details see the [API authorization docs](https://github.com/NCEAS/vegbank2/blob/develop/helm/docs/api-authorization.md).
-
-**Step 2 — Set the token in R**
-
-```r
-vb_set_token("eyJhbGciOiJSUzI1NiIsInR5cCI...")
+```json
+{
+  "token": {
+    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI...",
+    "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI..."
+  }
+}
 ```
 
-**Step 3 — Upload data**
+For more details see the [API authorization
+docs](https://github.com/NCEAS/vegbank2/blob/develop/helm/docs/api-authorization.md).
+
+### Step 2 — Set the tokens in R
+
+You can provide individual token strings:
+
+```r
+vb_set_token(
+  access_token  = "eyJhbGciOiJSUzI1NiIsInR5cCI...",
+  refresh_token = "eyJhbGciOiJSUzI1NiIsInR5cCI..."
+)
+```
+
+Or pass the full JSON response or a named list directly:
+
+```r
+# Named list
+vb_set_token(tokens = list(
+  access_token  = "eyJ...",
+  refresh_token = "eyJ..."
+))
+
+# JSON string (e.g. copied from /authorize response)
+vb_set_token(tokens = '{"access_token": "eyJ...", "refresh_token": "eyJ..."}')
+```
+
+### Step 3 — Upload data
 
 ```r
 # dry_run = TRUE validates the payload without committing to the database
@@ -150,17 +174,38 @@ vb_upload_plant_concepts(plant_concepts =
     vb_rf_code = "rf.33",
     vb_status_py_code = "py.511",
     plant_concept_status = "test status",
-    start_date = '2026-03-01'
-  ), dry_run=TRUE)
+    start_date = "2026-03-01"
+  ), dry_run = TRUE)
 ```
 
-**Clear the token**
+### Token lifecycle
+
+**Automatic refresh.** When an API request is made and the access token
+has expired, `vegbankr` will automatically use the stored refresh token
+to obtain a new token pair — no manual intervention required. If the
+refresh token has also expired, you will be prompted to re-authenticate.
+
+**Check validity.** You can inspect token status at any time:
 
 ```r
-vb_set_token(NULL)
+vb_access_token_is_valid()
+vb_refresh_token_is_valid()
 ```
 
-A `401 Unauthorized` response means the token is missing or expired — repeat Steps 1–2 to reauthenticate.
+**Manual refresh.** To explicitly refresh the tokens before they expire:
+
+```r
+vb_refresh_tokens()
+```
+
+**Clear tokens.** To remove all stored tokens from the session:
+
+```r
+vb_unset_token()
+```
+
+A `401 Unauthorized` response means the token is missing or expired —
+repeat Steps 1–2 to re-authenticate.
 
 
 ## License
