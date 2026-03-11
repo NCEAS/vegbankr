@@ -192,6 +192,36 @@ vb_refresh_token_is_valid <- function() {
 }
 
 
+#' Refresh stored Bearer tokens
+#'
+#' Calls the VegBank `/refresh` endpoint with the currently stored refresh
+#' token to obtain a new access token and refresh token, then stores both
+#' via [vb_set_token()].
+#'
+#' @returns NULL
+#' @examples
+#' \dontrun{
+#' vb_refresh_tokens()
+#' }
+#' @seealso [vb_set_token()], [vb_unset_token()]
+#' @import httr2
+#' @export
+vb_refresh_tokens <- function() {
+  if (!vb_refresh_token_is_valid()) {
+    stop("no valid refresh token stored; use vb_set_token() to set one first")
+  }
+
+  req <- request(vb_get_base_url()) |>
+    req_url_path_append("refresh") |>
+    req_headers(Accept = "application/json") |>
+    req_body_json(list(refresh_token = vb_refresh_token()))
+
+  # SKIP_AUTH skips adding the Authorization header
+
+  vb_set_token(tokens = parse_tokens_dict(resp_body_json(response)))
+}
+
+
 #' Parse a tokens dict into a normalized named list
 #'
 #' Accepts a named list or a JSON string with `access_token` and/or

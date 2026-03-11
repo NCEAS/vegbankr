@@ -115,11 +115,13 @@ vb_verbosity <- function() {
 #' messaging, and an R error will be raised.
 #'
 #' @param request An httr2 request
+#' @param skip_auth Logical. If `TRUE`, skip Bearer-token attachment.
+#'   Used by [vb_refresh_tokens()].
 #' @return An httr2 response
 #'
 #' @import httr2
 #' @noRd
-send <- function(request) {
+send <- function(request, skip_auth = FALSE) {
   error_body <- function(resp) {
     tryCatch(resp_body_json(resp)$error$message,
       error = function(msg) {
@@ -129,9 +131,11 @@ send <- function(request) {
   }
   request <- request |> req_error(body = error_body)
 
-  token <- vb_token()
-  if (!is.null(token)) {
-    request <- request |> req_headers(Authorization = paste("Bearer", token))
+  if (!skip_auth) {
+    token <- vb_token()
+    if (!is.null(token)) {
+      request <- request |> req_headers(Authorization = paste("Bearer", token))
+    }
   }
 
   verbosity <- vb_verbosity()
