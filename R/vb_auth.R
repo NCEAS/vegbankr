@@ -76,6 +76,44 @@ vb_token <- function() {
 }
 
 
+#' Extract a claim from a JWT payload
+#'
+#' Decodes the payload segment of a JWT and returns the value of the specified claim. 
+#' Returns NULL if the token is NULL, malformed, or the claim is absent.
+#'
+#' A JWT is a dot-separated triple: `header.payload.signature`. This
+#' function base64url-decodes the payload, parses it as JSON,
+#' and returns the value of the requested claim. No signature verification is performed.
+#'
+#' @param token JWT string
+#' @param claim (character) Name of the claim to extract (e.g. "exp",  "scope", etc.)
+#' @returns The claim value, or NULL
+#' @noRd
+jwt_claim <- function(token, claim) {
+  if (is.null(token)) return(NULL)
+
+  # A JWT has three dot-separated parts: header.payload.signature
+  parts <- strsplit(token, ".", fixed = TRUE)[[1]]
+  if (length(parts) < 2) return(NULL)
+
+  # Base64url → standard Base64: replace URL-safe chars and pad to multiple of 4
+  payload_b64 <- parts[[2]]
+  padding <- (4 - nchar(payload_b64) %% 4) %% 4
+  payload_b64 <- paste0(payload_b64, strrep("=", padding))
+  payload_b64 <- chartr("-_", "+/", payload_b64)
+
+  # Decode payload to JSON string, then extract the requested claim
+  payload_json <- tryCatch(
+    rawToChar(base64enc::base64decode(payload_b64)),
+    error = function(e) NULL
+  )
+
+  if (is.null(payload_json)) return(NULL)
+  tryCatch(jsonlite::fromJSON(payload_json)[[claim]], error = function(e) NULL)
+}
+
+
+
 #' Parse a tokens dict into a normalized named list
 #'
 #' Accepts a named list or a JSON string with `access_token` and/or
