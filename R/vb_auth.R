@@ -50,6 +50,7 @@ vb_set_token <- function(access_token = NULL, refresh_token = NULL, tokens = NUL
   message("VegBank token(s) updated: ", paste(set_parts, collapse = " and "))
 }
 
+
 #' Clear stored Bearer tokens
 #'
 #' Removes the OAuth2 access token and refresh token previously stored by
@@ -67,12 +68,22 @@ vb_unset_token <- function() {
   message("VegBank token(s) cleared")
 }
 
+
 #' Retrieve the currently stored Bearer token
 #'
 #' @returns The token string, or NULL if none is set
 #' @noRd
 vb_token <- function() {
   getOption("vegbank.token", default = NULL)
+}
+
+
+#' Retrieve the currently stored refresh token
+#'
+#' @returns The refresh token string, or NULL if none is set
+#' @noRd
+vb_refresh_token <- function() {
+  getOption("vegbank.refresh_token", default = NULL)
 }
 
 
@@ -113,6 +124,73 @@ jwt_claim <- function(token, claim) {
 }
 
 
+#' Extract the expiry time from a JWT string
+#'
+#' Convenience wrapper around [jwt_claim()] that extracts the `exp` claim
+#' and converts it to a POSIXct timestamp.
+#'
+#' @param token JWT string
+#' @returns POSIXct expiry time, or NULL
+#' @noRd
+jwt_exp <- function(token) {
+  exp <- jwt_claim(token, "exp")
+  if (is.null(exp) || !is.numeric(exp)) return(NULL)
+  as.POSIXct(exp, origin = "1970-01-01", tz = "UTC")
+}
+
+
+#' Check whether a token is present and not expired
+#'
+#' Decodes the `exp` claim from a JWT token string and returns `TRUE` if
+#' the token exists and has a valid expiry.
+#'
+#' @param token JWT string, or NULL
+#' @returns Logical `TRUE` if the token is present and valid,
+#'   `FALSE` otherwise.
+#' @noRd
+token_is_valid <- function(token) {
+  exp <- jwt_exp(token)
+
+  # Keep a 30 second buffer for request round trip
+  !is.null(exp) && (Sys.time() + 30) < exp
+}
+
+
+#' Check whether the stored access token is present and not expired
+#'
+#' Decodes the `exp` claim from the stored JWT access token and returns
+#' `TRUE` if the token exists and has a valid expiry.
+#'
+#' @returns Logical `TRUE` if the access token is present and valid,
+#'   `FALSE` otherwise.
+#' @examples
+#' \dontrun{
+#' vb_access_token_is_valid()
+#' }
+#' @seealso [vb_set_token()], [vb_refresh_tokens()]
+#' @export
+vb_access_token_is_valid <- function() {
+  token_is_valid(vb_token())
+}
+
+
+#' Check whether the stored refresh token is present and not expired
+#'
+#' Decodes the `exp` claim from the stored JWT refresh token and returns
+#' `TRUE` if the token exists and has a valid expiry.
+#'
+#' @returns Logical `TRUE` if the refresh token is present and valid,
+#'   `FALSE` otherwise.
+#' @examples
+#' \dontrun{
+#' vb_refresh_token_is_valid()
+#' }
+#' @seealso [vb_set_token()], [vb_refresh_tokens()]
+#' @export
+vb_refresh_token_is_valid <- function() {
+  token_is_valid(vb_refresh_token())
+}
+
 
 #' Parse a tokens dict into a normalized named list
 #'
@@ -133,7 +211,7 @@ parse_tokens_dict <- function(tokens) {
   if (!is.list(tokens)) {
     stop("'tokens' must be a named list or JSON string")
   }
-  # Unwrap nested 'token' envelope from /authorize and /refresh responses
+  # Parse 'token' from /authorize and /refresh responses
   if ("token" %in% names(tokens) && is.list(tokens[["token"]])) {
     tokens <- tokens[["token"]]
   }
