@@ -1,21 +1,52 @@
-#' Set a Bearer token for authenticated API requests
+#' Set Bearer token(s) for authenticated API requests
 #'
-#' Stores an OAuth2 access token in a global option so it is automatically
-#' included in subsequent API requests as an `Authorization: Bearer` header.
-#' Call `vb_set_token(NULL)` to clear the token.
+#' Stores an OAuth2 access token and/or refresh token in global options for use in subsequent authenticated API requests. Use [vb_unset_token()] to clear previously stored tokens.
 #'
-#' @param token (character) A Bearer token string, or NULL to clear
+#' Two input modes are supported — use one or the other, not both:
+#' * **Individual strings:** pass `access_token`, `refresh_token`, or both.
+#' * **Token dict:** pass `tokens` as a named list or JSON string with `access_token` and/or `refresh_token` keys.
+#'
+#' @param access_token (character) Access token string.
+#' @param refresh_token (character) Refresh token string.
+#' @param tokens (list | character) Named list or JSON string containing
+#'   `access_token` and/or `refresh_token`. Cannot be combined with
+#'   `access_token` or `refresh_token`.
 #' @returns NULL
 #' @examples
-#' vb_set_token("eyJhbGciOiJIUzI1NiJ9...")
-#' vb_set_token(NULL)  # clear
+#' vb_set_token(access_token = "eyJhbGciOiJIUzI1NiJ9...")
+#' vb_set_token(access_token = "eyJ...", refresh_token = "eyJ...")
+#' vb_set_token(tokens = list(access_token = "eyJ...", refresh_token = "eyJ..."))
+#' @seealso [vb_unset_token()], [vb_refresh_tokens()]
 #' @export
-vb_set_token <- function(token) {
-  if (!is.null(token) && (!is.character(token) || nchar(token) == 0)) {
-    stop("token must be a non-empty string, or NULL to clear")
+vb_set_token <- function(access_token = NULL, refresh_token = NULL, tokens = NULL) {
+  # Only accept one input mode: either individual tokens or a tokens dict, not both
+  if (!is.null(tokens) && (!is.null(access_token) || !is.null(refresh_token))) {
+    stop("provide either 'tokens' or 'access_token'/'refresh_token', not both")
   }
-  options(vegbank.token = token)
-  if (is.null(token)) message("VegBank token cleared") else message("VegBank token set")
+
+  # If token supplied as a dict, extract individual tokens
+  if (!is.null(tokens)) {
+    tokens        <- parse_tokens_dict(tokens)
+    access_token  <- tokens[["access_token"]]
+    refresh_token <- tokens[["refresh_token"]]
+  }
+
+  assert_token_string(access_token,  "access_token")
+  assert_token_string(refresh_token, "refresh_token")
+
+  if (is.null(access_token) && is.null(refresh_token)) {
+    stop("at least one of 'access_token' or 'refresh_token' must be provided")
+  }
+
+  # Update global options with provided tokens
+  if (!is.null(access_token))  options(vegbank.token = access_token)
+  if (!is.null(refresh_token)) options(vegbank.refresh_token = refresh_token)
+
+  set_parts <- c(
+    if (!is.null(access_token))  "access token",
+    if (!is.null(refresh_token)) "refresh token"
+  )
+  message("VegBank token(s) updated: ", paste(set_parts, collapse = " and "))
 }
 
 #' Retrieve the currently stored Bearer token
