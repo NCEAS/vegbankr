@@ -260,7 +260,7 @@ parse_tokens_dict <- function(tokens) {
 #' @noRd
 assert_token_string <- function(value, name) {
   if (!is.null(value) &&
-        (!is.character(value) || length(value) != 1 || nchar(value) == 0)) {
+        (!is.character(value) || length(value) != 1 || is.na(value) || nchar(value) == 0)) {
     stop(name, " must be a non-empty string")
   }
 }
