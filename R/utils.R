@@ -115,8 +115,7 @@ vb_verbosity <- function() {
 #' messaging, and an R error will be raised.
 #'
 #' @param request An httr2 request
-#' @param skip_auth Logical. If `TRUE`, skip Bearer-token attachment.
-#'   Used by [vb_refresh_tokens()].
+#' @param skip_auth Logical. If `TRUE`, skip auto-refresh and Bearer-token attachment.
 #' @return An httr2 response
 #'
 #' @import httr2
@@ -132,8 +131,20 @@ send <- function(request, skip_auth = FALSE) {
   request <- request |> req_error(body = error_body)
 
   if (!skip_auth) {
+    # If the access token is expired but the refresh token is
+    # still valid, update tokens before retrying the request.
+    if (!is.null(vb_token()) && !vb_access_token_is_valid()) {
+      if (vb_refresh_token_is_valid()) {
+        message("Access token expired; refreshing tokens...")
+        vb_refresh_tokens()
+      } else {
+        stop("Access token is expired and no valid refresh token is available. ",
+             "Use vb_set_token() to set a new token.")
+      }
+    }
+
     token <- vb_token()
-    if (!is.null(token)) {
+    if (!is.null(token) && vb_access_token_is_valid()) {
       request <- request |> req_headers(Authorization = paste("Bearer", token))
     }
   }

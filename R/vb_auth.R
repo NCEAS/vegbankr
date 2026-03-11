@@ -216,7 +216,9 @@ vb_refresh_tokens <- function() {
     req_headers(Accept = "application/json") |>
     req_body_json(list(refresh_token = vb_refresh_token()))
 
-  # SKIP_AUTH skips adding the Authorization header
+  # skip_auth: Skips auth token and prevents circular recursion
+  # since send()'s auto-refresh calls vb_refresh_tokens().
+  response <- send(req, skip_auth = TRUE)
 
   vb_set_token(tokens = parse_tokens_dict(resp_body_json(response)))
 }
