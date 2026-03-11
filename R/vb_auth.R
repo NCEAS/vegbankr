@@ -16,6 +16,7 @@
 #' vb_set_token(access_token = "eyJhbGciOiJIUzI1NiJ9...")
 #' vb_set_token(access_token = "eyJ...", refresh_token = "eyJ...")
 #' vb_set_token(tokens = list(access_token = "eyJ...", refresh_token = "eyJ..."))
+#' vb_set_token(tokens = '{"access_token": "eyJ...", "refresh_token": "eyJ..."}')
 #' @seealso [vb_unset_token()], [vb_refresh_tokens()]
 #' @export
 vb_set_token <- function(access_token = NULL, refresh_token = NULL, tokens = NULL) {
@@ -47,6 +48,23 @@ vb_set_token <- function(access_token = NULL, refresh_token = NULL, tokens = NUL
     if (!is.null(refresh_token)) "refresh token"
   )
   message("VegBank token(s) updated: ", paste(set_parts, collapse = " and "))
+}
+
+#' Clear stored Bearer tokens
+#'
+#' Removes the OAuth2 access token and refresh token previously stored by
+#' [vb_set_token()]. After calling this function, subsequent API requests
+#' will be sent without an `Authorization: Bearer` header.
+#'
+#' @returns NULL
+#' @examples
+#' vb_unset_token()
+#' @seealso [vb_set_token()]
+#' @export
+vb_unset_token <- function() {
+  options(vegbank.token         = NULL)
+  options(vegbank.refresh_token = NULL)
+  message("VegBank token(s) cleared")
 }
 
 #' Retrieve the currently stored Bearer token
