@@ -25,3 +25,45 @@ vb_set_token <- function(token) {
 vb_token <- function() {
   getOption("vegbank.token", default = NULL)
 }
+
+
+#' Parse a tokens dict into a normalized named list
+#'
+#' Accepts a named list or a JSON string with `access_token` and/or
+#' `refresh_token` keys and returns a normalized named list. Errors
+#' on malformed or unrecognised input.
+#'
+#' @param tokens Named list or JSON string
+#' @return Named list with `access_token` and/or `refresh_token`
+#' @noRd
+parse_tokens_dict <- function(tokens) {
+  if (is.character(tokens) && length(tokens) == 1) {
+    tokens <- tryCatch(
+      jsonlite::fromJSON(tokens),
+      error = function(e) stop("'tokens' could not be parsed as JSON: ", e$message)
+    )
+  }
+  if (!is.list(tokens)) {
+    stop("'tokens' must be a named list or JSON string")
+  }
+  # Unwrap nested 'token' envelope from /authorize and /refresh responses
+  if ("token" %in% names(tokens) && is.list(tokens[["token"]])) {
+    tokens <- tokens[["token"]]
+  }
+  if (!any(c("access_token", "refresh_token") %in% names(tokens))) {
+    stop("'tokens' must contain at least one of 'access_token' or 'refresh_token'")
+  }
+  tokens
+}
+
+#' Validate that a token value is a non-empty string (or NULL)
+#'
+#' @param value The token value to check
+#' @param name The parameter name, used in the error message
+#' @noRd
+assert_token_string <- function(value, name) {
+  if (!is.null(value) &&
+        (!is.character(value) || length(value) != 1 || nchar(value) == 0)) {
+    stop(name, " must be a non-empty string")
+  }
+}
