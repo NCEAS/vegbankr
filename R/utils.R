@@ -138,8 +138,9 @@ send <- function(request, skip_auth = FALSE) {
         message("Access token expired; refreshing tokens...")
         vb_refresh_tokens()
       } else {
-        stop("Access token is expired and no valid refresh token is available. ",
-             "Use vb_set_token() to set a new token.")
+        message("Access token expired and no valid refresh token available.")
+        stop("Re-authenticate and call vb_set_token() to set a new token.",
+             call. = FALSE)
       }
     }
 
