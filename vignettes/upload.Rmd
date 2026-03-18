@@ -1,11 +1,18 @@
 ---
-title: "Uploading data with vegbankr"
+title: "Uploading plot data with vegbankr"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Uploading data with vegbankr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r}
+library(DT)
+
+docs <- read.csv("../inst/loader-table-fields.csv")
+```
+
 
 ## Introduction to `vegbankr`
 
@@ -25,3 +32,32 @@ To use `vegbankr` to upload data, there are 3 key steps:
 1. Model and transform your data to the vegbank loader table format
 2. Validate your data
 3. Upload your data using `vb_upload_plot_observations(...)`
+
+This vignette will walk through these 3 steps, with an emphasis on modeling and validating data.
+
+## Vegbank Loader Tables
+
+Loader tables are the data format that is used to upload data into VegBank In order to publish your data to vegbank, the first step is to model whatever format your data is in to the loader table format, and then transform the data into that format. Modeling your data means identifying how each piece of information in your original dataset (like species names, plot locations, survey dates) corresponds to specific fields in the VegBank loader table format. There are a total of 12 loader tables that can be used for plot observation data, though not all are required for data ingest. In this section, the loader tables and their fields will be described, in the order in which it is recommended to prepare them. 
+
+Each loader table you create is an R `data.frame` that is eventually passed to a vegbank upload function. In the documentation below, interactive tables display the allowed `field` (column names), whether the field is required, best practice, commonly used, or sometimes used, and a description of the field.
+
+### Projects
+
+This table stores information about a project established to collect vegetation plot data. The `user_pj_code` is the project code primary key, and is found as a foreign key in several other tables. An example project code might be `MOJA` with project name "Mojave Desert Vegetation Surveys."
+
+```{r, echo = FALSE}
+docs %>% 
+  filter(loader_table == "projects") %>% 
+  select(-loader_table) %>% 
+  datatable()
+```
+### Parties
+
+The contributors table is fairly code heavy, but is closely linked to both the projects table and the 
+
+```{r, echo = FALSE}
+docs %>% 
+  filter(loader_table == "parties") %>% 
+  select(-loader_table) %>% 
+  datatable()
+```
