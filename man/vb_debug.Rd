@@ -14,7 +14,7 @@ reported. Values between 1-3 control verbosity level passed to
 request time duration.}
 }
 \description{
-Set VegBank debug level used when \code{send}ing API requests. This
+Set VegBank debug level used to \code{send} API requests. This
 currently controls two things:
 \enumerate{
 \item Verbosity of API requests, specifically as handled by
