@@ -3,13 +3,21 @@ Title: Interface to the VegBank Vegetation Plot Database
 Version: 0.1.0
 Authors@R: c(
     person("Jim", "Regetz",
-           email = "regetz@nceas.ucsb.edu",
-           role = c("aut", "cre"),
-           comment=c(ORCID = "0009-0008-2666-6229")),
+        email = "regetz@nceas.ucsb.edu",
+        role = c("aut", "cre"),
+        comment=c(ORCID = "0009-0008-2666-6229")),
     person("Matthew B.", "Jones",
-           email = "jones@nceas.ucsb.edu",
-           role = c("aut"),
-           comment=c(ORCID = "0000-0003-0077-4738"))
+        email = "jones@nceas.ucsb.edu",
+        role = c("aut"),
+        comment=c(ORCID = "0000-0003-0077-4738")),
+    person("Rushiraj", "Nenuji",
+        email = "nenuji@nceas.ucsb.edu",
+        role = c("aut"),
+        comment=c(ORCID = "0000-0003-4678-5213")),
+    person("Jeanette", "Clark",
+        email = "jclark@nceas.ucsb.edu",
+        role = c("aut"),
+        comment=c(ORCID = "0000-0003-4703-1974"))
     )
 Description: Provides a programmatic interface to VegBank, the
     vegetation plot database of the Ecological Society of America's
@@ -24,7 +32,7 @@ Description: Provides a programmatic interface to VegBank, the
     VegBank database, and will soon support validating and uploading new
     data to the VegBank database as well.
 License: Apache License (>= 2) | file LICENSE
-URL: https://github.com/NCEAS/vegbankr
+URL: https://nceas.r-universe.dev/vegbankr
 BugReports: https://github.com/NCEAS/vegbankr/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -42,6 +50,9 @@ Imports:
     rlang
 Suggests:
     httptest2,
+    spelling,
     testthat (>= 3.0.0),
     withr
+Depends:
+    R (>= 4.1.0)
 Config/testthat/edition: 3

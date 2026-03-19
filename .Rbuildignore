@@ -1,2 +1,3 @@
 ^CONTRIBUTING\.md$
 ^\.github$
+^.*\.Rproj$
