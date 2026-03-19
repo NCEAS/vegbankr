@@ -35,7 +35,7 @@
 #' @param detail Character string specifying level of detail. All endpoints
 #'   support "full" detail. For those that support "minimal" detail, this is the
 #'   default for collection queries, otherwise the default is "full". Plot
-#'   observations additionally support detail="geo". In all cases, set to `NULL`
+#'   observations additionally support `detail="geo"`. In all cases, set to `NULL`
 #'   to use the API default.
 #' @param with_nested Logical indicating whether to include nested data
 #'   structures. All endpoints support `FALSE`. For those that support `TRUE`,
@@ -125,7 +125,7 @@
 #' provided with prefix matching a resource type that _differs_ from the target
 #' resource.  For example, `vb_get_plot_observations("pj.340")`, will return the
 #' collection of VegBank plot observation records corresponding to project
-#' "pj.340", if the project and corresponding plot observations exist.
+#' `pj.340`, if the project and corresponding plot observations exist.
 #'
 #' ### Full collection queries
 #'

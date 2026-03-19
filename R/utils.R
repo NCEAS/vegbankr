@@ -40,7 +40,7 @@ vb_get_base_url <- function() {
 
 #' Enable VegBank API debugging mode
 #'
-#' Set VegBank debug level used when `send`ing API requests. This
+#' Set VegBank debug level used to `send` API requests. This
 #' currently controls two things:
 #'  1. Verbosity of API requests, specifically as handled by
 #'     `httr::req_perform()`
@@ -102,6 +102,7 @@ vb_verbosity <- function() {
   }
 }
 
+
 #' Send a request
 #'
 #' Light wrapper of httr::req_perform() that performs the request with
@@ -114,11 +115,12 @@ vb_verbosity <- function() {
 #' messaging, and an R error will be raised.
 #'
 #' @param request An httr2 request
+#' @param skip_auth Logical. If `TRUE`, skip auto-refresh and Bearer-token attachment.
 #' @return An httr2 response
 #'
 #' @import httr2
 #' @noRd
-send <- function(request) {
+send <- function(request, skip_auth = FALSE) {
   error_body <- function(resp) {
     tryCatch(resp_body_json(resp)$error$message,
       error = function(msg) {
@@ -127,6 +129,26 @@ send <- function(request) {
     )
   }
   request <- request |> req_error(body = error_body)
+
+  if (!skip_auth) {
+    # If the access token is expired but the refresh token is
+    # still valid, update tokens before retrying the request.
+    if (!is.null(vb_get_access_token()) && (!vb_access_token_is_valid() || (Sys.time() + 30) < jwt_expiry_time(vb_get_access_token()))) {
+      if (vb_refresh_token_is_valid()) {
+        message("Access token expired; refreshing tokens...")
+        vb_refresh_tokens()
+      } else {
+        message("Access token expired and no valid refresh token available. Please re-authenticate at https://api.vegbank.org/login to get new tokens.")
+        stop("Re-authenticate and call vb_set_token() to set a new token.",
+             call. = FALSE)
+      }
+    }
+
+    token <- vb_get_access_token()
+    if (!is.null(token) && vb_access_token_is_valid()) {
+      request <- request |> req_headers(Authorization = paste("Bearer", token))
+    }
+  }
 
   verbosity <- vb_verbosity()
   if (verbosity == 0) {
