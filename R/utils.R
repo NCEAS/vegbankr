@@ -133,7 +133,7 @@ send <- function(request, skip_auth = FALSE) {
   if (!skip_auth) {
     # If the access token is expired but the refresh token is
     # still valid, update tokens before retrying the request.
-    if (!is.null(vb_token()) && !vb_access_token_is_valid()) {
+    if (!is.null(vb_get_access_token()) && !vb_access_token_is_valid()) {
       if (vb_refresh_token_is_valid()) {
         message("Access token expired; refreshing tokens...")
         vb_refresh_tokens()
@@ -144,7 +144,7 @@ send <- function(request, skip_auth = FALSE) {
       }
     }
 
-    token <- vb_token()
+    token <- vb_get_access_token()
     if (!is.null(token) && vb_access_token_is_valid()) {
       request <- request |> req_headers(Authorization = paste("Bearer", token))
     }

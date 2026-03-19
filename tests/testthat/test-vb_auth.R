@@ -13,10 +13,10 @@ make_valid_jwt <- function() {
 }
 
 test_that("vb_set_token stores tokens", {
-  withr::local_options(vegbank.token = NULL, vegbank.refresh_token = NULL)
+  withr::local_options(vegbank.access_token = NULL, vegbank.refresh_token = NULL)
 
   expect_message(vb_set_token(access_token = "eyJhbGciOi"), "access token")
-  expect_equal(getOption("vegbank.token"), "eyJhbGciOi")
+  expect_equal(getOption("vegbank.access_token"), "eyJhbGciOi")
 
   expect_message(vb_set_token(refresh_token = "eAJpc3MiOi"), "refresh token")
   expect_equal(getOption("vegbank.refresh_token"), "eAJpc3MiOi")
@@ -25,11 +25,11 @@ test_that("vb_set_token stores tokens", {
     vb_set_token(access_token = "eyJhbGciOi", refresh_token = "eAJpc3MiOi"),
     "access token and refresh token"
   )
-  expect_equal(getOption("vegbank.token"), "eyJhbGciOi")
+  expect_equal(getOption("vegbank.access_token"), "eyJhbGciOi")
   expect_equal(getOption("vegbank.refresh_token"), "eAJpc3MiOi")
 
   expect_message(vb_set_token(tokens = list(access_token = "eyJhdWQiOi", refresh_token = "eAJpc3MiOi")))
-  expect_equal(getOption("vegbank.token"), "eyJhdWQiOi")
+  expect_equal(getOption("vegbank.access_token"), "eyJhdWQiOi")
   expect_equal(getOption("vegbank.refresh_token"), "eAJpc3MiOi")
 })
 
@@ -44,20 +44,20 @@ test_that("vb_set_token rejects invalid inputs", {
 })
 
 test_that("vb_unset_token clears stored tokens", {
-  withr::local_options(vegbank.token = "eyJhbGciOi", vegbank.refresh_token = "eyJhbGciOi")
+  withr::local_options(vegbank.access_token = "eyJhbGciOi", vegbank.refresh_token = "eyJhbGciOi")
   expect_message(vb_unset_token(), "cleared")
-  expect_null(getOption("vegbank.token"))
+  expect_null(getOption("vegbank.access_token"))
   expect_null(getOption("vegbank.refresh_token"))
 })
 
 test_that("vb_access_token_is_valid checks stored access token", {
-  withr::local_options(vegbank.token = make_valid_jwt())
+  withr::local_options(vegbank.access_token = make_valid_jwt())
   expect_true(vb_access_token_is_valid())
 
-  withr::local_options(vegbank.token = make_expired_jwt())
+  withr::local_options(vegbank.access_token = make_expired_jwt())
   expect_false(vb_access_token_is_valid())
 
-  withr::local_options(vegbank.token = NULL)
+  withr::local_options(vegbank.access_token = NULL)
   expect_false(vb_access_token_is_valid())
 })
 

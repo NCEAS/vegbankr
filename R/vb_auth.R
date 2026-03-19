@@ -40,7 +40,7 @@ vb_set_token <- function(access_token = NULL, refresh_token = NULL, tokens = NUL
   }
 
   # Update global options with provided tokens
-  if (!is.null(access_token))  options(vegbank.token = access_token)
+  if (!is.null(access_token))  options(vegbank.access_token = access_token)
   if (!is.null(refresh_token)) options(vegbank.refresh_token = refresh_token)
 
   set_parts <- c(
@@ -63,7 +63,7 @@ vb_set_token <- function(access_token = NULL, refresh_token = NULL, tokens = NUL
 #' @seealso [vb_set_token()]
 #' @export
 vb_unset_token <- function() {
-  options(vegbank.token         = NULL)
+  options(vegbank.access_token  = NULL)
   options(vegbank.refresh_token = NULL)
   message("VegBank token(s) cleared")
 }
@@ -73,8 +73,8 @@ vb_unset_token <- function() {
 #'
 #' @returns The token string, or NULL if none is set
 #' @noRd
-vb_token <- function() {
-  getOption("vegbank.token", default = NULL)
+vb_get_access_token <- function() {
+  getOption("vegbank.access_token", default = NULL)
 }
 
 
@@ -82,7 +82,7 @@ vb_token <- function() {
 #'
 #' @returns The refresh token string, or NULL if none is set
 #' @noRd
-vb_refresh_token <- function() {
+vb_get_refresh_token <- function() {
   getOption("vegbank.refresh_token", default = NULL)
 }
 
@@ -170,7 +170,7 @@ token_is_valid <- function(token) {
 #' @seealso [vb_set_token()], [vb_refresh_tokens()]
 #' @export
 vb_access_token_is_valid <- function() {
-  token_is_valid(vb_token())
+  token_is_valid(vb_get_access_token())
 }
 
 
@@ -188,7 +188,7 @@ vb_access_token_is_valid <- function() {
 #' @seealso [vb_set_token()], [vb_refresh_tokens()]
 #' @export
 vb_refresh_token_is_valid <- function() {
-  token_is_valid(vb_refresh_token())
+  token_is_valid(vb_get_refresh_token())
 }
 
 
@@ -213,7 +213,7 @@ vb_refresh_tokens <- function() {
   req <- request(vb_get_base_url()) |>
     req_url_path_append("refresh") |>
     req_headers(Accept = "application/json") |>
-    req_body_json(list(refresh_token = vb_refresh_token()))
+    req_body_json(list(refresh_token = vb_get_refresh_token()))
 
   # skip_auth: Skips auth token and prevents circular recursion
   # since send()'s auto-refresh calls vb_refresh_tokens().
@@ -251,6 +251,7 @@ parse_tokens_dict <- function(tokens) {
   }
   tokens
 }
+
 
 #' Validate that a token value is a non-empty string (or NULL)
 #'
