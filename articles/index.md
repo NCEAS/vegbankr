@@ -2,5 +2,5 @@
 
 ### All vignettes
 
-- [Uploading data with
+- [Uploading plot data with
   vegbankr](https://nceas.github.io/vegbankr/articles/upload.md):

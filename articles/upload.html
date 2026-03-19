@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Uploading data with vegbankr • vegbankr</title>
+<title>Uploading plot data with vegbankr • vegbankr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Uploading data with vegbankr">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Uploading plot data with vegbankr">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -34,7 +34,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/upload.html">Uploading data with vegbankr</a></li>
+<li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
   </ul>
 </li>
       </ul>
@@ -52,11 +52,15 @@
 
 
 
-
-<div class="row">
+<link href="upload_files/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="upload_files/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="upload_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="upload_files/datatables-binding-0.34.0/datatables.js"></script><link href="upload_files/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="upload_files/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="upload_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="upload_files/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="upload_files/crosstalk-1.2.2/js/crosstalk.min.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Uploading data with vegbankr</h1>
+      <h1>Uploading plot data with vegbankr</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/NCEAS/vegbankr/blob/feature-75-documentation/vignettes/upload.Rmd" class="external-link"><code>vignettes/upload.Rmd</code></a></small>
@@ -65,6 +69,11 @@
 
     
     
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/DT" class="external-link">DT</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"../inst/loader-table-fields.csv"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="introduction-to-vegbankr">Introduction to <code>vegbankr</code><a class="anchor" aria-label="anchor" href="#introduction-to-vegbankr"></a>
 </h2>
@@ -79,9 +88,130 @@ with other taxa recorded in plot records. As a VegBank API client, the
 downloading vegetation plot records and other supporting information
 from the VegBank database, and will soon support validating and
 uploading new data to the VegBank database as well.</p>
-<p>To use <code>vegbankr</code></p>
+<p>To use <code>vegbankr</code> to upload data, there are 3 key
+steps:</p>
+<ol style="list-style-type: decimal">
+<li>Model and transform your data to the vegbank loader table
+format</li>
+<li>Validate your data</li>
+<li>Upload your data using
+<code>vb_upload_plot_observations(...)</code>
+</li>
+</ol>
+<p>This vignette will walk through these 3 steps, with an emphasis on
+modeling and validating data.</p>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="vegbank-loader-tables">Vegbank Loader Tables<a class="anchor" aria-label="anchor" href="#vegbank-loader-tables"></a>
+</h2>
+<p>Loader tables are the data format that is used to upload data into
+VegBank. In order to publish your data to VegBank, the first step is to
+model whatever format your data is in to the loader table format, and
+then transform the data into that format. Modeling your data means
+identifying how each piece of information in your original dataset (like
+species names, plot locations, survey dates) corresponds to specific
+fields in the VegBank loader table format. There are a total of 12
+loader tables that can be used for plot observation data, though not all
+are required for data ingest. In this section, the loader tables and
+their fields will be described, in the order in which it is recommended
+to prepare them.</p>
+<p>Each loader table you create is an R <code>data.frame</code> that is
+eventually passed to a VegBank upload function. In the documentation
+below, interactive tables display the allowed <code>field</code> (column
+names), whether the field is required, best practice, commonly used, or
+sometimes used, and a description of the field.</p>
+<p>There are number of fields that act as codes which are used primary
+and secondary keys to link loader tables together. Codes that begin with
+<code>user_</code> are supplied by the data uploader. Codes that begin
+with <code>vb_</code> are created by the database upon data upload.</p>
+<div class="section level3">
+<h3 id="projects">Projects<a class="anchor" aria-label="anchor" href="#projects"></a>
+</h3>
+<p>This table stores information about a project established to collect
+vegetation plot data. The <code>user_pj_code</code> is the project code
+primary key, and is found as a foreign key in several other tables. An
+example project code might be <code>MOJA</code> with project name
+“Mojave Desert Vegetation Surveys.”</p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["user_pj_code","project_name","project_description","start_date","stop_date"],["required","best practice","commonly used","sometimes used","sometimes used"],["User provided project identifier. Primary key for projects.","Project name as defined by the principal investigator.","Short description of the project including the original purpose for conducting the project. This can be viewed as the project abstract plus supporting metadata.","Project start date.","Project stop date."]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>field<\/th>\n      <th>required<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"field","targets":1},{"name":"required","targets":2},{"name":"description","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="section level3">
+<h3 id="parties">Parties<a class="anchor" aria-label="anchor" href="#parties"></a>
+</h3>
+<p>The Parties loader table is used to upload new parties (people)
+associated with plots, projects, taxa, and classifications. The primary
+key is <code>user_py_code</code> which is used as a foreign key in the
+Contributors loader table. Once uploaded, VegBank will create a
+<code>vb_py_code</code> for each party to be used in the Contributors
+table.</p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e5c8c404fe174e4c81bd" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8"],["user_py_code","surname","given_name","middle_name","organization_name","email","orcid","ror"],["required","best practice","commonly used","sometimes used","best practice","commonly used","sometimes used","sometimes used"],["User provided party identifier. Required. Primary Key for Parties.","Last name","First name","Middle name","Organization of party","Email address","ORCID of party","ROR of organization"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>field<\/th>\n      <th>required<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"field","targets":1},{"name":"required","targets":2},{"name":"description","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="section level3">
+<h3 id="contributors">Contributors<a class="anchor" aria-label="anchor" href="#contributors"></a>
+</h3>
+<p>The contributors loader table is fairly code heavy, but is closely
+linked to both the Projects table and the Parties table, and is used to
+link parties (people) with their contributions to plots, projects, taxa,
+and classifications.</p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-36aa3d2a04d42bbc2145" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["user_cr_code","vb_py_code","user_py_code","vb_ar_code","contributor_type","record_identifier"],["required","required","required","required","required","?"],["user provided contributors identifier. Primary key for contributors. This can most likely just be a row number.","Vegbank party identifier.","User provided party identifier. Primary key for party table.","Vegbank aux role identifier.","{Observation, Project, Class}","type in [ob, pj, cl]"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>field<\/th>\n      <th>required<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"field","targets":1},{"name":"required","targets":2},{"name":"description","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="section level3">
+<h3 id="plot-observations">Plot Observations<a class="anchor" aria-label="anchor" href="#plot-observations"></a>
+</h3>
+<p>The Plot Observations loader table contains all data that is
+consistent across a plot. This includes information on the plot name,
+location, physical features, non-vegetation cover, etc. This table has
+many optional fields that may or may not be applicable to your
+project.</p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-febe03efa1a2d8d52a86" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-febe03efa1a2d8d52a86">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107"],["vb_pl_code","user_pl_code","author_plot_code","vb_parent_pl_code","user_parent_pl_code","real_latitude","real_longitude","latitude","longitude","location_accuracy","confidentiality_status","confidentiality_reason","author_e","author_n","author_zone","author_datum","author_location","location_narrative","azimuth","dsgpoly","shape","area","stand_size","placement_method","permanence","layout_narrative","elevation","elevation_accuracy","elevation_range","slope_aspect","min_slope_aspect","max_slope_aspect","slope_gradient","min_slope_gradient","max_slope_gradient","topo_position","landform","surficial_deposits","rock_type","state_province","country","user_ob_code","user_pj_code","vb_pj_code","author_obs_code","vb_prev_ob_code","obs_start_date","obs_end_date","date_accuracy","vb_cm_code","cover_dispersion","auto_taxon_cover","vb_sm_code","method_narrative","taxon_observation_area","stem_size_limit","stem_observation_area","stem_sample_method","original_data","effort_level","floristic_quality","bryophyte_quality","lichen_quality","observation_narrative","landscape_narrative","homogeneity","phenologic_aspect","stand_maturity","successional_status","basal_area","hydrologic_regime","soil_moisture_regime","soil_drainage","water_salinity","water_depth","shore_distance","soil_depth","organic_depth","vb_so_code","soil_taxon_src","percent_bedrock","percent_rock_gravel","percent_wood","percent_litter","percent_bare_soil","percent_water","percent_other","name_other","tree_ht","shrub_ht","field_ht","nonvascular_ht","submerged_ht","tree_cover","shrub_cover","field_cover","nonvascular_cover","floating_cover","submerged_cover","dominant_stratum","growthform_1_type","growthform_2_type","growthform_3_type","growthform_1_cover","growthform_2_cover","growthform_3_cover","total_cover"],["required","required","required","sometimes used","sometimes used","best practice","best practice","sometimes used","sometimes used","commonly used","??","??","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","sometimes used","commonly used","best practice","commonly used","commonly used","best practice","commonly used","commonly used","sometimes used","sometimes used","commonly used","sometimes used","sometimes used","commonly used","sometimes used","sometimes used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","required","sometimes used","sometimes used","required","sometimes used","best practice","sometimes used","sometimes used","sometimes used","commonly used","sometimes used","sometimes used","commonly used","best practice","sometimes used","sometimes used","sometimes used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","sometimes used","sometimes used","sometimes used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","sometimes used","sometimes used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used","sometimes used"],["Vegbank plot identifier, primary key for plots table","User provided plot identifier, primary key for plots table","Author's Plot number/code, or the original plot number if taken from literature.","Vegbank parent plot identifier","User provided parent plot identifier","Full precision latitude","Full precision longitude","Publically visible latitude","Publically visible longitude","Estimated accuracy of the location of the plot. Plot origin has a 95% or greater probability of being within this many meters of the reported location.","Are the data to be considered confidential? 0=no, 1= 1km radius, 2=10km radius, 3=100km radius, 4=location embargo, 5=public embargo on all plot data, 6=full embargo on all plot data. This applies also to region.","The reason for confidentiality.  This field should not be open to public view.  Reasons might include specific rare species, ownership, prepublication embargo, or many other reason","Original E-W coordinate as recorded by the author","Original N-S coordinate as recorded by the author","Original UTM zone reported by the author","Original datum reported by the author","Original location as described by author (e.g. Town-Range-Section)","Text description that provides information useful for plot relocation.","This element stores the azimuth of the x-axis used to describe the relative coordinate system for plot shape (dsgpoly) and other spatial information about the plot. Typically the azimuth is parallel to the long axis of the plot (in the case of a rectangle).","This field is a text string containing the points circumscribing a plot area.  These points are anticipated to have been collected using tapes, GPS, or calculated from the plot shape and area. Points are X-Y coordinates in m relative to plot origin.","Shape of the plot area.","Total area of the plot in m2.  If many subplots, this area includes the subplots and the interstitial space.  RESERVED VALUE: -1 is used to indicate that the plot had no boundaries.","The extent of this community occurrence in relation to the plot size: very extensive (&gt;1000x plot), extensive (&gt;100x plot), large (10-100x plot), small (3-10x plot), very small (1-3x plot).","Brief description of strategy for determining plot placement within the stand.","Is the plot monumented so as to assure permanence?  If so, this should be described in the layoutNarrative","Text description of and the rationale for the layout of the plot.","The elevation of the plot origin in meters above sea level.","The accuracy of the elevation in meters.","Meters of difference in elevations of the high and low points in the plot.","Representative azimuth of slope gradient (0-360 degrees); if too flat to determine = -1; if too irregular to determine = -2.","Minimum azimuth of slope gradient (0-360 degrees), counterclockwise from representative azimuth.","Maximum azimuth of slope gradient (0-360 degrees), clockwise from representative azimuth","Representative inclination of slope in degrees; if too irregular to determine, = -1.","Minimum inclination of slope in degrees.","Maximum inclination of slope in degrees.","Position of the plot on land surface (e.g., Summit, shoulder, upper slope, middle slope, lower slope, toeslope, no slope, channel bed, dune swale, pond).","A recognizable physical feature on the surface of the earth, often including consideration of the natural cause of its formation.","Surficial deposits represent the parent material that are the geologic or organic precursors to the soil.  They may either have been deposited by geologic (wind, ice, gravity or water) or biologic (organic) activity, or formed in place more-or-less directly from rocks and minerals below.","RockType values conform to the lithic types in the FGDC Soil Geographic Data Standards, September 1997. http://www.fgdc.gov/standards/documents/standards/soils/soil997.PDF (pages 56-59).","State, province of the location.","Country of the physical address.","User provided observtion identifier, primary key for observation.","User provided project identifier, primary key for projects table.","Vegbank project identifier.",null,"Vegbank previous observation identifier.","The date of the observation, or the first day if the observation spanned more than one day.","If the observation event spanned more than a single day, this is the last day on which observations were made.","Estimated accuracy of the observation date.","Vegbank cover method identifier.","Were cover values for the total taxon list collected from one contiguous area or dispersed subplots?","TRUE indicates that taxonObservation.taxonCover was automatically calculated from the values of all stratumObservation.taxonStratumCover","Vegbank strata method identifier","Additional metadata helpful for understanding how the data were collected during the observation event.","the total surface area (in m^2) used for cover estimates and for which a complete species list is provided.  If subplots were used, this would be the total area of the subplots without interstitial space.  RESERVED VALUE: -1 is used to indicate the complete list of species had no known boundaries.","Lower diameter limit in centimeters for inclusion of a tree in the stem count (stemCount).","the total surface area (in m^2) observed for recording woody stem data.  RESERVED VALUE: -1 means no known area.","The method used to obtain basal area or tree stem data (e.g., full census, point quarter, random pairs, Bitterlich, other).","Location where the hard data reside and any access instructions.","This is the effort spent making the observations as estimated by the party that submitted the data (e.g., Very thorough, Average, Hurried description).","Subjective assessment of floristic quality by the party that submitted the plot (e.g., Highest, High, High but incomplete, Moderate, Moderate and incomplete, Low).","Subjective assessment of the taxonomic quality of the bryophyte data by the party that submitted the plot (e.g., Highest, High, High but incomplete, Moderate, Moderate and incomplete, Low, Very incomplete, absent).","Subjective assessment of the taxonomic quality of the lichen data by the party that submitted the plot (e.g., Highest, High, High but incomplete, Moderate, Moderate and incomplete, Low, Very incomplete, absent).","Additional unstructured observations useful for understanding the ecological attributes and significance of the plot observations.","Unstructured observations on the landscape context of the observed plot.","How homogeneous was the community (e.g., homogeneous, compositional trend across plot, conspicuous inclusions, irregular mosaic or pattern).","Season expression of the community (e.g., typical growing season, vernal, aestival, wet, autumnal, winter, dry, irregular ephemerals present).","How mature is the stand.  Could be young, mature but even-aged, old-growth, etc.","Description of the assumed successional status of the plot. This description is of necessity highly subjective.","Total basal area of woody stems (in m²/ha).  0 should be used to indicate that plots have no stems.","What is the hydrologic regime, which is a reflection of frequency and duration of flooding?  List is taken from Cowardin et al. 1979, 1985.","How moist was the soil at the sampling event?","Identifies the natural drainage conditions of the soil and refers to the frequency and duration of wet periods. The soil drainage classes are defined in terms of (1) actual moisture content (in excess of field moisture capacity) and (2) the extent of the period during which excess water is present in the plant-root zone. Soil drainage class categories conform to the FGDC Soil Geographic Data Standards, September 1997. (http://www.fgdc.gov/standards/documents/standards/soils/soil997.PDF.) Definitions are derived from Grossman et al. (1998) and Sims et al. (1997). ","How saline is the water, if a flooded community?","For aquatic or marine vegetation, what was the water depth in m.","For aquatic or marine vegetation, what was the closest distance to shore in m.","Median depth to bedrock or permafrost in m (usually from averaging multiple probe readings).","Depth of the surficial organic layer, where present, in centimeters.","Vegbank soil data identifier","How was the soil taxon determined (e.g., field observation, map,  other sources)?","Percent of surface that is exposed bedrock.","Percent of surface that is exposed rock and gravel.","Percent of surface that is wood.","Percent of surface that is litter.","Percent of surface that is bare soil.","Percent of surface that is water.","Percent of surface that belong to an additional itemized category","Name of additional itemized ground cover category (e.g., beer cans).","Height of the tree layer in m.","Height of the shrub layer in m.","Height of the field layer in m.","Height of the nonvascular layer in m.","Height of the submerged layer in m.","Total cover of the tree layer in percent.  Includes tall trees (single-stemmed woody plants, generally more than 5 m in height or greater at maturity under optimal growing conditions). Very tall shrubs with tree-like form may also be included here, as may other life forms, such as lianas and epiphytes.","Total cover of the shrub layer in percent.  Includes shrubs (multiple-stemmed woody plants, generally less than 5 m in height at maturity under optimal growing conditions) and shorter trees (saplings).  As with the tree stratum, other life forms present in this stratum may also be included (however, herbaceous life forms should be excluded, as their stems often die back annually and do not have as consistent a height as woody life forms). Where dwarf-shrubs (i.e. shrubs shorter than 0.5 m) form a distinct stratum (either as part of a series of strata, as in a forest, or as the top stratum of more open vegetation, such as tundra or xeric shrublands), they should be treated as a low version of the shrub stratum (or short shrub substratum).  In many vegetation types, dwarf-shrubs may simply occur as one life form component of the herb stratum.","Total cover of the field layer in percent.  Also referred to as Herb stratum.  Includes herbs (plants without woody stems and often dying back annually), often in association with low creeping semi-shrubs, dwarf-shrubs, vines, and non-woody brambles (such as raspberries), as well as tree or shrub seedlings.","Total cover of the nonvascular layer in percent.  Also referred to as moss, bryoid, or ground stratum.  Defined entirely by mosses, lichens, liverworts, and alga.  Ground-creeping vines, prostrate shrubs and herbs should be treated in the herb stratum.  Where herbs are entirely absent, it is still possible to recognize this stratum if other very low woody or semi-woody life forms are present.","Total cover of the floating layer in percent.  Includes rooted or drifting plants that float on the water surface (e.g., duckweed, water-lily).","Total cover of the submerged layer in percent.  Includes rooted or drifting plants that by-and-large remain submerged in the water column or on the aquatic bottom (e.g., pondweed).  The focus is on the overall strata arrangement of these aquatic plants.  Note that emergent plants life forms in a wetland should be placed in above water strata (e.g., cattail or sedges would be placed in the herb stratum, whereas the duckweed would be in the floating aquatic stratum).","Which of the six standard strata is dominant?","The predominant growth form?","The second-most predominant growthform?","The third-most predominant growthform","Total cover of the predominant growthform?","Total cover of the second-most predominant growthform?","Total cover of the third-most predominant growthform?","The total cover, in percent, of all vegetation on the plot."]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>field<\/th>\n      <th>required<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"field","targets":1},{"name":"required","targets":2},{"name":"description","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="section level3">
+<h3 id="community-classifications">Community Classifications<a class="anchor" aria-label="anchor" href="#community-classifications"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="strat-cover">Strat Cover<a class="anchor" aria-label="anchor" href="#strat-cover"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="strata">Strata<a class="anchor" aria-label="anchor" href="#strata"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="taxon-interpretations">Taxon Interpretations<a class="anchor" aria-label="anchor" href="#taxon-interpretations"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="distrubances">Distrubances<a class="anchor" aria-label="anchor" href="#distrubances"></a>
+</h3>
+</div>
+<div class="section level3">
+<h3 id="soils">Soils<a class="anchor" aria-label="anchor" href="#soils"></a>
+</h3>
+<p>The Soils loader table is used to describe soils collected from a
+plot. This includes information on soil horizons, texture, and chemical
+properties.</p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1fb4450895fe099f74a1" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1fb4450895fe099f74a1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],["user_so_code","user_ob_code","description","horizon","depth_top","depth_bottom","color","organic","texture","sand","silt","clay","coarse","ph","exchange_capacity","base_saturation"],["required","sometimes used","commonly used","required","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used","commonly used"],["User provided soil data identifier. Primary Key for soil data. This can most likely just be a row number rather than user provided if necessary.","User provided observation identifier. Primary Key for observation.","Text description of the soil.","The horizon to which this observation applies.","The depth at which the horizon observation starts.","The depth at which the horizon observation ends.","Soil color (USDA guidelines recommended).","Percent organic content of the soil (for methods see observation.methodsNarrative).","Soil texture class.The texture classes sands, loamy sands, and sandy loams (plural terms) correspond to sand, loamy sand, and sandy loam (singular terms) in the textural triangle.","Percent sand in the soil horizon.","Percent silt in the soil horizon.","Percent clay in the soil horizon.","percent coarse fragments in the soil, prior to removal for textural analysis","pH of the soil (for methods see observation.methodsNarrative).","Cation exchange capacity (for methods see observation.methodsNarrative).","Percent base saturation (for methods see observation.methodsNarrative)."]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>field<\/th>\n      <th>required<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"field","targets":1},{"name":"required","targets":2},{"name":"description","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="section level3">
+<h3 id="stem-data">Stem Data<a class="anchor" aria-label="anchor" href="#stem-data"></a>
+</h3>
+<p>The Stem Data loader table is used to describe individual plant stems
+measured at a plot.</p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-10b3b7155e8045a1b2ad" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-10b3b7155e8045a1b2ad">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13"],["user_sc_code","user_tm_code","stem_count","stem_diameter","stem_diameter_accuracy","stem_height","stem_height_accuracy","user_sl_code","stem_code","stem_x_position","stem_y_position","stem_health","stem_taxon_area"],["required","required","required","best practice","commonly used","sometimes used","sometimes used","required","sometimes used","sometimes used","sometimes used","sometimes used","for expert users"],["User provided stem count identifier. Normalized primary key for stem count.","User provided taxon importance identifier.","The number of stems of a single species that have these specific stem diameter and height data in common.","The diameter of the stem in centimeters. When diameter classes are used, the stemDiameter is the midpoint between the low end and high end for the diameter class;  the offset between this and the endpoints is stored in the stemDiameterAccuracy attribute.","The accuracy of the stem diameter measurements in centimeters. This represents the distance between the diameter class midpoint and endpoint.","The measured height of the stem in meters. When height classes are used, the stemHeight is the midpoint between the low end and high end for the height class; the offset between this and the endpoint is stored in the stemHeightAccuracy field.","The accuracy of the measured height of a stem, being the offset between the midpoint of the class and the endpoint, in meters.","User provided stem location identifier. Primary key for stem location. Can most likely be a row number if necessary rather than user provided.","Name or code applied to a specific stem in the plot. This is generally a numeric label to associate a field data entry with a stem in the database.","The X-coordinate of the stem position in m. The user will enter the relative position of stems with respect to the plot origin (in meters) with the x-axis defined by the plot azimuth.","The Y-coordinate of the stem position, as above.","Health of the stem referenced in this stemLocation record. Usually used to describe \"dead\" stems.","This is the area in m2 used to infer the presence of the stem(s) referenced in this record.  Overrides similar area field in taxonObservation, taxonImportance, and/or observation.  RESERVED VALUE: -1 is used to indicate no known boundaries were used while collecting this stem size."]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>field<\/th>\n      <th>required<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"field","targets":1},{"name":"required","targets":2},{"name":"description","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
