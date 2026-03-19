@@ -5,6 +5,7 @@
 
 - **Authors**: Jim Regetz, Matthew B. Jones
 - **License**: [Apache 2](https://opensource.org/license/apache-2-0)
+- [Package documentation](https://nceas.r-universe.dev/vegbankr)
 - [Package source code on GitHub](https://github.com/NCEAS/vegbankr)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/vegbankr/issues)
 - Contact us: help@vegbank.org
@@ -52,7 +53,7 @@ On that note, prior to its production release, the main VegBank API
 (https://api.vegbank.org) may or may not be available at any given time.
 However, until then, you should be able to explore and prototype against
 the development API (https://api-dev.vegbank.org). Configure `vegbankr`
-to use the dev API using the following expression:
+to use the development API using the following expression:
 
 ```r
 library(vegbankr)
@@ -90,7 +91,7 @@ ob.135454 <- vb_get_plot_observations("ob.135454", detail = "full",
   with_nested = TRUE)
 ```
 
-Get the taxon (plant) observations associated with this plot obseration,
+Get the taxon (plant) observations associated with this plot observation,
 displaying them in order based on the plant code of the current taxon
 interpretation.
 
@@ -100,13 +101,13 @@ vb_get_taxon_observations("ob.135454") |>
   print(n = 35)
 ```
 
-Now search for community concepts with the string "_sequoiadendron_".
+Now search for community concepts with the string `"_sequoiadendron_"`.
 ```r
 sequoia_communities <- vb_get_community_concepts(search = "sequoiadendron")
 ```
 
 Determine which concept has the most plot observations, then retrieve
-all of those plot obervations from VegBank.
+all of those plot observations from VegBank.
 
 ```r
 sequoia_plots <- sequoia_communities |>

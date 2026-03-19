@@ -40,7 +40,7 @@ vb_get_base_url <- function() {
 
 #' Enable VegBank API debugging mode
 #'
-#' Set VegBank debug level used when `send`ing API requests. This
+#' Set VegBank debug level used to `send` API requests. This
 #' currently controls two things:
 #'  1. Verbosity of API requests, specifically as handled by
 #'     `httr::req_perform()`
