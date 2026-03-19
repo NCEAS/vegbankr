@@ -183,7 +183,7 @@
 "taxon_interpretations","vb_pc_code","required","Vegbank plant concept identifier."
 "taxon_interpretations","user_py_code","required","User provided party identifier. Primary key for party table."
 "taxon_interpretations","vb_py_code","required","Vegbank party identifier."
-"taxon_interpretations","vb_ro_code","required","Vegbank"
+"taxon_interpretations","vb_ar_code","required","Vegbank role code."
 "taxon_interpretations","interpretation_type","?","Categories for the interpretation (e.g.,  author, computer generated, simplified for comparative analysis, correction, finer resolution)."
 "taxon_interpretations","user_rf_code","sometimes used","User provided reference identifier. Primary key for references table."
 "taxon_interpretations","vb_rf_code","sometimes used","Vegbank reference identifier."

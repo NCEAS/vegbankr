@@ -15,6 +15,11 @@ library(dplyr)
 library(DT)
 
 docs <- read.csv("../inst/loader-table-fields.csv")
+
+docs$required <- factor(docs$required, levels = c("required", "best practice", "commonly used", "sometimes used"))
+
+docs <- docs %>% 
+  arrange(required)
 ```
 
 ## Introduction to `vegbankr`
@@ -94,6 +99,12 @@ docs %>%
 The contributors loader table is fairly code heavy, but is closely linked to
 both the Projects table and the Parties table, and is used to link parties (people) with their contributions to plots, projects, taxa, and classifications.
 
+`user_py_code` is a foreign key to the `parties` table, so any values present in this field must be present there as well. Optionally, instead of `user_py_code`, `vb_py_code` can be used if the party is already in vegbank. One of `user_py_code` or `vb_py_code` must be present, but having both in the same row is disallowed.
+
+`vb_ar_code` is the vegbank role code - a code in the format `ar.{nn}`. A table of allowed values and their meanings is listed below the loader table variables.
+
+Finally, the `contributor_type` indicates whether this contributor is linked to an Observation, Project, or Classification. The `record_identifier` value will depend on which of these three types the contributor is associated with. If the contributor should be associated with a project with `user_pj_code` `MOJA`, the `record_identifier` for that contributor should be `MOJA` and the contributor type should be Project. This transitively will also associate the contributor with all plots associated with that project. If the contributor should only be associated with a particular observation with `user_ob_code` `MOJA_0214`, the record identifier is that observation identifier, and the `contributor_type` should be Observation.
+
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -102,9 +113,46 @@ docs %>%
   datatable()
 ```
 
+```{r, echo = FALSE}
+
+roles <- dplyr::tribble(
+  ~ar_code, ~role_name,
+  "ar.16",  "Author",
+  "ar.17",  "Contact",
+  "ar.18",  "PI",
+  "ar.19",  "Data Manager",
+  "ar.34",  "Classifier",
+  "ar.36",  "Plot author",
+  "ar.38",  "Co-PI",
+  "ar.39",  "Computer (automated)",
+  "ar.40",  "Consultant",
+  "ar.43",  "Field assistant",
+  "ar.44",  "Guide",
+  "ar.45",  "Land owner",
+  "ar.46",  "Not specified",
+  "ar.47",  "Not specified/Unknown",
+  "ar.48",  "Passive observer",
+  "ar.50",  "Plot contributor",
+  "ar.51",  "Publication author",
+  "ar.53",  "Research advisor",
+  "ar.54",  "System manager",
+  "ar.55",  "Taxonomist",
+  "ar.56",  "Data aggregator"
+) 
+
+datatable(roles)
+
+```
+
 ### Plot Observations
 
-The Plot Observations loader table contains all data that is consistent across a plot. This includes information on the plot name, location, physical features, non-vegetation cover, etc. This table has many optional fields that may or may not be applicable to your project.
+The plot observations loader table contains all data that is consistent across a plot. This includes information on the plot name, location, physical features, non-vegetation cover, etc. This table has many optional fields that may or may not be applicable to your project.
+
+Similar to the pattern described in contributors, one of `vb_pl_code` or `user_pl_code` is required, and only one of those two fields may be used for each row. `vb_pl_code` would only be used if the intention is to add a new observation record to the same plot. These codes are used as foreign keys in various other tables. `author_plot_code` is often the same as these codes (eg: `MOJA_0214`) but there they could be different for valid reasons. `author_plot_code` is prominently displayed in the user VegBank interface as the plot identifier. 
+
+`user_ob_code` is the primary key for an observation on a plot, and may be the same as the plot code if there is only one observation of each plot. If there are multiple observations on the same plot, however, `user_ob_code` must be unique for each observation. 
+
+`user/vb_pj_code` can link a plot and it's observation back to a project. Values in these fields must be present either in the `projects` loader table (`user_pj_code`) or VegBank if the project is already uploaded (`vb_pj_code`). 
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -115,7 +163,29 @@ docs %>%
 
 ### Community Classifications
 
-### Strat Cover
+The community classifications loader table contains the community classification of an observation. 
+
+The primary key is `user_cl_code`. The foreign key `user_ob_code` corresponds to the key present in the plot observations loader table, and is required. All values in this field must also be present in the plot observations table.
+
+`vb_cc_code` is the VegBank community concept identifier, a required field, the value of which must already be present in VegBank. To retrieve a list of possible `vb_cc_code` values, use the `vegbankr` function `vb_get_community_concepts`.
+
+```{r, echo = FALSE}
+docs %>% 
+  filter(loader_table == "community_classifications") %>% 
+  select(-loader_table) %>% 
+  datatable()
+```
+
+### Strata Cover
+
+This loader table contains data from a plot observation of the plant names, cover, and strata in a given plot. The `user_ob_code` is a required foreign key that links the plant to a plot observation. All values in this field must be present in the plot observations loader table. `user_tm_code` is a key that is unique for each combination of `user_ob_code`, plant name, and strata in this table. `user_to_code` is a key that is unique for each combination of `user_ob_code` and plant name - so `user_to_code` may be repeated in this table if a plant exists in multiple strata in a plot observation.
+
+```{r, echo = FALSE}
+docs %>% 
+  filter(loader_table == "strata_cover_data") %>% 
+  select(-loader_table) %>% 
+  datatable()
+```
 
 ### Strata
 
