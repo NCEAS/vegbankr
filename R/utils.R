@@ -133,13 +133,13 @@ send <- function(request, skip_auth = FALSE) {
   if (!skip_auth) {
     # If the access token is expired but the refresh token is
     # still valid, update tokens before retrying the request.
-    if (!is.null(vb_get_access_token()) && !vb_access_token_is_valid()) {
+    if (!is.null(vb_get_access_token()) && !vb_access_token_is_valid() || (Sys.time() + 30) < jwt_expiry_time(vb_get_access_token())) {
       if (vb_refresh_token_is_valid()) {
         message("Access token expired; refreshing tokens...")
         vb_refresh_tokens()
       } else {
         message("Access token expired and no valid refresh token available.")
-        stop("Re-authenticate and call vb_set_token() to set a new token.",
+        stop("Re-authenticate at https://vegbank.org/login and call vb_set_token() to set a new token.",
              call. = FALSE)
       }
     }

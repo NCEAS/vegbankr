@@ -48,6 +48,20 @@ vb_set_token <- function(access_token = NULL, refresh_token = NULL, tokens = NUL
     if (!is.null(refresh_token)) "refresh token"
   )
   message("VegBank token(s) updated: ", paste(set_parts, collapse = " and "))
+
+  if (!is.null(access_token) && is.null(refresh_token)) {
+    exp <- jwt_expiry_time(access_token)
+    expiry_note <- if (!is.null(exp)) {
+      mins <- as.numeric(difftime(exp, Sys.time(), units = "mins"))
+      sprintf("Your access token expires in %.0f minute(s). ", max(0, mins))
+    } else {
+      ""
+    }
+    message(
+      "Note: no refresh token provided. ", expiry_note,
+      "Provide a refresh token via vb_set_token() to enable automatic renewal."
+    )
+  }
 }
 
 
@@ -132,7 +146,7 @@ jwt_claim <- function(token, claim) {
 #' @param token JWT string
 #' @returns POSIXct expiry time, or NULL
 #' @noRd
-jwt_exp <- function(token) {
+jwt_expiry_time <- function(token) {
   exp <- jwt_claim(token, "exp")
   if (is.null(exp) || !is.numeric(exp)) return(NULL)
   as.POSIXct(exp, origin = "1970-01-01", tz = "UTC")
@@ -149,10 +163,9 @@ jwt_exp <- function(token) {
 #'   `FALSE` otherwise.
 #' @noRd
 token_is_valid <- function(token) {
-  exp <- jwt_exp(token)
+  exp <- jwt_expiry_time(token)
 
-  # Keep a 30 second buffer for request round trip
-  !is.null(exp) && (Sys.time() + 30) < exp
+  !is.null(exp) && Sys.time() < exp
 }
 
 
