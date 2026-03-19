@@ -138,8 +138,8 @@ send <- function(request, skip_auth = FALSE) {
         message("Access token expired; refreshing tokens...")
         vb_refresh_tokens()
       } else {
-        message("Access token expired and no valid refresh token available.")
-        stop("Re-authenticate at https://vegbank.org/login and call vb_set_token() to set a new token.",
+        message("Access token expired and no valid refresh token available. Please re-authenticate at https://api.vegbank.org/login to get new tokens.")
+        stop("Re-authenticate and call vb_set_token() to set a new token.",
              call. = FALSE)
       }
     }
