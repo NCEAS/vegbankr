@@ -157,13 +157,35 @@ table. `user_tm_code` is a key that is unique for each combination of
 `user_ob_code`, plant name, and strata in this table. `user_to_code` is
 a key that is unique for each combination of `user_ob_code` and plant
 name - so `user_to_code` may be repeated in this table if a plant exists
-in multiple strata in a plot observation.
+in multiple strata in a plot observation. `user_sr_code` is a foreign
+key that corresponds to the `strata` loader table, described below.
 
-### Strata
+### Strata Methods
+
+Each strata value must also have a VegBank strata method associated with
+it. This is represented by `vb_sy_code`. To see available codes, see the
+code snippet below the table:
+
+``` r
+vb_strata <- vb_get_stratum_methods(with_nested = TRUE) %>% 
+  unnest(stratum_types) %>% 
+  mutate(stratum_index = tolower(stratum_index)) %>% 
+  rename(Stratum = stratum_index)
+```
 
 ### Taxon Interpretations
 
-### Distrubances
+Taxon interpretations associates the plants in the strata cover table
+with an existing VegBank plant concept code. To get a list of existing
+plant concepts, use the `vb_get_plant_concepts` function. Note that a
+person with a role is also required for this table, so one of
+`user_py_code` (present in the `parties` loader table) or `vb_py_code`
+(an exsiting VegBank party) must exist, along with their role, in
+`vb_ar_code`.
+
+### Disturbances
+
+This loader table describes disturbances on a plot.
 
 ### Soils
 
@@ -175,5 +197,3 @@ properties.
 
 The Stem Data loader table is used to describe individual plant stems
 measured at a plot.
-
-### References
