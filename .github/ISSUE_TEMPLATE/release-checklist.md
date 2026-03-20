@@ -2,6 +2,7 @@
 name: Release checklist
 about: Plan final steps before software release
 title: "Release checklist version: x.y.z"
+type: "Task"
 assignees: ''
 ---
 
@@ -9,6 +10,8 @@ assignees: ''
 
 - [ ] Close any issues assigned to this release
 - [ ] Update version number, publish date, etc. in DESCRIPTION
+- [ ] Mint new DOI for release if minor or major release
+- [ ] Update DOI, version number, publish date, etc. in README.md
 - [ ] Check and update contributors list and update CITATION if needed
 - [ ] check that all new functions have unit tests
 - [ ] update NEWS
@@ -28,6 +31,7 @@ assignees: ''
    - [ ] Windows: R release
    - [ ] Windows: R devel
 - [ ] update cran_comments
+- [ ] submit to CRAN
 
 ## Post CRAN approval
 
