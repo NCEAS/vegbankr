@@ -32,7 +32,7 @@ Description: Provides a programmatic interface to 'VegBank', the
     'VegBank' database, and validating and uploading new
     data to the 'VegBank' database as well.
 License: Apache License (>= 2) | file LICENSE
-URL: https://nceas.r-universe.dev/vegbankr
+URL: https://github.com/NCEAS/vegbankr, https://nceas.github.io/vegbankr/, https://nceas.r-universe.dev/vegbankr
 BugReports: https://github.com/NCEAS/vegbankr/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -49,7 +49,11 @@ Imports:
     purrr,
     rlang
 Suggests:
+    DT,
+    knitr,
     httptest2,
+    pkgdown,
+    rmarkdown,
     spelling,
     testthat (>= 3.0.0),
     withr
@@ -59,3 +63,4 @@ Language: en-US
 Config/testthat/edition: 3
 Config/spelling/custom_dicts: inst/WORDLIST
 X-CRAN-Comment: Spelling: ITIS NCEAS VegBank vegbankr
+VignetteBuilder: knitr
