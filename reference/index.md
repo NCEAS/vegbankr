@@ -7,6 +7,8 @@
   using a package-provided lookup table by default
 - [`get_page_details()`](https://nceas.github.io/vegbankr/reference/get_page_details.md)
   : Get paging details for a VegBank dataframe
+- [`vb_access_token_is_valid()`](https://nceas.github.io/vegbankr/reference/vb_access_token_is_valid.md)
+  : Check whether the stored access token is present and not expired
 - [`vb_count()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
   [`vb_count_community_classifications()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
   [`vb_count_community_concepts()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
@@ -53,12 +55,20 @@
   : Retrieve a VegBank resource by identifier
 - [`vb_overview()`](https://nceas.github.io/vegbankr/reference/vb_overview.md)
   : Retrieve VegBank summary stats
+- [`vb_refresh_token_is_valid()`](https://nceas.github.io/vegbankr/reference/vb_refresh_token_is_valid.md)
+  : Check whether the stored refresh token is present and not expired
+- [`vb_refresh_tokens()`](https://nceas.github.io/vegbankr/reference/vb_refresh_tokens.md)
+  : Refresh stored Bearer tokens
 - [`vb_resolve()`](https://nceas.github.io/vegbankr/reference/vb_resolve.md)
   : Resolve a VegBank identifier
 - [`vb_set_base_url()`](https://nceas.github.io/vegbankr/reference/vb_set_base_url.md)
   : Set a base URL for the VegBank API
+- [`vb_set_token()`](https://nceas.github.io/vegbankr/reference/vb_set_token.md)
+  : Set Bearer token(s) for authenticated API requests
 - [`vb_undebug()`](https://nceas.github.io/vegbankr/reference/vb_undebug.md)
   : Disable VegBank API debugging mode
+- [`vb_unset_token()`](https://nceas.github.io/vegbankr/reference/vb_unset_token.md)
+  : Clear stored Bearer tokens
 - [`vb_upload()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
   [`vb_upload_plot_observations()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
   [`vb_upload_plant_concepts()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)

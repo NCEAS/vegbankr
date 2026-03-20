@@ -247,7 +247,7 @@ vb_get(
   Character string specifying level of detail. All endpoints support
   "full" detail. For those that support "minimal" detail, this is the
   default for collection queries, otherwise the default is "full". Plot
-  observations additionally support detail="geo". In all cases, set to
+  observations additionally support `detail="geo"`. In all cases, set to
   `NULL` to use the API default.
 
 - num_taxa:
@@ -368,7 +368,7 @@ A query is considered a "cross-resource collection query" if a `vb_code`
 is provided with prefix matching a resource type that *differs* from the
 target resource. For example, `vb_get_plot_observations("pj.340")`, will
 return the collection of VegBank plot observation records corresponding
-to project "pj.340", if the project and corresponding plot observations
+to project `pj.340`, if the project and corresponding plot observations
 exist.
 
 #### Full collection queries

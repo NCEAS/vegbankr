@@ -11,6 +11,7 @@
 
 - **Authors**: Jim Regetz, Matthew B. Jones
 - **License**: [Apache 2](https://opensource.org/license/apache-2-0)
+- [Package documentation](https://nceas.r-universe.dev/vegbankr)
 - [Package source code on GitHub](https://github.com/NCEAS/vegbankr)
 - [**Submit Bugs and feature
   requests**](https://github.com/NCEAS/vegbankr/issues)
@@ -62,7 +63,7 @@ On that note, prior to its production release, the main VegBank API
 (<https://api.vegbank.org>) may or may not be available at any given
 time. However, until then, you should be able to explore and prototype
 against the development API (<https://api-dev.vegbank.org>). Configure
-`vegbankr` to use the dev API using the following expression:
+`vegbankr` to use the development API using the following expression:
 
 ``` r
 library(vegbankr)
@@ -102,9 +103,9 @@ ob.135454 <- vb_get_plot_observations("ob.135454", detail = "full",
   with_nested = TRUE)
 ```
 
-Get the taxon (plant) observations associated with this plot obseration,
-displaying them in order based on the plant code of the current taxon
-interpretation.
+Get the taxon (plant) observations associated with this plot
+observation, displaying them in order based on the plant code of the
+current taxon interpretation.
 
 ``` r
 vb_get_taxon_observations("ob.135454") |>
@@ -112,14 +113,14 @@ vb_get_taxon_observations("ob.135454") |>
   print(n = 35)
 ```
 
-Now search for community concepts with the string “*sequoiadendron*”.
+Now search for community concepts with the string `"_sequoiadendron_"`.
 
 ``` r
 sequoia_communities <- vb_get_community_concepts(search = "sequoiadendron")
 ```
 
 Determine which concept has the most plot observations, then retrieve
-all of those plot obervations from VegBank.
+all of those plot observations from VegBank.
 
 ``` r
 sequoia_plots <- sequoia_communities |>
@@ -128,6 +129,97 @@ sequoia_plots <- sequoia_communities |>
   dplyr::pull(cc_code) |>
   vb_get_plot_observations()
 ```
+
+## Authentication
+
+VegBank API `write` endpoints require a Bearer token. Set it once per
+session and all subsequent API calls include it automatically.
+
+### Step 1 — Obtain your tokens
+
+Visit the VegBank [login page](https://api.vegbank.org/login) and
+authenticate with your ORCID credentials. You will receive a JSON
+response containing an `access_token` and a `refresh_token`:
+
+``` json
+{
+  "token": {
+    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI...",
+    "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI..."
+  }
+}
+```
+
+For more details see the [API authorization
+docs](https://github.com/NCEAS/vegbank2/blob/develop/helm/docs/api-authorization.md).
+
+### Step 2 — Set the tokens in R
+
+You can provide individual token strings:
+
+``` r
+vb_set_token(
+  access_token  = "eyJhbGciOiJSUzI1NiIsInR5cCI...",
+  refresh_token = "eyJhbGciOiJSUzI1NiIsInR5cCI..."
+)
+```
+
+Or pass the full JSON response or a named list directly:
+
+``` r
+# Named list
+vb_set_token(tokens = list(
+  access_token  = "eyJ...",
+  refresh_token = "eyJ..."
+))
+
+# JSON string (e.g. copied from /authorize response)
+vb_set_token(tokens = '{"access_token": "eyJ...", "refresh_token": "eyJ..."}')
+```
+
+### Step 3 — Upload data
+
+``` r
+# dry_run = TRUE validates the payload without committing to the database
+vb_upload_plant_concepts(plant_concepts =
+  data.frame(
+    user_pc_code = "PC_1",
+    name = "Test concept",
+    vb_rf_code = "rf.33",
+    vb_status_py_code = "py.511",
+    plant_concept_status = "test status",
+    start_date = "2026-03-01"
+  ), dry_run = TRUE)
+```
+
+### Token lifecycle
+
+**Automatic refresh.** When an API request is made and the access token
+has expired, `vegbankr` will automatically use the stored refresh token
+to obtain a new token pair — no manual intervention required. If the
+refresh token has also expired, you will be prompted to re-authenticate.
+
+**Check validity.** You can inspect token status at any time:
+
+``` r
+vb_access_token_is_valid()
+vb_refresh_token_is_valid()
+```
+
+**Manual refresh.** To explicitly refresh the tokens before they expire:
+
+``` r
+vb_refresh_tokens()
+```
+
+**Clear tokens.** To remove all stored tokens from the session:
+
+``` r
+vb_unset_token()
+```
+
+A `401 Unauthorized` response means the token is missing or expired —
+repeat Steps 1–2 to re-authenticate.
 
 ## License
 
@@ -167,6 +259,8 @@ of California, Santa Barbara, and the State of California.
   using a package-provided lookup table by default
 - [`get_page_details()`](https://nceas.github.io/vegbankr/reference/get_page_details.md)
   : Get paging details for a VegBank dataframe
+- [`vb_access_token_is_valid()`](https://nceas.github.io/vegbankr/reference/vb_access_token_is_valid.md)
+  : Check whether the stored access token is present and not expired
 - [`vb_count()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
   [`vb_count_community_classifications()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
   [`vb_count_community_concepts()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
@@ -213,12 +307,20 @@ of California, Santa Barbara, and the State of California.
   : Retrieve a VegBank resource by identifier
 - [`vb_overview()`](https://nceas.github.io/vegbankr/reference/vb_overview.md)
   : Retrieve VegBank summary stats
+- [`vb_refresh_token_is_valid()`](https://nceas.github.io/vegbankr/reference/vb_refresh_token_is_valid.md)
+  : Check whether the stored refresh token is present and not expired
+- [`vb_refresh_tokens()`](https://nceas.github.io/vegbankr/reference/vb_refresh_tokens.md)
+  : Refresh stored Bearer tokens
 - [`vb_resolve()`](https://nceas.github.io/vegbankr/reference/vb_resolve.md)
   : Resolve a VegBank identifier
 - [`vb_set_base_url()`](https://nceas.github.io/vegbankr/reference/vb_set_base_url.md)
   : Set a base URL for the VegBank API
+- [`vb_set_token()`](https://nceas.github.io/vegbankr/reference/vb_set_token.md)
+  : Set Bearer token(s) for authenticated API requests
 - [`vb_undebug()`](https://nceas.github.io/vegbankr/reference/vb_undebug.md)
   : Disable VegBank API debugging mode
+- [`vb_unset_token()`](https://nceas.github.io/vegbankr/reference/vb_unset_token.md)
+  : Clear stored Bearer tokens
 - [`vb_upload()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
   [`vb_upload_plot_observations()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
   [`vb_upload_plant_concepts()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)

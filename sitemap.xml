@@ -9,15 +9,20 @@
 <url><loc>https://nceas.github.io/vegbankr/reference/canonicalize_names.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/get_page_details.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/index.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_access_token_is_valid.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_count.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_debug.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_get.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_get_base_url.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_get_by_id.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_overview.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_refresh_token_is_valid.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_refresh_tokens.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_resolve.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_set_base_url.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_set_token.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_undebug.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_unset_token.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_upload.html</loc></url>
 </urlset>
 
