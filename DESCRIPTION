@@ -50,7 +50,10 @@ Imports:
     rlang
 Suggests:
     DT,
+    knitr,
     httptest2,
+    pkgdown,
+    rmarkdown,
     spelling,
     testthat (>= 3.0.0),
     withr
@@ -60,3 +63,4 @@ Language: en-US
 Config/testthat/edition: 3
 Config/spelling/custom_dicts: inst/WORDLIST
 X-CRAN-Comment: Spelling: ITIS NCEAS VegBank vegbankr
+VignetteBuilder: knitr
