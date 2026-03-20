@@ -40,6 +40,7 @@ RoxygenNote: 7.3.3
 Imports:
     DBI,
     base64enc,
+    cli,
     curl,
     dplyr,
     duckdb,
@@ -47,7 +48,8 @@ Imports:
     jsonlite,
     nanoparquet,
     purrr,
-    rlang
+    rlang,
+    tidyr
 Suggests:
     DT,
     knitr,
