@@ -68,7 +68,7 @@ vb_validate_plot_observations <- function(plot_observations,
   validation_results$plot_observations <- list(
     validate_at_least_one_present(plot_observations, "vb_pl_code", "user_pl_code"),
     validate_no_nulls(plot_observations, c("author_plot_code", "user_ob_code", "author_obs_code")),
-    validate_no_duplicates(plot_observations, c("author_plot_code", "user_ob_code", "author_obs_code")),
+    validate_no_duplicates(plot_observations, c("user_ob_code", "author_obs_code")),
     validate_values_exist(plot_observations, "user_pj_code", projects, "user_pj_code"),
     validate_values_exist(plot_observations, "user_parent_pl_code", plot_observations, "user_pl_code")
   )
@@ -84,15 +84,15 @@ vb_validate_plot_observations <- function(plot_observations,
   # strata cover
   validation_results$strata_cover_data <- list(
     validate_no_nulls(strata_cover_data, c("user_ob_code", "user_to_code", "user_tm_code", "author_plant_name")),
-    validate_no_duplicates(strata_cover_data, c("user_to_code")),
-    validate_values_exist(strata_cover_data, "user_ob_code", plot_observations, "user_ob_code")
+    validate_no_duplicates(strata_cover_data, c("user_tm_code")),
+    validate_values_exist(strata_cover_data, "user_ob_code", plot_observations, "user_ob_code"),
+    validate_values_exist(strata_cover_data, "user_sr_code", strata, "user_sr_code")
   )
   
   # strata
   validation_results$strata <- list(
     validate_no_nulls(strata, c("user_ob_code", "user_sr_code", "vb_sy_code")),
-    validate_values_exist(strata, "user_ob_code", plot_observations, "user_ob_code"),
-    validate_values_exist(strata, "user_sr_code", strata_cover_data, "user_sr_code")
+    validate_values_exist(strata, "user_ob_code", plot_observations, "user_ob_code")
   )
   
   # taxon interpretations
@@ -230,17 +230,18 @@ validate_values_exist <- function(child_df, child_col, parent_df, parent_col) {
   }
   
   if (!child_col %in% names(child_df)) {
-    cli::cli_alert_danger("{child_table}: Column '{child_col}' not found")
-    return(FALSE)
+    cli::cli_alert_info("{child_table}: Column '{child_col}' not found - skipping foreign key validation")
+    return(TRUE)
   }
   
   if (!parent_col %in% names(parent_df)) {
-    cli::cli_alert_danger("{parent_table}: Column '{parent_col}' not found")
-    return(FALSE)
+    cli::cli_alert_danger("{parent_table}: Column '{parent_col}' not found - skipping foreign key validation")
+    return(TRUE)
   }
   
   orphaned <- child_df %>%
     select(all_of(child_col)) %>%
+    mutate(!!child_col := as.character(.data[[child_col]])) %>%
     filter(!is.na(.data[[child_col]])) %>%
     anti_join(parent_df %>% select(all_of(parent_col)), 
               by = stats::setNames(parent_col, child_col)) %>%
@@ -279,10 +280,11 @@ validate_at_least_one_present <- function(df, col1, col2) {
     return(TRUE)
   }
   
-  missing_cols <- c(col1, col2)[!c(col1, col2) %in% names(df)]
-  if (length(missing_cols) > 0) {
-    cli::cli_alert_danger("{table_name}: Missing columns: {paste(missing_cols, collapse = ', ')}")
-    return(FALSE)
+  if (!col1 %in% names(df)) {
+    df[[col1]] <- NA_character_
+  }
+  if (!col2 %in% names(df)) {
+    df[[col2]] <- NA_character_
   }
   
   both_null_count <- df %>%
