@@ -219,7 +219,18 @@ docs %>%
 
 ### Disturbances
 
-This loader table describes disturbances on a plot.
+The disturbances loader table contains information about disturbances observed
+at a plot, such as fire, grazing, logging, or other events that have impacted
+the vegetation.
+
+The primary key is `user_do_code`. The foreign key `user_ob_code` links each
+disturbance record to a specific plot observation and is required.
+
+`type` describes the kind of disturbance and is a required field. `comment` is
+a best practice field for providing text details about the disturbance and its
+impacts. `intensity` describes the degree or severity of the disturbance, `age`
+records the estimated time in years since the disturbance event occurred, and
+`extent` captures the percent of the plot that experienced the disturbance event.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -230,7 +241,22 @@ docs %>%
 
 ### Soils
 
-The Soils loader table is used to describe soils collected from a plot. This includes information on soil horizons, texture, and chemical properties.
+The Soils loader table is used to describe soils collected from a plot. This includes information on soil horizons, texture, color, depth, and chemical properties.
+
+The primary key is `user_so_code`, which can be a simple row number. The foreign
+key `user_ob_code` links each soil record to a specific plot observation when used.
+
+`horizon` is a required field that identifies the soil horizon being described.
+`depth_top` and `depth_bottom` define the vertical extent of each horizon.
+`color` records soil color following USDA guidelines.
+
+Soil texture can be described using `texture` class and/or by recording the
+percent composition. Chemical properties include `organic` matter content, `ph`,
+`exchange_capacity`, and `base_saturation`. Methods for chemical analyses should
+be documented in the plot observation's `methodsNarrative` field.
+
+A `description` field shows additional text details about the soil
+characteristics.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -242,6 +268,31 @@ docs %>%
 ### Stem Data
 
 The Stem Data loader table is used to describe individual plant stems measured at a plot. 
+This table supports detailed tree/shrub demographic data collection, including
+stem diameter, height, location, and health status.
+
+The primary key is `user_sc_code`, which is the stem count identifier. The
+required foreign key `user_tm_code` links each stem record to a specific taxon
+observation in the strata cover table, associating stems with their species
+identification.
+
+`stem_count` is a required field recording the number of stems of a single
+species that share the same diameter and height characteristics. `stem_diameter`
+records stem diameter in centimeters. When diameter classes are used, this value
+represents the class midpoint, with `stem_diameter_accuracy` storing the offset
+to the class endpoint. Similarly, `stem_height` records height in meters, with
+`stem_height_accuracy` capturing measurement precision when height classes are
+used. 
+
+Individual stems can be tracked with `user_sl_code` (stem location identifier),
+`stem_code` (field label or tag number), and precise positions via 
+`stem_x_position` and `stem_y_position` coordinates in meters relative to the plot
+origin, with the x-axis defined by the plot azimuth.
+
+Additional fields include `stem_health` for recording stem condition and
+`stem_taxon_area` for expert users to record the sampling area used to infer
+species presence.
+
 ```{r, echo = FALSE}
 docs %>% 
   filter(loader_table == "stem_data") %>% 
