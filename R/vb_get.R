@@ -20,8 +20,10 @@
 #'   between the two options. If not specified, defaults to `TRUE` for
 #'   collection queries and `FALSE` for single-record queries.
 #' @param search Optional search string for filtering results based on full-text
-#'   search. Available for: plot-observations, plant-concepts, community-concepts,
-#'   projects, and parties.
+#'   search or the resource's vb_code (the latter of which is functionally
+#'   equivalent to using the `vb_code` argument directly). Available for:
+#'   plot-observations, plant-concepts, community-concepts, projects, and
+#'   parties.
 #' @param sort Optional string for sorting results. Prepend with "-" for
 #'   descending order (e.g., "-obs_count"). Available for:
 #'   \itemize{

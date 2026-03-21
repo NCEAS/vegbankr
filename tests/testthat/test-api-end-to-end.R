@@ -51,6 +51,11 @@ test_that("Getting projects works", {
   all <- vb_get_projects(limit = 5)
   expect_identical(nrow(all), 5L)
   expect_named(all, names, ignore.order = TRUE)
+  # check that search for pj code works
+  expect_identical(
+    vb_get_projects("pj.10508", parquet=TRUE),
+    vb_get_projects(search="pj.10508", detail="full") |>
+      dplyr::select(-search_rank))
 })
 
 test_that("Getting parties works", {
@@ -79,6 +84,11 @@ test_that("Getting parties works", {
   all <- vb_get_parties(limit = 5)
   expect_identical(nrow(all), 5L)
   expect_named(all, names, ignore.order = TRUE)
+  # check that search for py code works
+  expect_identical(
+    vb_get_parties("py.191378", parquet=TRUE),
+    vb_get_parties(search="py.191378", detail="full") |>
+      dplyr::select(-search_rank))
 })
 
 test_that("Getting roles works", {
@@ -237,7 +247,11 @@ test_that("Getting plant concepts works", {
   all <- vb_get_plant_concepts(limit = 5)
   expect_identical(nrow(all), 5L)
   expect_named(all, names, ignore.order = TRUE)
-
+  # check that search for pc code works
+  expect_identical(
+    vb_get_plant_concepts("pc.193", parquet=TRUE),
+    vb_get_plant_concepts(search="pc.193", detail="full", with_nested=TRUE) |>
+      dplyr::select(-search_rank))
 })
 
 test_that("Getting taxon observations works", {
@@ -483,6 +497,12 @@ test_that("Getting community concepts works", {
   all <- vb_get_community_concepts(limit = 5)
   expect_identical(nrow(all), 5L)
   expect_named(all, names, ignore.order = TRUE)
+  # check that search for cc code works
+  expect_identical(
+    vb_get_community_concepts("cc.30617", parquet=TRUE),
+    vb_get_community_concepts(search="cc.30617", detail="full",
+                              with_nested=TRUE) |>
+      dplyr::select(-search_rank))
 })
 
 test_that("Getting community classifications works", {
@@ -805,4 +825,10 @@ test_that("Getting plot observations works", {
   all <- vb_get_plot_observations(limit = 5)
   expect_identical(nrow(all), 5L)
   expect_named(all, names_mini, ignore.order = TRUE)
+  # check that search for ob code works
+  expect_identical(
+    vb_get_plot_observations("ob.41618", parquet=TRUE),
+    vb_get_plot_observations(search="ob.41618", detail="full",
+                             with_nested=TRUE, num_taxa=1000) |>
+      dplyr::select(-search_rank))
 })
