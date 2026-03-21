@@ -4,16 +4,22 @@
 \alias{vb_get}
 \alias{vb_get_projects}
 \alias{vb_get_parties}
+\alias{vb_get_roles}
 \alias{vb_get_references}
+\alias{vb_get_named_places}
 \alias{vb_get_cover_methods}
 \alias{vb_get_stratum_methods}
 \alias{vb_get_plant_concepts}
 \alias{vb_get_taxon_observations}
+\alias{vb_get_taxon_importances}
+\alias{vb_get_stem_counts}
+\alias{vb_get_strata}
 \alias{vb_get_taxon_interpretations}
 \alias{vb_get_community_concepts}
 \alias{vb_get_community_classifications}
 \alias{vb_get_community_interpretations}
 \alias{vb_get_plot_observations}
+\alias{vb_get_user_datasets}
 \title{Retrieve data from VegBank}
 \usage{
 vb_get_projects(
@@ -36,6 +42,8 @@ vb_get_parties(
   ...
 )
 
+vb_get_roles(vb_code = NULL, limit = 100, offset = 0, parquet = NULL, ...)
+
 vb_get_references(
   vb_code = NULL,
   limit = 100,
@@ -43,6 +51,14 @@ vb_get_references(
   parquet = NULL,
   search = NULL,
   sort = NULL,
+  ...
+)
+
+vb_get_named_places(
+  vb_code = NULL,
+  limit = 100,
+  offset = 0,
+  parquet = NULL,
   ...
 )
 
@@ -85,6 +101,25 @@ vb_get_taxon_observations(
   with_nested = NULL,
   ...
 )
+
+vb_get_taxon_importances(
+  vb_code = NULL,
+  limit = 100,
+  offset = 0,
+  parquet = NULL,
+  with_nested = NULL,
+  ...
+)
+
+vb_get_stem_counts(
+  vb_code = NULL,
+  limit = 100,
+  offset = 0,
+  parquet = NULL,
+  ...
+)
+
+vb_get_strata(vb_code = NULL, limit = 100, offset = 0, parquet = NULL, ...)
 
 vb_get_taxon_interpretations(
   vb_code = NULL,
@@ -136,6 +171,14 @@ vb_get_plot_observations(
   with_nested = NULL,
   num_taxa = NULL,
   num_comms = NULL,
+  ...
+)
+
+vb_get_user_datasets(
+  vb_code = NULL,
+  limit = 100,
+  offset = 0,
+  parquet = NULL,
   ...
 )
 
@@ -192,7 +235,7 @@ this is the default for individual record queries, otherwise the default is
 \item{detail}{Character string specifying level of detail. All endpoints
 support "full" detail. For those that support "minimal" detail, this is the
 default for collection queries, otherwise the default is "full". Plot
-observations additionally support detail="geo". In all cases, set to \code{NULL}
+observations additionally support \code{detail="geo"}. In all cases, set to \code{NULL}
 to use the API default.}
 
 \item{num_taxa}{\emph{Available only for plot-observations.} Integer
@@ -249,15 +292,28 @@ part of a community classification event
 names through usages
 \item \code{vb_get_taxon_observations()} - Data provider's determination of taxa
 observed on a plot, and the overall cover of those taxa
+\item \code{vb_get_taxon_importances()} - Cover/etc, and optionally stem counts,
+of taxa observed on a plot, overall and by stratum if so defined
+\item \code{vb_get_stem_counts()} - Stem counts of observed taxa, overall and by
+stratum if so defined
+\item \code{vb_get_strata()} - Defined strata in which taxon importance and/or stem
+counts have been recorded within a given plot observation, consistent with
+some stratum method
 \item \code{vb_get_taxon_interpretations()} - Assignments of taxon names and
 authorities (i.e., plant concepts) to specific taxon observations
 \item \code{vb_get_cover_methods()} - Information about registered coverclass methods
 \item \code{vb_get_stratum_methods()} - Information about registered strata sampling
 protocols
+\item \code{vb_get_named_places()} - Information about named places registered in
+VegBank
 \item \code{vb_get_references()} - Information about references cited within VegBank
 \item \code{vb_get_projects()} - Information about projects established to collect
 vegetation plot data
 \item \code{vb_get_parties()} - Information about people and organizations who have
+contributed to the collection or interpretation of a plot
+\item \code{vb_get_roles()} - VegBank-defined role types, which can be used to define
+the role of a party contributing to a plot observation, classification, etc
+\item \code{vb_get_user_datasets()} - Information about people and organizations who have
 contributed to the collection or interpretation of a plot
 }
 }
@@ -277,7 +333,7 @@ A query is considered a "cross-resource collection query" if a \code{vb_code} is
 provided with prefix matching a resource type that \emph{differs} from the target
 resource.  For example, \code{vb_get_plot_observations("pj.340")}, will return the
 collection of VegBank plot observation records corresponding to project
-"pj.340", if the project and corresponding plot observations exist.
+\code{pj.340}, if the project and corresponding plot observations exist.
 }
 
 \subsection{Full collection queries}{

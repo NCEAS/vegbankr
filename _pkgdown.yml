@@ -1,0 +1,14 @@
+url: https://nceas.github.io/vegbankr/
+template:
+  bootstrap: 5
+navbar:
+  structure:
+    left: [intro, upload, articles]
+    right: [search, github]
+  components:
+    intro:
+      text: About
+      href: index.html
+    upload:
+      text: Upload
+      href: articles/upload.html

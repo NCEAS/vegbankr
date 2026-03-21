@@ -1,0 +1,114 @@
+{
+    "core_counts": [
+        {
+            "count": 116352,
+            "name": "Observations"
+        },
+        {
+            "count": 95318,
+            "name": "Classified observations"
+        },
+        {
+            "count": 30436,
+            "name": "NVC classified observations"
+        },
+        {
+            "count": 293172,
+            "name": "Plants"
+        },
+        {
+            "count": 97024,
+            "name": "Accepted USDA plants"
+        },
+        {
+            "count": 9405,
+            "name": "Observed accepted USDA plants"
+        },
+        {
+            "count": 38981,
+            "name": "Communities"
+        },
+        {
+            "count": 10711,
+            "name": "Accepted US NVC communities"
+        },
+        {
+            "count": 1912,
+            "name": "Observed accepted US NVC communities"
+        }
+    ],
+    "latest_n_projects": [
+        {
+            "count": 3538,
+            "last_date_added": "Thu, 30 Apr 2020 16:17:56 GMT",
+            "name": "NVC Plot Template Import NCCN_plus_External_Sources_Plot_Data",
+            "pj_code": "pj.11129"
+        },
+        {
+            "count": 113,
+            "last_date_added": "Wed, 25 Apr 2018 18:39:54 GMT",
+            "name": "Canadian Transect_Grizelle Gonzalez (Gonzalez et al. 2000)",
+            "pj_code": "pj.11111"
+        }
+    ],
+    "top_n_community_concepts": [
+        {
+            "cc_code": "cc.1",
+            "count": 1961,
+            "name": "Community 1"
+        },
+        {
+            "cc_code": "cc.2",
+            "count": 1696,
+            "name": "Community 2"
+        }
+    ],
+    "top_n_contributors": [
+        {
+            "count": 10283,
+            "name": "Person 1",
+            "py_code": "py.1"
+        },
+        {
+            "count": 8657,
+            "name": "Person 2",
+            "py_code": "py.2"
+        }
+    ],
+    "top_n_named_places": [
+        {
+            "count": 16492,
+            "name": "Place 1",
+            "np_code": "np.1"
+        },
+        {
+            "count": 12808,
+            "name": "Place 2",
+            "np_code": "np.2"
+        }
+    ],
+    "top_n_plant_concepts": [
+        {
+            "count": 7475,
+            "name": "Plant 1",
+            "pc_code": "pc.1"
+        },
+        {
+            "count": 7073,
+            "name": "Plant 2",
+            "pc_code": "pc.2"
+        }
+    ],
+    "top_n_projects": [
+        {
+            "count": 17326,
+            "name": "Project 1",
+            "pj_code": "pj.1"
+        },
+        {
+            "count": 12962,
+            "name": "Project 2",
+            "pj_code": "pj.3"
+        }
+    ]
+}

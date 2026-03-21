@@ -8,6 +8,25 @@
 
 ENABLED <- FALSE
 
+test_that("Getting overview stats works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  names <- c(
+    "core_counts",
+    "latest_n_projects",
+    "top_n_community_concepts",
+    "top_n_contributors",
+    "top_n_named_places",
+    "top_n_plant_concepts",
+    "top_n_projects"
+  )
+  overview <- vb_overview(limit=4)
+  expect_named(overview, names, ignore.order = TRUE)
+  expect_true(all(sapply(overview, is.data.frame)))
+  expect_equal(nrow(overview$top_n_projects), 4)
+})
+
 test_that("Getting projects works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()
@@ -58,6 +77,28 @@ test_that("Getting parties works", {
   expect_identical(nrow(one), 1L)
   expect_named(one, names, ignore.order = TRUE)
   all <- vb_get_parties(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
+test_that("Getting roles works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_roles("ar.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "ar_code",
+    "description",
+    "name"
+  )
+  one <- vb_get_roles("ar.16")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names, ignore.order = TRUE)
+  all <- vb_get_roles(limit = 5)
   expect_identical(nrow(all), 5L)
   expect_named(all, names, ignore.order = TRUE)
 })
@@ -234,6 +275,102 @@ test_that("Getting taxon observations works", {
   expect_identical(nrow(one), 1L)
   expect_named(one, names_nest, ignore.order = TRUE)
   all <- vb_get_taxon_observations(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
+test_that("Getting taxon importances works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_taxon_importances("tm.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "basal_area",
+    "biomass",
+    "cover",
+    "cover_code",
+    "inference_area",
+    "ob_code",
+    "sr_code",
+    "stratum_base",
+    "stratum_height",
+    "stratum_name",
+    "tm_code",
+    "to_code"
+  )
+  names_nest <- c(
+    names,
+    "stems"
+  )
+  one <- vb_get_taxon_importances("tm.74081")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names_nest, ignore.order = TRUE)
+  all <- vb_get_taxon_importances(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
+test_that("Getting stem counts works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_stem_counts("sc.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "count",
+    "diameter",
+    "diameter_accuracy",
+    "height",
+    "height_accuracy",
+    "ob_code",
+    "sc_code",
+    "sr_code",
+    "stratum_name",
+    "taxon_area",
+    "tm_code",
+    "to_code"
+  )
+  one <- vb_get_stem_counts("sc.2056")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names, ignore.order = TRUE)
+  all <- vb_get_stem_counts(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
+test_that("Getting strata works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_strata("sr.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "base",
+    "cover",
+    "description",
+    "height",
+    "name",
+    "ob_code",
+    "sm_code",
+    "sr_code",
+    "stratum_method_name",
+    "stratum_type_name",
+    "sy_code"
+  )
+  one <- vb_get_strata("sr.22374")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names, ignore.order = TRUE)
+  all <- vb_get_strata(limit = 5)
   expect_identical(nrow(all), 5L)
   expect_named(all, names, ignore.order = TRUE)
 })
@@ -419,6 +556,62 @@ test_that("Getting community interpretations works", {
   expect_named(all, names_mini, ignore.order = TRUE)
 })
 
+test_that("Getting user datasets works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_user_datasets("ds.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "accession_code",
+    "description",
+    "ds_code",
+    "name",
+    "obs_count",
+    "owner_email",
+    "owner_label",
+    "start",
+    "stop",
+    "type"
+  )
+  one <- vb_get_user_datasets("ds.196903")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names, ignore.order = TRUE)
+  all <- vb_get_user_datasets(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
+test_that("Getting named places works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  expect_message(
+    zero_records <- vb_get_named_places("np.0"),
+    "No records returned",
+    fixed = TRUE)
+  expect_identical(nrow(zero_records), 0L)
+  names <- c(
+    "code",
+    "description",
+    "name",
+    "np_code",
+    "obs_count",
+    "owner",
+    "rf_label",
+    "system"
+  )
+  one <- vb_get_named_places("np.1")
+  expect_identical(nrow(one), 1L)
+  expect_named(one, names, ignore.order = TRUE)
+  all <- vb_get_named_places(limit = 5)
+  expect_identical(nrow(all), 5L)
+  expect_named(all, names, ignore.order = TRUE)
+})
+
 test_that("Getting plot observations works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()
@@ -535,6 +728,7 @@ test_that("Getting plot observations works", {
     "plot_validation_level",
     "previous_ob_code",
     "project_name",
+    "replaced_by_ob_code",
     "representativeness",
     "rf_code",
     "rf_label",
@@ -578,6 +772,9 @@ test_that("Getting plot observations works", {
   )
   names_full_nest <- c(
     names_full,
+    "disturbances",
+    "named_places",
+    "soils",
     "taxon_count",
     "taxon_importance_count",
     "taxon_importance_count_returned",

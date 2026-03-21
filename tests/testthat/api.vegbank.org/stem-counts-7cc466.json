@@ -1,0 +1,33 @@
+{
+    "count": 600241,
+    "data": [
+        {
+            "count": 1,
+            "diameter": 22.0,
+            "diameter_accuracy": null,
+            "height": null,
+            "height_accuracy": null,
+            "ob_code": "ob.3062",
+            "sc_code": "sc.2056",
+            "sr_code": "sr.22374",
+            "stratum_name": "Canopy",
+            "taxon_area": null,
+            "tm_code": "tm.74081",
+            "to_code": "to.68185"
+        },
+        {
+            "count": 1,
+            "diameter": 17.2,
+            "diameter_accuracy": null,
+            "height": null,
+            "height_accuracy": null,
+            "ob_code": "ob.3062",
+            "sc_code": "sc.2057",
+            "sr_code": "sr.22374",
+            "stratum_name": "Canopy",
+            "taxon_area": null,
+            "tm_code": "tm.74081",
+            "to_code": "to.68185"
+        }
+    ]
+}

@@ -220,6 +220,28 @@ test_that("parties works", {
   test_cross_resource(resource, "projects", "pj.11057")
 })
 
+test_that("roles works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "roles"
+  table_code <- "ar"
+  vb_code <- "ar.16"
+  names_full <- c(
+    "ar_code",
+    "description",
+    "name"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+})
+
 test_that("references works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()
@@ -399,6 +421,112 @@ test_that("taxon-observations works", {
   test_success_collection_parquet(resource, names_full_nest, with_nested=TRUE)
   test_cross_resource(resource, "plot-observations", "ob.83802")
   test_cross_resource(resource, "plant-concepts", "pc.110944")
+})
+
+test_that("taxon-importances works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "taxon-importances"
+  table_code <- "tm"
+  vb_code <- "tm.74081"
+  names_full <- c(
+    "basal_area",
+    "biomass",
+    "cover",
+    "cover_code",
+    "inference_area",
+    "ob_code",
+    "sr_code",
+    "stratum_base",
+    "stratum_height",
+    "stratum_name",
+    "tm_code",
+    "to_code"
+  )
+  names_full_nest <- c(
+    names_full,
+    "stems"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+  test_success_collection_parquet(resource, names_full_nest, with_nested=TRUE)
+  test_cross_resource(resource, "plot-observations", "ob.3062")
+  test_cross_resource(resource, "taxon-observations", "to.68185")
+  test_cross_resource(resource, "plant-concepts", "pc.45236")
+})
+
+test_that("stem-counts works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "stem-counts"
+  table_code <- "sc"
+  vb_code <- "sc.2056"
+  names_full <- c(
+    "count",
+    "diameter",
+    "diameter_accuracy",
+    "height",
+    "height_accuracy",
+    "ob_code",
+    "sc_code",
+    "sr_code",
+    "stratum_name",
+    "taxon_area",
+    "tm_code",
+    "to_code"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+  test_cross_resource(resource, "plot-observations", "ob.3062")
+  test_cross_resource(resource, "taxon-observations", "to.68185")
+  test_cross_resource(resource, "taxon-importances", "tm.74081")
+})
+
+test_that("strata works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "strata"
+  table_code <- "sr"
+  vb_code <- "sr.22374"
+  names_full <- c(
+    "base",
+    "cover",
+    "description",
+    "height",
+    "name",
+    "ob_code",
+    "sm_code",
+    "sr_code",
+    "stratum_method_name",
+    "stratum_type_name",
+    "sy_code"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+  test_cross_resource(resource, "plot-observations", "ob.109863")
+  test_cross_resource(resource, "taxon-observations", "to.587096")
+  test_cross_resource(resource, "taxon-importances", "tm.74081")
 })
 
 test_that("taxon-interpretations works", {
@@ -610,6 +738,62 @@ test_that("community-interpretations works", {
   test_cross_resource(resource, "community-concepts", "cc.38712")
 })
 
+test_that("user-datasets works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "user-datasets"
+  table_code <- "ds"
+  vb_code <- "ds.196903"
+  names_full <- c(
+    "accession_code",
+    "description",
+    "ds_code",
+    "name",
+    "obs_count",
+    "owner_email",
+    "owner_label",
+    "start",
+    "stop",
+    "type"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+})
+
+test_that("named-places works", {
+  skip_if_not(ENABLED && interactive())
+  skip_on_cran()
+  local_vb_debug(0)
+  resource <- "named-places"
+  table_code <- "np"
+  vb_code <- "np.1"
+  names_full <- c(
+    "code",
+    "description",
+    "name",
+    "np_code",
+    "obs_count",
+    "owner",
+    "rf_label",
+    "system"
+  )
+  test_error_limit(resource)
+  test_error_offset(resource)
+  test_error_detail(resource)
+  test_error_vb_code(resource, table_code)
+  test_success_one_json(resource, vb_code, names_full)
+  test_success_one_parquet(resource, vb_code, names_full)
+  test_success_collection_json(resource, names_full)
+  test_success_collection_parquet(resource, names_full)
+})
+
 test_that("plot-observations works", {
   skip_if_not(ENABLED && interactive())
   skip_on_cran()
@@ -724,6 +908,7 @@ test_that("plot-observations works", {
     "plot_validation_level",
     "previous_ob_code",
     "project_name",
+    "replaced_by_ob_code",
     "representativeness",
     "rf_code",
     "rf_label",
@@ -774,6 +959,9 @@ test_that("plot-observations works", {
   )
   names_full_nest <- c(
     names_full,
+    "disturbances",
+    "named_places",
+    "soils",
     "taxon_count",
     "taxon_importance_count",
     "taxon_importance_count_returned",
@@ -800,6 +988,8 @@ test_that("plot-observations works", {
   test_success_collection_parquet(resource, names_mini_nest,
                                   detail="minimal", with_nested=TRUE)
   test_success_collection_parquet(resource, names_geo, detail="geo")
+  test_cross_resource(resource, "user-datasets", "ds.199635")
+  test_cross_resource(resource, "named-places", "np.1000")
   test_cross_resource(resource, "projects", "pj.340")
   test_cross_resource(resource, "parties", "py.192036")
   test_cross_resource(resource, "plant-concepts", "pc.110944")

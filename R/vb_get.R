@@ -35,7 +35,7 @@
 #' @param detail Character string specifying level of detail. All endpoints
 #'   support "full" detail. For those that support "minimal" detail, this is the
 #'   default for collection queries, otherwise the default is "full". Plot
-#'   observations additionally support detail="geo". In all cases, set to `NULL`
+#'   observations additionally support `detail="geo"`. In all cases, set to `NULL`
 #'   to use the API default.
 #' @param with_nested Logical indicating whether to include nested data
 #'   structures. All endpoints support `FALSE`. For those that support `TRUE`,
@@ -86,15 +86,28 @@
 #'   names through usages
 #' * `vb_get_taxon_observations()` - Data provider's determination of taxa
 #'   observed on a plot, and the overall cover of those taxa
+#' * `vb_get_taxon_importances()` - Cover/etc, and optionally stem counts,
+#'   of taxa observed on a plot, overall and by stratum if so defined
+#' * `vb_get_stem_counts()` - Stem counts of observed taxa, overall and by
+#'    stratum if so defined
+#' * `vb_get_strata()` - Defined strata in which taxon importance and/or stem
+#'    counts have been recorded within a given plot observation, consistent with
+#'    some stratum method
 #' * `vb_get_taxon_interpretations()` - Assignments of taxon names and
 #'   authorities (i.e., plant concepts) to specific taxon observations
 #' * `vb_get_cover_methods()` - Information about registered coverclass methods
 #' * `vb_get_stratum_methods()` - Information about registered strata sampling
 #'   protocols
+#' * `vb_get_named_places()` - Information about named places registered in
+#'   VegBank
 #' * `vb_get_references()` - Information about references cited within VegBank
 #' * `vb_get_projects()` - Information about projects established to collect
 #'   vegetation plot data
 #' * `vb_get_parties()` - Information about people and organizations who have
+#'   contributed to the collection or interpretation of a plot
+#' * `vb_get_roles()` - VegBank-defined role types, which can be used to define
+#'   the role of a party contributing to a plot observation, classification, etc
+#' * `vb_get_user_datasets()` - Information about people and organizations who have
 #'   contributed to the collection or interpretation of a plot
 #'
 #' ## Query types
@@ -112,7 +125,7 @@
 #' provided with prefix matching a resource type that _differs_ from the target
 #' resource.  For example, `vb_get_plot_observations("pj.340")`, will return the
 #' collection of VegBank plot observation records corresponding to project
-#' "pj.340", if the project and corresponding plot observations exist.
+#' `pj.340`, if the project and corresponding plot observations exist.
 #'
 #' ### Full collection queries
 #'
@@ -179,6 +192,18 @@ vb_get_parties <- function(vb_code = NULL, limit = 100, offset = 0,
 
 #' @rdname vb_get
 #' @export
+vb_get_roles <- function(vb_code = NULL, limit = 100, offset = 0,
+                         parquet = NULL, ...) {
+  resource <- "roles"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...)
+}
+
+#' @rdname vb_get
+#' @export
 vb_get_references <- function(vb_code = NULL, limit = 100, offset = 0,
                             parquet = NULL, search = NULL, sort = NULL, ...) {
   resource <- "references"
@@ -187,6 +212,18 @@ vb_get_references <- function(vb_code = NULL, limit = 100, offset = 0,
   if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
   vb_get(resource, vb_code, parquet = parquet, search = search,
          sort = sort, limit = limit, offset = offset, ...)
+}
+
+#' @rdname vb_get
+#' @export
+vb_get_named_places <- function(vb_code = NULL, limit = 100, offset = 0,
+                                parquet = NULL, ...) {
+  resource <- "named-places"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...)
 }
 
 #' @rdname vb_get
@@ -244,6 +281,44 @@ vb_get_taxon_observations <- function(vb_code = NULL, limit = 100,
   if (missing(with_nested)) with_nested <- if (is_collection) FALSE else TRUE
   vb_get(resource, vb_code, parquet = parquet, search = search,
          with_nested = with_nested, limit = limit, offset = offset, ...)
+}
+
+#' @rdname vb_get
+#' @export
+vb_get_taxon_importances <- function(vb_code = NULL, limit = 100,
+                                     offset = 0, parquet = NULL,
+                                     with_nested = NULL, ...) {
+  resource <- "taxon-importances"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  if (missing(with_nested)) with_nested <- if (is_collection) FALSE else TRUE
+  vb_get(resource, vb_code, parquet = parquet, with_nested = with_nested,
+         limit = limit, offset = offset, ...)
+}
+
+#' @rdname vb_get
+#' @export
+vb_get_stem_counts <- function(vb_code = NULL, limit = 100, offset = 0,
+                               parquet = NULL, ...) {
+  resource <- "stem-counts"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...)
+}
+
+#' @rdname vb_get
+#' @export
+vb_get_strata <- function(vb_code = NULL, limit = 100, offset = 0,
+                          parquet = NULL, ...) {
+  resource <- "strata"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...)
 }
 
 #' @rdname vb_get
@@ -326,6 +401,17 @@ vb_get_plot_observations <- function(vb_code = NULL, limit = 100, offset = 0,
 }
 
 #' @rdname vb_get
+#' @export
+vb_get_user_datasets <- function(vb_code = NULL, limit = 100, offset = 0,
+                                 parquet = NULL, ...) {
+  resource <- "user-datasets"
+  vb_key <- get_vb_key(resource)
+  is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
+  vb_get(resource, vb_code, parquet = parquet, limit = limit,
+         offset = offset, ...) }
+
+#' @rdname vb_get
 #' @import httr2
 #' @importFrom rlang !!!
 #' @export
@@ -381,16 +467,22 @@ vb_get <- function(resource, vb_code = NULL, by = NULL, parquet = TRUE,
 
 # Internal mapping table between vb_code prefixes and resource names
 vb_resource_lookup <- c(
+  ar = "roles",
   cl = "community-classifications",
   cc = "community-concepts",
   ci = "community-interpretations",
   cm = "cover-methods",
+  ds = "user-datasets",
+  np = "named-places",
   py = "parties",
   pc = "plant-concepts",
   ob = "plot-observations",
   pj = "projects",
   rf = "references",
+  sc = "stem-counts",
   sm = "stratum-methods",
+  sr = "strata",
+  tm = "taxon-importances",
   ti = "taxon-interpretations",
   to = "taxon-observations"
 )
