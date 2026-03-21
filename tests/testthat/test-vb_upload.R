@@ -169,5 +169,16 @@ with_mock_api({
       paste0(endpoint, "?dry_run=FALSE&deactivation=none")
     )
 
+    endpoint <- "https://api.vegbank.org/taxon-interpretations"
+    expect_error(
+      vb_upload_taxon_interpretations(),
+      "argument \"taxon_interpretations\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_taxon_interpretations(
+        taxon_interpretations = data.frame(a=1)),
+      paste0(endpoint)
+    )
+
   })
 })

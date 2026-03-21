@@ -80,6 +80,9 @@
 #'    through usages, with some status designation
 #' 3. `vb_upload_community_concepts()` - Community concepts linked to community
 #'    names through usages, with some status designation
+#' 4. `vb_upload_taxon_interpretations()` - Re-interpretation of existing
+# '   VegBank taxon observations (each of which belongs to some VegBank plot
+#'    observation), associating them with one or more VegBank plant concepts
 #'
 #' If `vb_debug()` is enabled, additional debugging details will be reported to
 #' the console, primarily focused on the data being uploaded.
@@ -271,5 +274,16 @@ vb_upload_community_concepts <- function(community_concepts,
             parties = parties,
             references = references,
             query_params = query_params,
+            dry_run = dry_run)
+}
+
+#' @rdname vb_upload
+#' @export
+vb_upload_taxon_interpretations <- function(taxon_interpretations,
+    parties = NULL, references = NULL, dry_run = FALSE) {
+  vb_upload("taxon-interpretations",
+            taxon_interpretations = taxon_interpretations,
+            parties = parties,
+            references = references,
             dry_run = dry_run)
 }
