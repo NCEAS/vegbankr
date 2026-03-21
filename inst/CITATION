@@ -1,5 +1,6 @@
 year <- sub("-.*", "", meta$Date)
 title <- "An R API Package for the VegBank Data System"
+note <- sprintf("R package version %s", meta$Version)
 authors <- c(
     person("Jim", "Regetz",
         email = "regetz@nceas.ucsb.edu",
@@ -17,12 +18,12 @@ authors <- c(
         email = "jclark@nceas.ucsb.edu",
         role = c("aut"),
         comment=c(ORCID = "0000-0003-4703-1974"))
-    )
 )
-bibentry(bibtype = "software",
+bibentry(bibtype = "Manual",
          title = paste0("{vegbankr}: ", title),
          author = authors,
          year = year,
+         note = note,
          url = "https://doi.org/10.82902/J1159D",
          doi = '10.82902/J1159D'
 )
