@@ -292,7 +292,7 @@ test_that("Getting taxon importances works", {
     "No records returned",
     fixed = TRUE)
   expect_identical(nrow(zero_records), 0L)
-  names <- c(
+  names_mini <- c(
     "basal_area",
     "biomass",
     "cover",
@@ -302,20 +302,25 @@ test_that("Getting taxon importances works", {
     "sr_code",
     "stratum_base",
     "stratum_height",
-    "stratum_name",
     "tm_code",
     "to_code"
   )
-  names_nest <- c(
-    names,
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "author_plant_name",
+    "stratum_name"
+  )
+  names_full_nest <- c(
+    names_full,
     "stems"
   )
   one <- vb_get_taxon_importances("tm.74081")
   expect_identical(nrow(one), 1L)
-  expect_named(one, names_nest, ignore.order = TRUE)
+  expect_named(one, names_full_nest, ignore.order = TRUE)
   all <- vb_get_taxon_importances(limit = 5)
   expect_identical(nrow(all), 5L)
-  expect_named(all, names, ignore.order = TRUE)
+  expect_named(all, names_mini, ignore.order = TRUE)
 })
 
 test_that("Getting stem counts works", {

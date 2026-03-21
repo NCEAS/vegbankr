@@ -440,7 +440,7 @@ test_that("taxon-importances works", {
   resource <- "taxon-importances"
   table_code <- "tm"
   vb_code <- "tm.74081"
-  names_full <- c(
+  names_mini <- c(
     "basal_area",
     "biomass",
     "cover",
@@ -450,9 +450,18 @@ test_that("taxon-importances works", {
     "sr_code",
     "stratum_base",
     "stratum_height",
-    "stratum_name",
     "tm_code",
     "to_code"
+  )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "author_plant_name",
+    "stratum_name"
+  )
+  names_mini_nest <- c(
+    names_mini,
+    "stems"
   )
   names_full_nest <- c(
     names_full,
@@ -460,13 +469,15 @@ test_that("taxon-importances works", {
   )
   test_error_limit(resource)
   test_error_offset(resource)
-  test_error_detail(resource)
   test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names_full)
   test_success_one_parquet(resource, vb_code, names_full)
   test_success_collection_json(resource, names_full)
   test_success_collection_parquet(resource, names_full)
+  test_success_collection_parquet(resource, names_mini, detail="minimal")
   test_success_collection_parquet(resource, names_full_nest, with_nested=TRUE)
+  test_success_collection_parquet(resource, names_mini_nest,
+                                  detail="minimal", with_nested=TRUE)
   test_cross_resource(resource, "plot-observations", "ob.3062")
   test_cross_resource(resource, "taxon-observations", "to.68185")
   test_cross_resource(resource, "plant-concepts", "pc.45236")
