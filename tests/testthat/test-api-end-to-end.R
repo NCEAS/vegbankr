@@ -368,7 +368,7 @@ test_that("Getting strata works", {
     "No records returned",
     fixed = TRUE)
   expect_identical(nrow(zero_records), 0L)
-  names <- c(
+  names_mini <- c(
     "base",
     "cover",
     "description",
@@ -377,16 +377,20 @@ test_that("Getting strata works", {
     "ob_code",
     "sm_code",
     "sr_code",
-    "stratum_method_name",
-    "stratum_type_name",
     "sy_code"
+  )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "stratum_method_name",
+    "stratum_type_name"
   )
   one <- vb_get_strata("sr.22374")
   expect_identical(nrow(one), 1L)
-  expect_named(one, names, ignore.order = TRUE)
+  expect_named(one, names_full, ignore.order = TRUE)
   all <- vb_get_strata(limit = 5)
   expect_identical(nrow(all), 5L)
-  expect_named(all, names, ignore.order = TRUE)
+  expect_named(all, names_mini, ignore.order = TRUE)
 })
 
 test_that("Getting taxon interpretations works", {

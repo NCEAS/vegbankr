@@ -17,7 +17,7 @@ with_mock_api({
     )
 
     response <- vb_get_strata("sr.1", parquet=FALSE,
-      limit=NULL, offset=NULL)
+      limit=NULL, offset=NULL, detail=NULL)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(
@@ -32,14 +32,14 @@ with_mock_api({
     expect_identical(response$stratum_type_name[1], "Shrub")
 
     expect_message(
-      zero_records <- vb_get_strata(limit=0, parquet=FALSE),
+      zero_records <- vb_get_strata(limit=0, parquet=FALSE, detail=NULL),
       "No records returned",
       fixed = TRUE
     )
     expect_s3_class(zero_records, "data.frame")
     expect_identical(nrow(zero_records), 0L)
 
-    response <- vb_get_strata(limit=2, parquet=FALSE)
+    response <- vb_get_strata(limit=2, parquet=FALSE, detail=NULL)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 2L)
     expect_named(

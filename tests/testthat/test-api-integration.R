@@ -529,7 +529,7 @@ test_that("strata works", {
   resource <- "strata"
   table_code <- "sr"
   vb_code <- "sr.22374"
-  names_full <- c(
+  names_mini <- c(
     "base",
     "cover",
     "description",
@@ -538,18 +538,22 @@ test_that("strata works", {
     "ob_code",
     "sm_code",
     "sr_code",
-    "stratum_method_name",
-    "stratum_type_name",
     "sy_code"
+  )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "stratum_method_name",
+    "stratum_type_name"
   )
   test_error_limit(resource)
   test_error_offset(resource)
-  test_error_detail(resource)
   test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names_full)
   test_success_one_parquet(resource, vb_code, names_full)
   test_success_collection_json(resource, names_full)
   test_success_collection_parquet(resource, names_full)
+  test_success_collection_parquet(resource, names_mini, detail="minimal")
   test_cross_resource(resource, "plot-observations", "ob.109863")
   test_cross_resource(resource, "taxon-observations", "to.587096")
   test_cross_resource(resource, "taxon-importances", "tm.74081")
