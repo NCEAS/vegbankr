@@ -332,7 +332,7 @@ test_that("Getting stem counts works", {
     "No records returned",
     fixed = TRUE)
   expect_identical(nrow(zero_records), 0L)
-  names <- c(
+  names_mini <- c(
     "count",
     "diameter",
     "diameter_accuracy",
@@ -341,17 +341,22 @@ test_that("Getting stem counts works", {
     "ob_code",
     "sc_code",
     "sr_code",
-    "stratum_name",
     "taxon_area",
     "tm_code",
     "to_code"
   )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "author_plant_name",
+    "stratum_name"
+  )
   one <- vb_get_stem_counts("sc.2056")
   expect_identical(nrow(one), 1L)
-  expect_named(one, names, ignore.order = TRUE)
+  expect_named(one, names_full, ignore.order = TRUE)
   all <- vb_get_stem_counts(limit = 5)
   expect_identical(nrow(all), 5L)
-  expect_named(all, names, ignore.order = TRUE)
+  expect_named(all, names_mini, ignore.order = TRUE)
 })
 
 test_that("Getting strata works", {

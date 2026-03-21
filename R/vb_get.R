@@ -302,13 +302,14 @@ vb_get_taxon_importances <- function(vb_code = NULL, limit = 100,
 #' @rdname vb_get
 #' @export
 vb_get_stem_counts <- function(vb_code = NULL, limit = 100, offset = 0,
-                               parquet = NULL, ...) {
+                               parquet = NULL, detail = NULL, ...) {
   resource <- "stem-counts"
   vb_key <- get_vb_key(resource)
   is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
+  if (missing(detail)) detail <- if (is_collection) "minimal" else "full"
   if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
   vb_get(resource, vb_code, parquet = parquet, limit = limit,
-         offset = offset, ...)
+         offset = offset, detail = detail, ...)
 }
 
 #' @rdname vb_get
