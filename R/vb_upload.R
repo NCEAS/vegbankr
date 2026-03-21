@@ -83,6 +83,9 @@
 #' 4. `vb_upload_taxon_interpretations()` - Re-interpretation of existing
 # '   VegBank taxon observations (each of which belongs to some VegBank plot
 #'    observation), associating them with one or more VegBank plant concepts
+#' 5. `vb_upload_community_classifications()` - Re-interpretation of existing
+#'    VegBank plot observations, associating them with one or more VegBank
+#'    community concepts as part of a classification activity
 #'
 #' If `vb_debug()` is enabled, additional debugging details will be reported to
 #' the console, primarily focused on the data being uploaded.
@@ -285,5 +288,17 @@ vb_upload_taxon_interpretations <- function(taxon_interpretations,
             taxon_interpretations = taxon_interpretations,
             parties = parties,
             references = references,
+            dry_run = dry_run)
+}
+
+#' @rdname vb_upload
+#' @export
+vb_upload_community_classifications <- function(community_classifications,
+    parties = NULL, references = NULL, contributors = NULL, dry_run = FALSE) {
+  vb_upload("community-classifications",
+            community_classifications = community_classifications,
+            parties = parties,
+            references = references,
+            contributors = contributors,
             dry_run = dry_run)
 }

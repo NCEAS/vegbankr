@@ -6,6 +6,7 @@
 \alias{vb_upload_plant_concepts}
 \alias{vb_upload_community_concepts}
 \alias{vb_upload_taxon_interpretations}
+\alias{vb_upload_community_classifications}
 \title{Upload data to VegBank}
 \usage{
 vb_upload(resource, ..., query_params = NULL, dry_run = FALSE)
@@ -50,6 +51,14 @@ vb_upload_taxon_interpretations(
   taxon_interpretations,
   parties = NULL,
   references = NULL,
+  dry_run = FALSE
+)
+
+vb_upload_community_classifications(
+  community_classifications,
+  parties = NULL,
+  references = NULL,
+  contributors = NULL,
   dry_run = FALSE
 )
 }
@@ -156,6 +165,9 @@ through usages, with some status designation
 names through usages, with some status designation
 \item \code{vb_upload_taxon_interpretations()} - Re-interpretation of existing
 observation), associating them with one or more VegBank plant concepts
+\item \code{vb_upload_community_classifications()} - Re-interpretation of existing
+VegBank plot observations, associating them with one or more VegBank
+community concepts as part of a classification activity
 }
 
 If \code{vb_debug()} is enabled, additional debugging details will be reported to
