@@ -98,6 +98,7 @@ vb_get_taxon_observations(
   offset = 0,
   parquet = NULL,
   search = NULL,
+  detail = NULL,
   with_nested = NULL,
   ...
 )
@@ -107,6 +108,7 @@ vb_get_taxon_importances(
   limit = 100,
   offset = 0,
   parquet = NULL,
+  detail = NULL,
   with_nested = NULL,
   ...
 )
@@ -116,10 +118,18 @@ vb_get_stem_counts(
   limit = 100,
   offset = 0,
   parquet = NULL,
+  detail = NULL,
   ...
 )
 
-vb_get_strata(vb_code = NULL, limit = 100, offset = 0, parquet = NULL, ...)
+vb_get_strata(
+  vb_code = NULL,
+  limit = 100,
+  offset = 0,
+  parquet = NULL,
+  detail = NULL,
+  ...
+)
 
 vb_get_taxon_interpretations(
   vb_code = NULL,
