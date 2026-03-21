@@ -388,23 +388,31 @@ test_that("taxon-observations works", {
   resource <- "taxon-observations"
   table_code <- "to"
   vb_code <- "to.587096"
-  names_full <- c(
-    "author_plant_name",
+  names_mini <- c(
     "int_curr_pc_code",
+    "int_orig_pc_code",
+    "ob_code",
+    "rf_code",
+    "taxon_inference_area",
+    "to_code"
+  )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "author_plant_name",
     "int_curr_plant_code",
     "int_curr_plant_common",
     "int_curr_plant_sci_full",
     "int_curr_plant_sci_name_no_auth",
-    "int_orig_pc_code",
     "int_orig_plant_code",
     "int_orig_plant_common",
     "int_orig_plant_sci_full",
     "int_orig_plant_sci_name_no_auth",
-    "ob_code",
-    "rf_code",
-    "rf_label",
-    "taxon_inference_area",
-    "to_code"
+    "rf_label"
+  )
+  names_mini_nest <- c(
+    names_mini,
+    "taxon_importance"
   )
   names_full_nest <- c(
     names_full,
@@ -412,13 +420,15 @@ test_that("taxon-observations works", {
   )
   test_error_limit(resource)
   test_error_offset(resource)
-  test_error_detail(resource)
   test_error_vb_code(resource, table_code)
   test_success_one_json(resource, vb_code, names_full)
   test_success_one_parquet(resource, vb_code, names_full)
   test_success_collection_json(resource, names_full)
   test_success_collection_parquet(resource, names_full)
+  test_success_collection_parquet(resource, names_mini, detail="minimal")
   test_success_collection_parquet(resource, names_full_nest, with_nested=TRUE)
+  test_success_collection_parquet(resource, names_mini_nest,
+                                  detail="minimal", with_nested=TRUE)
   test_cross_resource(resource, "plot-observations", "ob.83802")
   test_cross_resource(resource, "plant-concepts", "pc.110944")
 })

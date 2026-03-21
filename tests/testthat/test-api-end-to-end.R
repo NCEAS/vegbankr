@@ -249,34 +249,38 @@ test_that("Getting taxon observations works", {
     "No records returned",
     fixed = TRUE)
   expect_identical(nrow(zero_records), 0L)
-  names <- c(
-    "author_plant_name",
+  names_mini <- c(
     "int_curr_pc_code",
+    "int_orig_pc_code",
+    "ob_code",
+    "rf_code",
+    "taxon_inference_area",
+    "to_code"
+  )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "author_plant_name",
     "int_curr_plant_code",
     "int_curr_plant_common",
     "int_curr_plant_sci_full",
     "int_curr_plant_sci_name_no_auth",
-    "int_orig_pc_code",
     "int_orig_plant_code",
     "int_orig_plant_common",
     "int_orig_plant_sci_full",
     "int_orig_plant_sci_name_no_auth",
-    "ob_code",
-    "rf_code",
-    "rf_label",
-    "taxon_inference_area",
-    "to_code"
+    "rf_label"
   )
-  names_nest <- c(
-    names,
+  names_full_nest <- c(
+    names_full,
     "taxon_importance"
   )
   one <- vb_get_taxon_observations("to.693826")
   expect_identical(nrow(one), 1L)
-  expect_named(one, names_nest, ignore.order = TRUE)
+  expect_named(one, names_full_nest, ignore.order = TRUE)
   all <- vb_get_taxon_observations(limit = 5)
   expect_identical(nrow(all), 5L)
-  expect_named(all, names, ignore.order = TRUE)
+  expect_named(all, names_mini, ignore.order = TRUE)
 })
 
 test_that("Getting taxon importances works", {
