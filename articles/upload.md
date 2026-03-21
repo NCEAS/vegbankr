@@ -56,10 +56,10 @@ interactive tables display the allowed `field` (column names), whether
 the field is required, best practice, commonly used, or sometimes used,
 and a description of the field.
 
-There are number of fields that act as codes which are used primary and
-secondary keys to link loader tables together. Codes that begin with
-`user_` are supplied by the data uploader. Codes that begin with `vb_`
-are created by the database upon data upload.
+There are a number of fields that act as codes and that are used as
+primary and secondary keys to link loader tables together. Codes that
+begin with `user_` are supplied by the data contributor. Codes that
+begin with `vb_` are created by the database upon data upload.
 
 ### Projects
 
@@ -118,9 +118,9 @@ Similar to the pattern described in contributors, one of `vb_pl_code` or
 for each row. `vb_pl_code` would only be used if the intention is to add
 a new observation record to the same plot. These codes are used as
 foreign keys in various other tables. `author_plot_code` is often the
-same as these codes (eg: `MOJA_0214`) but there they could be different
-for valid reasons. `author_plot_code` is prominently displayed in the
-user VegBank interface as the plot identifier.
+same as these codes (e.g., `MOJA_0214`) but there they could be
+different for valid reasons. `author_plot_code` is prominently displayed
+in the user VegBank interface as the plot identifier.
 
 `user_ob_code` is the primary key for an observation on a plot, and may
 be the same as the plot code if there is only one observation of each
@@ -180,20 +180,75 @@ with an existing VegBank plant concept code. To get a list of existing
 plant concepts, use the `vb_get_plant_concepts` function. Note that a
 person with a role is also required for this table, so one of
 `user_py_code` (present in the `parties` loader table) or `vb_py_code`
-(an exsiting VegBank party) must exist, along with their role, in
+(an existing VegBank party) must exist, along with their role, in
 `vb_ar_code`.
 
 ### Disturbances
 
-This loader table describes disturbances on a plot.
+The disturbances loader table contains information about disturbances
+observed at a plot, such as fire, grazing, logging, or other events that
+have impacted the vegetation.
+
+The primary key is `user_do_code`. The foreign key `user_ob_code` links
+each disturbance record to a specific plot observation and is required.
+
+`type` describes the kind of disturbance and is a required field.
+`comment` is a best practice field for providing text details about the
+disturbance and its impacts. `intensity` describes the degree or
+severity of the disturbance, `age` records the estimated time in years
+since the disturbance event occurred, and `extent` captures the percent
+of the plot that experienced the disturbance event.
 
 ### Soils
 
 The Soils loader table is used to describe soils collected from a plot.
-This includes information on soil horizons, texture, and chemical
-properties.
+This includes information on soil horizons, texture, color, depth, and
+chemical properties.
+
+The primary key is `user_so_code`, which can be a simple row number. The
+foreign key `user_ob_code` links each soil record to a specific plot
+observation when used.
+
+`horizon` is a required field that identifies the soil horizon being
+described. `depth_top` and `depth_bottom` define the vertical extent of
+each horizon. `color` records soil color following USDA guidelines.
+
+Soil texture can be described using `texture` class and/or by recording
+the percent composition. Chemical properties include `organic` matter
+content, `ph`, `exchange_capacity`, and `base_saturation`. Methods for
+chemical analyses should be documented in the plot observation’s
+`methodsNarrative` field.
+
+A `description` field shows additional text details about the soil
+characteristics.
 
 ### Stem Data
 
 The Stem Data loader table is used to describe individual plant stems
-measured at a plot.
+measured at a plot. This table supports detailed tree/shrub demographic
+data collection, including stem diameter, height, location, and health
+status.
+
+The primary key is `user_sc_code`, which is the stem count identifier.
+The required foreign key `user_tm_code` links each stem record to a
+specific taxon observation in the strata cover table, associating stems
+with their species identification.
+
+`stem_count` is a required field recording the number of stems of a
+single species that share the same diameter and height characteristics.
+`stem_diameter` records stem diameter in centimeters. When diameter
+classes are used, this value represents the class midpoint, with
+`stem_diameter_accuracy` storing the offset to the class endpoint.
+Similarly, `stem_height` records height in meters, with
+`stem_height_accuracy` capturing measurement precision when height
+classes are used.
+
+Individual stems can be tracked with `user_sl_code` (stem location
+identifier), `stem_code` (field label or tag number), and precise
+positions via `stem_x_position` and `stem_y_position` coordinates in
+meters relative to the plot origin, with the x-axis defined by the plot
+azimuth.
+
+Additional fields include `stem_health` for recording stem condition and
+`stem_taxon_area` for expert users to record the sampling area used to
+infer species presence.

@@ -15,16 +15,18 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/NCEAS/vegbankr/blob/feature-75-documentation/DESCRIPTION)
+[`inst/CITATION`](https://github.com/NCEAS/vegbankr/blob/main/inst/CITATION)
 
-Regetz J, Jones M, Nenuji R, Clark J (2026). *vegbankr: Interface to the
-'VegBank' Vegetation Plot Database*. R package version 0.9.0.9000,
-<https://github.com/NCEAS/vegbankr>.
+Regetz J, Jones M, Nenuji R, Clark J (2026). *vegbankr: An R API Package
+for the VegBank Data System*.
+[doi:10.82902/J1159D](https://doi.org/10.82902/J1159D), R package
+version 0.9.0, <https://doi.org/10.82902/J1159D>.
 
     @Manual{,
-      title = {vegbankr: Interface to the 'VegBank' Vegetation Plot Database},
+      title = {{vegbankr}: An R API Package for the VegBank Data System},
       author = {Jim Regetz and Matthew B. Jones and Rushiraj Nenuji and Jeanette Clark},
       year = {2026},
-      note = {R package version 0.9.0.9000},
-      url = {https://github.com/NCEAS/vegbankr},
+      note = {R package version 0.9.0},
+      url = {https://doi.org/10.82902/J1159D},
+      doi = {10.82902/J1159D},
     }
