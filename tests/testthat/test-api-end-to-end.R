@@ -249,34 +249,38 @@ test_that("Getting taxon observations works", {
     "No records returned",
     fixed = TRUE)
   expect_identical(nrow(zero_records), 0L)
-  names <- c(
-    "author_plant_name",
+  names_mini <- c(
     "int_curr_pc_code",
+    "int_orig_pc_code",
+    "ob_code",
+    "rf_code",
+    "taxon_inference_area",
+    "to_code"
+  )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "author_plant_name",
     "int_curr_plant_code",
     "int_curr_plant_common",
     "int_curr_plant_sci_full",
     "int_curr_plant_sci_name_no_auth",
-    "int_orig_pc_code",
     "int_orig_plant_code",
     "int_orig_plant_common",
     "int_orig_plant_sci_full",
     "int_orig_plant_sci_name_no_auth",
-    "ob_code",
-    "rf_code",
-    "rf_label",
-    "taxon_inference_area",
-    "to_code"
+    "rf_label"
   )
-  names_nest <- c(
-    names,
+  names_full_nest <- c(
+    names_full,
     "taxon_importance"
   )
   one <- vb_get_taxon_observations("to.693826")
   expect_identical(nrow(one), 1L)
-  expect_named(one, names_nest, ignore.order = TRUE)
+  expect_named(one, names_full_nest, ignore.order = TRUE)
   all <- vb_get_taxon_observations(limit = 5)
   expect_identical(nrow(all), 5L)
-  expect_named(all, names, ignore.order = TRUE)
+  expect_named(all, names_mini, ignore.order = TRUE)
 })
 
 test_that("Getting taxon importances works", {
@@ -288,7 +292,7 @@ test_that("Getting taxon importances works", {
     "No records returned",
     fixed = TRUE)
   expect_identical(nrow(zero_records), 0L)
-  names <- c(
+  names_mini <- c(
     "basal_area",
     "biomass",
     "cover",
@@ -298,20 +302,25 @@ test_that("Getting taxon importances works", {
     "sr_code",
     "stratum_base",
     "stratum_height",
-    "stratum_name",
     "tm_code",
     "to_code"
   )
-  names_nest <- c(
-    names,
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "author_plant_name",
+    "stratum_name"
+  )
+  names_full_nest <- c(
+    names_full,
     "stems"
   )
   one <- vb_get_taxon_importances("tm.74081")
   expect_identical(nrow(one), 1L)
-  expect_named(one, names_nest, ignore.order = TRUE)
+  expect_named(one, names_full_nest, ignore.order = TRUE)
   all <- vb_get_taxon_importances(limit = 5)
   expect_identical(nrow(all), 5L)
-  expect_named(all, names, ignore.order = TRUE)
+  expect_named(all, names_mini, ignore.order = TRUE)
 })
 
 test_that("Getting stem counts works", {
@@ -323,7 +332,7 @@ test_that("Getting stem counts works", {
     "No records returned",
     fixed = TRUE)
   expect_identical(nrow(zero_records), 0L)
-  names <- c(
+  names_mini <- c(
     "count",
     "diameter",
     "diameter_accuracy",
@@ -332,17 +341,22 @@ test_that("Getting stem counts works", {
     "ob_code",
     "sc_code",
     "sr_code",
-    "stratum_name",
     "taxon_area",
     "tm_code",
     "to_code"
   )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "author_plant_name",
+    "stratum_name"
+  )
   one <- vb_get_stem_counts("sc.2056")
   expect_identical(nrow(one), 1L)
-  expect_named(one, names, ignore.order = TRUE)
+  expect_named(one, names_full, ignore.order = TRUE)
   all <- vb_get_stem_counts(limit = 5)
   expect_identical(nrow(all), 5L)
-  expect_named(all, names, ignore.order = TRUE)
+  expect_named(all, names_mini, ignore.order = TRUE)
 })
 
 test_that("Getting strata works", {
@@ -354,7 +368,7 @@ test_that("Getting strata works", {
     "No records returned",
     fixed = TRUE)
   expect_identical(nrow(zero_records), 0L)
-  names <- c(
+  names_mini <- c(
     "base",
     "cover",
     "description",
@@ -363,16 +377,20 @@ test_that("Getting strata works", {
     "ob_code",
     "sm_code",
     "sr_code",
-    "stratum_method_name",
-    "stratum_type_name",
     "sy_code"
+  )
+  names_full <- c(
+    names_mini,
+    "author_obs_code",
+    "stratum_method_name",
+    "stratum_type_name"
   )
   one <- vb_get_strata("sr.22374")
   expect_identical(nrow(one), 1L)
-  expect_named(one, names, ignore.order = TRUE)
+  expect_named(one, names_full, ignore.order = TRUE)
   all <- vb_get_strata(limit = 5)
   expect_identical(nrow(all), 5L)
-  expect_named(all, names, ignore.order = TRUE)
+  expect_named(all, names_mini, ignore.order = TRUE)
 })
 
 test_that("Getting taxon interpretations works", {

@@ -17,7 +17,7 @@ with_mock_api({
     )
 
     response <- vb_get_taxon_importances("tm.1", parquet=FALSE,
-      limit=NULL, offset=NULL, with_nested=NULL)
+      limit=NULL, offset=NULL, detail=NULL, with_nested=NULL)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 2L)
     expect_named(
@@ -32,7 +32,7 @@ with_mock_api({
     expect_identical(response$stratum_name[1], "Nonvascular")
 
     response <- vb_get_taxon_importances(limit=2, parquet=FALSE,
-      with_nested=NULL)
+      detail=NULL, with_nested=NULL)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 2L)
     expect_named(
