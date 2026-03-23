@@ -7,6 +7,7 @@
 \alias{vb_upload_community_concepts}
 \alias{vb_upload_taxon_interpretations}
 \alias{vb_upload_community_classifications}
+\alias{vb_upload_cover_methods}
 \title{Upload data to VegBank}
 \usage{
 vb_upload(resource, ..., query_params = NULL, dry_run = FALSE)
@@ -61,6 +62,8 @@ vb_upload_community_classifications(
   contributors = NULL,
   dry_run = FALSE
 )
+
+vb_upload_cover_methods(cover_methods, references = NULL, dry_run = FALSE)
 }
 \arguments{
 \item{resource}{\emph{Available only for \code{vb_upload()}.} Character string
@@ -136,6 +139,9 @@ associated with specific classification systems for new community concepts}
 
 \item{community_correlations}{A data frame defining correlations between
 community concepts}
+
+\item{cover_methods}{A data frame containing cover methods and their
+associated component cover indexes}
 }
 \value{
 The processed response object from the VegBank API documenting what
@@ -168,6 +174,8 @@ observation), associating them with one or more VegBank plant concepts
 \item \code{vb_upload_community_classifications()} - Re-interpretation of existing
 VegBank plot observations, associating them with one or more VegBank
 community concepts as part of a classification activity
+\item \code{vb_upload_cover_methods()} - New cover methods, including all component
+cover indexes defined by the method
 }
 
 If \code{vb_debug()} is enabled, additional debugging details will be reported to

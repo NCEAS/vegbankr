@@ -191,5 +191,16 @@ with_mock_api({
       paste0(endpoint)
     )
 
+    endpoint <- "https://api.vegbank.org/cover-methods"
+    expect_error(
+      vb_upload_cover_methods(),
+      "argument \"cover_methods\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_cover_methods(
+        cover_methods = data.frame(a=1)),
+      paste0(endpoint)
+    )
+
   })
 })
