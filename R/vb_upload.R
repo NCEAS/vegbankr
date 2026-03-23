@@ -55,6 +55,8 @@
 #'   community concepts
 #' @param cover_methods A data frame containing cover methods and their
 #'   associated component cover indexes
+#' @param stratum_methods A data frame containing stratum methods and their
+#'   associated component stratum types
 #' @param what_to_deactivate \emph{Available only for `vb_upload_plant_concepts()`
 #'   and `vb_upload_community_concepts()`.} Character string specifying what
 #'   existing concepts to deactivate in VegBank. Supported values are "none" and
@@ -90,6 +92,8 @@
 #'    community concepts as part of a classification activity
 #' 6. `vb_upload_cover_methods()` - New cover methods, including all component
 #'     cover indexes defined by the method
+#' 7. `vb_upload_stratum_methods()` - New stratum methods, including all component
+#'     stratum types defined by the method
 #'
 #' If `vb_debug()` is enabled, additional debugging details will be reported to
 #' the console, primarily focused on the data being uploaded.
@@ -313,6 +317,16 @@ vb_upload_cover_methods <- function(cover_methods, references = NULL,
     dry_run = FALSE) {
   vb_upload("cover-methods",
             cover_methods = cover_methods,
+            references = references,
+            dry_run = dry_run)
+}
+
+#' @rdname vb_upload
+#' @export
+vb_upload_stratum_methods <- function(stratum_methods, references = NULL,
+    dry_run = FALSE) {
+  vb_upload("stratum-methods",
+            stratum_methods = stratum_methods,
             references = references,
             dry_run = dry_run)
 }

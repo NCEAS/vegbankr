@@ -202,5 +202,16 @@ with_mock_api({
       paste0(endpoint)
     )
 
+    endpoint <- "https://api.vegbank.org/stratum-methods"
+    expect_error(
+      vb_upload_stratum_methods(),
+      "argument \"stratum_methods\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_stratum_methods(
+        stratum_methods = data.frame(a=1)),
+      paste0(endpoint)
+    )
+
   })
 })
