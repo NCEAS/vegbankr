@@ -15,7 +15,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/NCEAS/vegbankr/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/NCEAS/vegbankr/blob/v0.9.0/inst/CITATION)
 
 Regetz J, Jones M, Nenuji R, Clark J (2026). *vegbankr: An R API Package
 for the VegBank Data System*.
