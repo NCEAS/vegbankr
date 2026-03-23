@@ -18,7 +18,7 @@ with_mock_api({
 
     expect_message(
       zero_records <- vb_get_taxon_observations("zero_records",
-        parquet=FALSE, limit=NULL, offset=NULL, with_nested=NULL),
+        parquet=FALSE, limit=NULL, offset=NULL, detail=NULL, with_nested=NULL),
       "No records returned",
       fixed = TRUE
     )
@@ -26,7 +26,7 @@ with_mock_api({
     expect_identical(nrow(zero_records), 0L)
 
     response <- vb_get_taxon_observations("to.693826", limit=NULL,
-      offset=NULL, with_nested = NULL)
+      offset=NULL, detail=NULL, with_nested = NULL)
     expect_s3_class(response, "data.frame")
     expect_identical(nrow(response), 1L)
     expect_named(
