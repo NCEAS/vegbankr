@@ -12,13 +12,14 @@
 </div>
 
 
-- **Authors**: Jim Regetz, Matthew B. Jones
 - **License**: [Apache 2](https://opensource.org/license/apache-2-0)
 - [Package documentation](https://nceas.r-universe.dev/vegbankr)
 - [Package source code on GitHub](https://github.com/NCEAS/vegbankr)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/vegbankr/issues)
 - Contact us: help@vegbank.org
 - [VegBank discussions](https://github.com/NCEAS/vegbank2/discussions)
+- Citation: 
+> *Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark*. 2026. **vegbankr: An R API package for the VegBank data system**. Version 0.9.0. VegBank. doi:10.82902/J1159D
 
 This package is an R client for VegBank, the vegetation plot database of
 the Ecological Society of America's [Panel on Vegetation
