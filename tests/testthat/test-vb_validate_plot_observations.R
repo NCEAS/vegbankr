@@ -40,8 +40,8 @@ test_that("vb_validate_plot_observations works for valid data", {
   
   valid_strata_cover_data <- data.frame(
     user_ob_code = c("OB001", "OB001", "OB002"),
-    user_to_code = c("TO001", "TO002", "TO003"),
-    user_tm_code = c("TM001", "TM001", "TM002"),
+    user_tm_code = c("TM001", "TM002", "TM003"),
+    user_to_code = c("TO001", "TO001", "TO002"),
     user_sr_code = c("SR001", "SR002", "SR003"), 
     author_plant_name = c("Quercus alba", "Quercus alba", "Pinus strobus"),
     cover = c(25, 15, 40)
@@ -56,7 +56,7 @@ test_that("vb_validate_plot_observations works for valid data", {
   
   valid_taxon <- data.frame(
     user_ti_code = c("TI001", "TI002", "TI003"),  
-    user_to_code = c("TO001", "TO002", "TO003"),  
+    user_to_code = c("TO001", "TO001", "TO002"),  
     vb_pc_code = c("PC123", "PC456", "PC789"),
     vb_ar_code = c("ar.55", "ar.34", "ar.16"),
     user_py_code = c("PY001", "PY002", NA),  
