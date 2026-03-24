@@ -249,18 +249,18 @@ validate_values_exist <- function(child_df, child_col, parent_df, parent_col) {
   parent_table <- deparse(substitute(parent_df))
   
   if (is.null(child_df) || is.null(parent_df)) {
-    cli::cli_alert_info("{child_table} or {parent_table} not provided - skipping foreign key validation")
+    cli::cli_alert_info("{child_table} or {parent_table} not provided - skipping foreign key validation.")
     return(TRUE)
   }
-  
-  if (!child_col %in% names(child_df)) {
-    cli::cli_alert_info("{child_table}: Column '{child_col}' not found - skipping foreign key validation")
-    return(TRUE)
+
+  if (!(child_col %in% names(child_df))) {
+    cli::cli_alert_info("{child_table}: Column '{child_col}' not found - skipping foreign key validation.")
+    return(FALSE)
   }
-  
-  if (!parent_col %in% names(parent_df)) {
-    cli::cli_alert_danger("{parent_table}: Column '{parent_col}' not found - skipping foreign key validation")
-    return(TRUE)
+
+  if (!(parent_col %in% names(parent_df))) {
+    cli::cli_alert_info("{child_table}: Column '{parent_col}' not found in {parent_table} - skipping foreign key validation")
+    return(FALSE)
   }
   
   orphaned <- child_df %>%

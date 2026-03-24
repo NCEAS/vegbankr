@@ -29,6 +29,16 @@ valid_plots <- data.frame(
   obs_start_date = c("2024-01-15", "2024-02-20", "2024-03-10")
 )
 
+invalid_plots <- data.frame(
+  user_pl_code = c("PL001", "PL002", NA),
+  vb_pl_code = c(NA, NA, "VB001"),
+  user_pj_code = c("FOO", "FOO", "FOO"),
+  user_parent_pl_code = c(NA, "PL001", NA),
+  latitude = c(37.7749, 34.0522, 40.7128),
+  longitude = c(-122.4194, -118.2437, -74.0060),
+  obs_start_date = c("2024-01-15", "2024-02-20", "2024-03-10")
+)
+
 valid_community_classifications <- data.frame(
   user_ob_code = c("OB001", "OB002", "OB003"),
   user_cl_code = c("CL001", "CL002", "CL003"),
@@ -63,16 +73,23 @@ valid_taxon <- data.frame(
 )
 
 valid_disturbances <- data.frame(
-  user_do_code = c("DO001", "DO002", "DO003"),  # unique values (no duplicates)
-  user_ob_code = c("OB001", "OB002", "OB003"),  # must exist in plot_observations
+  user_do_code = c("DO001", "DO002", "DO003"),  
+  user_ob_code = c("OB001", "OB002", "OB003"), 
+  type = c("fire", "grazing", "logging"),
+  intensity = c("high", "moderate", "low"),
+  comment = c("Wildfire 2020", "Cattle grazing", "Selective harvest")
+)
+
+invalid_disturbances <- data.frame(
+  user_do_code = c("DO001", "DO002", "DO003"),  
   type = c("fire", "grazing", "logging"),
   intensity = c("high", "moderate", "low"),
   comment = c("Wildfire 2020", "Cattle grazing", "Selective harvest")
 )
 
 valid_soils <- data.frame(
-  user_so_code = c("SO001", "SO002", "SO003"),  # unique values (no duplicates)
-  user_ob_code = c("OB001", "OB002", "OB003"),  # must exist in plot_observations
+  user_so_code = c("SO001", "SO002", "SO003"),  
+  user_ob_code = c("OB001", "OB002", "OB003"),  
   horizon = c("A", "A", "B"),
   texture = c("sandy loam", "clay", "silt loam"),
   depth = c(15, 20, 30)
@@ -88,7 +105,7 @@ valid_stem <- data.frame(
 
 
 test_that("vb_validate_plot_observations works for valid data", {
-  # Valid parties table
+
   result <- vb_validate_plot_observations(
     projects = valid_project,
     parties = valid_parties,
@@ -104,5 +121,36 @@ test_that("vb_validate_plot_observations works for valid data", {
   )
   
   expect_true(all(unlist(result)))
+})
+
+test_that("vb_validate_plot_observations works for valid minimal data", {
+
+  result <- vb_validate_plot_observations(
+    plot_observations = valid_plots
+  )
+  
+  expect_true(all(unlist(result)))
+})
+
+test_that("vb_validate_plot_observations works for invalid data", {
+  
+  result <- vb_validate_plot_observations(
+    projects = valid_project,
+    parties = valid_parties,
+    contributors = valid_contributors,
+    plot_observations = invalid_plots,
+    community_classifications = valid_community_classifications, 
+    strata_cover_data = valid_strata_cover_data,
+    strata = valid_strata,
+    taxon_interpretations = valid_taxon,
+    disturbances = invalid_disturbances,
+    soils = valid_soils,
+    stem_data = valid_stem
+  )
+  
+  expect_false(result$plot_observations)
+  expect_false(result$disturbances)
+  expect_true(result$parties)
+  
   
 })
