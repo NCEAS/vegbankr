@@ -169,5 +169,49 @@ with_mock_api({
       paste0(endpoint, "?dry_run=FALSE&deactivation=none")
     )
 
+    endpoint <- "https://api.vegbank.org/taxon-interpretations"
+    expect_error(
+      vb_upload_taxon_interpretations(),
+      "argument \"taxon_interpretations\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_taxon_interpretations(
+        taxon_interpretations = data.frame(a=1)),
+      paste0(endpoint)
+    )
+
+    endpoint <- "https://api.vegbank.org/community-classifications"
+    expect_error(
+      vb_upload_community_classifications(),
+      "argument \"community_classifications\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_community_classifications(
+        community_classifications = data.frame(a=1)),
+      paste0(endpoint)
+    )
+
+    endpoint <- "https://api.vegbank.org/cover-methods"
+    expect_error(
+      vb_upload_cover_methods(),
+      "argument \"cover_methods\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_cover_methods(
+        cover_methods = data.frame(a=1)),
+      paste0(endpoint)
+    )
+
+    endpoint <- "https://api.vegbank.org/stratum-methods"
+    expect_error(
+      vb_upload_stratum_methods(),
+      "argument \"stratum_methods\" is missing, with no default"
+    )
+    expect_POST(
+      vb_upload_stratum_methods(
+        stratum_methods = data.frame(a=1)),
+      paste0(endpoint)
+    )
+
   })
 })
