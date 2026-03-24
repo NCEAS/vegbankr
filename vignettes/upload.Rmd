@@ -10,7 +10,7 @@ editor_options:
     wrap: 72
 ---
 
-```{r, message = FALSE} 
+```{r, message = FALSE, echo = FALSE} 
 library(dplyr)
 library(DT)
 
@@ -178,7 +178,7 @@ docs %>%
 
 ### Strata Cover
 
-This loader table contains data from a plot observation of the plant names, cover, and strata in a given plot. The `user_ob_code` is a required foreign key that links the plant to a plot observation. All values in this field must be present in the plot observations loader table. `user_tm_code` is a key that is unique for each combination of `user_ob_code`, plant name, and strata in this table. `user_to_code` is a key that is unique for each combination of `user_ob_code` and plant name - so `user_to_code` may be repeated in this table if a plant exists in multiple strata in a plot observation. `user_sr_code` is a foreign key that corresponds to the `strata` loader table, described below.
+This loader table contains data from a plot observation of the plant names, cover, and strata in a given plot. The `user_ob_code` is a required foreign key that links the plant to a plot observation. All values in this field must be present in the plot observations loader table. `user_to_code` is a key that is unique for each combination of `user_ob_code`, plant name, and strata in this table. `user_tm_code` is a key that is unique for each combination of `user_ob_code` and plant name - so `user_tm_code` may be repeated in this table if a plant exists in multiple strata in a plot observation. `user_sr_code` is a foreign key that corresponds to the `strata` loader table, described below.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -189,7 +189,7 @@ docs %>%
 
 ### Strata Methods
 
-Each strata value must also have a VegBank strata method associated with it. This is represented by `vb_sy_code`. To see available codes, see the code snippet below the table:
+Each strata value must also have a VegBank strata method associated with it. This is represented by `vb_sy_code`. To see available codes, see the code snippet below the table. The strata method is linked to an observation via the required `user_ob_code` field. `user_sr_code` is an required identifier that provides a key to each unique strata observation in the strata cover table.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -221,16 +221,10 @@ docs %>%
 
 The disturbances loader table contains information about disturbances observed
 at a plot, such as fire, grazing, logging, or other events that have impacted
-the vegetation.
-
-The primary key is `user_do_code`. The foreign key `user_ob_code` links each
+the vegetation. The primary key is `user_do_code`. The foreign key `user_ob_code` links each
 disturbance record to a specific plot observation and is required.
 
-`type` describes the kind of disturbance and is a required field. `comment` is
-a best practice field for providing text details about the disturbance and its
-impacts. `intensity` describes the degree or severity of the disturbance, `age`
-records the estimated time in years since the disturbance event occurred, and
-`extent` captures the percent of the plot that experienced the disturbance event.
+`type` describes the kind of disturbance and is a required field. This field is a closed list in vegbank, with options listed below.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -243,20 +237,8 @@ docs %>%
 
 The Soils loader table is used to describe soils collected from a plot. This includes information on soil horizons, texture, color, depth, and chemical properties.
 
-The primary key is `user_so_code`, which can be a simple row number. The foreign
-key `user_ob_code` links each soil record to a specific plot observation when used.
-
+The primary key is `user_so_code`, which can be a simple row number. `user_ob_code` links to the observations table. The foreign key `user_ob_code` links each soil record to a specific plot observation when used. 
 `horizon` is a required field that identifies the soil horizon being described.
-`depth_top` and `depth_bottom` define the vertical extent of each horizon.
-`color` records soil color following USDA guidelines.
-
-Soil texture can be described using `texture` class and/or by recording the
-percent composition. Chemical properties include `organic` matter content, `ph`,
-`exchange_capacity`, and `base_saturation`. Methods for chemical analyses should
-be documented in the plot observation's `methodsNarrative` field.
-
-A `description` field shows additional text details about the soil
-characteristics.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -276,28 +258,55 @@ required foreign key `user_tm_code` links each stem record to a specific taxon
 observation in the strata cover table, associating stems with their species
 identification.
 
-`stem_count` is a required field recording the number of stems of a single
-species that share the same diameter and height characteristics. `stem_diameter`
-records stem diameter in centimeters. When diameter classes are used, this value
-represents the class midpoint, with `stem_diameter_accuracy` storing the offset
-to the class endpoint. Similarly, `stem_height` records height in meters, with
-`stem_height_accuracy` capturing measurement precision when height classes are
-used. 
-
-Individual stems can be tracked with `user_sl_code` (stem location identifier),
-`stem_code` (field label or tag number), and precise positions via 
-`stem_x_position` and `stem_y_position` coordinates in meters relative to the plot
-origin, with the x-axis defined by the plot azimuth.
-
-Additional fields include `stem_health` for recording stem condition and
-`stem_taxon_area` for expert users to record the sampling area used to infer
-species presence.
-
 ```{r, echo = FALSE}
 docs %>% 
   filter(loader_table == "stem_data") %>% 
   select(-loader_table) %>% 
   datatable()
 ```
+
+## Data Validation
+
+## Data Upload
+
+To upload data, first you need to point your R session to the correct vegbank instance and set a token.
+
+To do a test upload, point to the test instance.
+
+```{r, eval = FALSE}
+vb_set_base_url("https://api-dev.vegbank.org")
+```
+
+Next, get a token by logging into [http://api-dev.vegbank.org/login](http://api-dev.vegbank.org/login). After logging in, you should see a JSON document that contains an access token and refresh token. The easiest way to get this information into R is to select the "Raw Data" option in your browser (if available) to get the plain text JSON. Copy this to your clipboard, and paste it into R to save to the variable `token`. You'll need to encase this string in **single quotes**. Double quotes will give a syntax error.
+
+```{r, eval = FALSE}
+token <- '{"message":"Authorization successful","token":{"access_token":".......","refresh_token":"......."}}'
+```
+
+Then set your token using:
+
+```{r, eval = FALSE}
+vb_set_token(tokens = token)
+```
+
+From here, uploading is easy using the `vb_upload_plot_observations()` function. This function takes as arguments data frames for each of the loader tables described above. Note that not all loader tables are required.
+
+To run the function, you'll take the same `data.frames` used in the validation section and pass them as arguments to the function like below. Note the `dry_run` argument. This is a way to do one last round of validation before inserting the data into VegBank. Setting a dry run allows the API to go through all of the steps except the very last insert call. If the dry run is successful, output will display saying that rows were inserted (but they weren't!). If it is not successful, it will error and more work is needed to ensure the loader tables conform to the required schema.
+
+```{r}
+vb_upload_plot_observations(plot_observations = plots_semi,
+                            projects = projects,
+                            parties = party,
+                            contributors = contrib_semi,
+                            disturbances = dist_semi,
+                            community_classifications = comm_semi,
+                            strata_cover_data = strat_semi,
+                            taxon_interpretations = tax_semi,
+                            strata = strat_defs_semi,
+                            soils = soils,
+                            dry_run = TRUE)
+```
+
+Once you get a successful dry run, set `dry_run` to `FALSE` to complete your upload!
 
 
