@@ -35,89 +35,106 @@
 #' @export
 #'
 vb_validate_plot_observations <- function(plot_observations,
-                                        projects = NULL, parties = NULL, references = NULL, soils = NULL,
-                                        disturbances = NULL, community_classifications = NULL, strata = NULL,
-                                        strata_cover_data = NULL, stem_data = NULL, taxon_interpretations = NULL,
-                                        contributors = NULL) {
-
+                                          projects = NULL, parties = NULL, references = NULL, soils = NULL,
+                                          disturbances = NULL, community_classifications = NULL, strata = NULL,
+                                          strata_cover_data = NULL, stem_data = NULL, taxon_interpretations = NULL,
+                                          contributors = NULL) {
+  
   fields <- utils::read.csv(system.file("loader-table-fields.csv", package = "vegbankr"))
   
   validation_results <- list()
-  
-  # projects
-  validation_results$projects <- list(
-    validate_no_nulls(projects, c("user_pj_code"))
-  )
-  
-  # parties
-  validation_results$parties <- list(
-    validate_no_nulls(parties, c("user_py_code"))
-  )
-  
-  # TODO: validate all vegbank codes exist in vegbank (optional???)
-  # contributors
-  validation_results$contributors <- list(
-    validate_no_nulls(contributors, c("user_cr_code", "vb_ar_code", "record_identifier", "contributor_type")),
-    validate_no_duplicates(contributors, c("user_cr_code")),
-    validate_at_least_one_present(contributors, "vb_py_code", "user_py_code"),
-    validate_values_exist(child_df = contributors, child_col = "user_py_code", parent_df = parties, parent_col = "user_py_code")
-    # TODO: validate the record identifier based on contributor_type
-  )
   
   # plot_observations
   validation_results$plot_observations <- list(
     validate_at_least_one_present(plot_observations, "vb_pl_code", "user_pl_code"),
     validate_no_nulls(plot_observations, c("author_plot_code", "user_ob_code", "author_obs_code")),
     validate_no_duplicates(plot_observations, c("user_ob_code", "author_obs_code")),
-    validate_values_exist(plot_observations, "user_pj_code", projects, "user_pj_code"),
-    validate_values_exist(plot_observations, "user_parent_pl_code", plot_observations, "user_pl_code")
+    validate_values_exist(plot_observations, "user_pj_code", projects, "user_pj_code")
   )
+  
+  # projects
+  if (!is.null(projects)){
+    validation_results$projects <- list(
+      validate_no_nulls(projects, c("user_pj_code"))
+    )
+  } else cli::cli_alert_info("projects table not provided - skipping validation")
+  
+  # parties
+  if (!is.null(parties)){
+    validation_results$parties <- list(
+      validate_no_nulls(parties, c("user_py_code"))
+    )
+  } else cli::cli_alert_info("parties table not provided - skipping validation")
+  
+  # TODO: validate all vegbank codes exist in vegbank (optional???)
+  # contributors
+  if (!is.null(contributors)){
+    validation_results$contributors <- list(
+      validate_no_nulls(contributors, c("user_cr_code", "vb_ar_code", "record_identifier", "contributor_type")),
+      validate_no_duplicates(contributors, c("user_cr_code")),
+      validate_at_least_one_present(contributors, "vb_py_code", "user_py_code"),
+      validate_values_exist(child_df = contributors, child_col = "user_py_code", parent_df = parties, parent_col = "user_py_code")
+      # TODO: validate the record identifier based on contributor_type
+    )
+  } else cli::cli_alert_info("contributors table not provided - skipping validation")
   
   # community classifications
-  validation_results$community_classifications <- list(
-    validate_no_nulls(community_classifications, c("user_cl_code", "user_ob_code", "vb_cc_code")),
-    validate_no_duplicates(community_classifications, c("user_cl_code")),
-    validate_values_exist(community_classifications, "user_ob_code", plot_observations, "user_ob_code")
-    # TODO: user_comm_class_rf_code
-  )
+  if (!is.null(community_classifications)){
+    validation_results$community_classifications <- list(
+      validate_no_nulls(community_classifications, c("user_cl_code", "user_ob_code", "vb_cc_code")),
+      validate_no_duplicates(community_classifications, c("user_cl_code")),
+      validate_values_exist(community_classifications, "user_ob_code", plot_observations, "user_ob_code")
+    )
+  } else cli::cli_alert_info("community_classifications table not provided - skipping validation")
   
   # strata cover
-  validation_results$strata_cover_data <- list(
-    validate_no_nulls(strata_cover_data, c("user_ob_code", "user_to_code", "user_tm_code", "author_plant_name")),
-    validate_no_duplicates(strata_cover_data, c("user_tm_code")),
-    validate_values_exist(strata_cover_data, "user_ob_code", plot_observations, "user_ob_code"),
-    validate_values_exist(strata_cover_data, "user_sr_code", strata, "user_sr_code")
-  )
+  if (!is.null(strata_cover_data)){
+    validation_results$strata_cover_data <- list(
+      validate_no_nulls(strata_cover_data, c("user_ob_code", "user_to_code", "user_tm_code", "author_plant_name")),
+      validate_no_duplicates(strata_cover_data, c("user_tm_code")),
+      validate_values_exist(strata_cover_data, "user_ob_code", plot_observations, "user_ob_code"),
+      validate_values_exist(strata_cover_data, "user_sr_code", strata, "user_sr_code")
+    )
+  } else cli::cli_alert_info("strata_cover_data table not provided - skipping validation")
   
   # strata
-  validation_results$strata <- list(
-    validate_no_nulls(strata, c("user_ob_code", "user_sr_code", "vb_sy_code")),
-    validate_values_exist(strata, "user_ob_code", plot_observations, "user_ob_code")
-  )
+  if (!is.null(strata)){
+    validation_results$strata <- list(
+      validate_no_nulls(strata, c("user_ob_code", "user_sr_code", "vb_sy_code")),
+      validate_values_exist(strata, "user_ob_code", plot_observations, "user_ob_code")
+    )
+  } else cli::cli_alert_info("strata table not provided - skipping validation")
   
   # taxon interpretations
-  validation_results$taxon_interpretations <- list(
-    validate_no_nulls(taxon_interpretations, c("user_ti_code", "user_to_code", "vb_pc_code", "vb_ar_code")),
-    validate_no_duplicates(taxon_interpretations, c("user_ti_code")),
-    validate_at_least_one_present(taxon_interpretations, "user_py_code", "vb_py_code"),
-    validate_values_exist(taxon_interpretations, "user_to_code", strata_cover_data, "user_to_code"),
-    validate_values_exist(taxon_interpretations, "user_py_code", parties, "user_py_code")
-    # TODO: references
-  )
+  if (!is.null(taxon_interpretations)){
+    validation_results$taxon_interpretations <- list(
+      validate_no_nulls(taxon_interpretations, c("user_ti_code", "user_to_code", "vb_pc_code", "vb_ar_code")),
+      validate_no_duplicates(taxon_interpretations, c("user_ti_code")),
+      validate_at_least_one_present(taxon_interpretations, "user_py_code", "vb_py_code"),
+      validate_values_exist(taxon_interpretations, "user_to_code", strata_cover_data, "user_to_code"),
+      validate_values_exist(taxon_interpretations, "user_py_code", parties, "user_py_code")
+      # TODO: references
+    )
+  } else cli::cli_alert_info("taxon_interpretations table not provided - skipping validation")
   
   # disturbances
-  validation_results$disturbances <- list(
-    validate_no_nulls(disturbances, c("user_do_code", "user_ob_code", "type")),
-    validate_no_duplicates(disturbances, c("user_do_code")),
-    validate_values_exist(disturbances, "user_ob_code", plot_observations, "user_ob_code")
-  )
+  if (!is.null(disturbances)){
+    validation_results$disturbances <- list(
+      validate_no_nulls(disturbances, c("user_do_code", "user_ob_code", "type")),
+      validate_no_duplicates(disturbances, c("user_do_code")),
+      validate_values_exist(disturbances, "user_ob_code", plot_observations, "user_ob_code")
+    )
+  } else cli::cli_alert_info("disturbances table not provided - skipping validation")
   
   # soils
-  validation_results$disturbances <- list(
-    validate_no_nulls(soils, c("user_so_code", "user_ob_code", "horizon")),
-    validate_no_duplicates(soils, c("user_so_code")),
-    validate_values_exist(soils, "user_ob_code", plot_observations, "user_ob_code")
-  )
+  if (!is.null(soils)){
+    validation_results$disturbances <- list(
+      validate_no_nulls(soils, c("user_so_code", "user_ob_code", "horizon")),
+      validate_no_duplicates(soils, c("user_so_code")),
+      validate_values_exist(soils, "user_ob_code", plot_observations, "user_ob_code")
+    )
+  } else cli::cli_alert_info("soils table not provided - skipping validation")
+  
   
   validation_results <- lapply(validation_results, function(x) all(unlist(x)))
   if (all(unlist(validation_results))){
@@ -142,7 +159,6 @@ validate_no_nulls <- function(df, columns) {
   table_name <- deparse(substitute(df))
   
   if (is.null(df)) {
-    cli::cli_alert_info("{table_name} not provided - skipping NULL validation")
     return(TRUE)
   }
   
@@ -182,7 +198,6 @@ validate_no_duplicates <- function(df, columns) {
   table_name <- deparse(substitute(df))
   
   if (is.null(df)) {
-    cli::cli_alert_info("{table_name} not provided - skipping duplicate validation")
     return(TRUE)
   }
   
@@ -276,7 +291,6 @@ validate_at_least_one_present <- function(df, col1, col2) {
   table_name <- deparse(substitute(df))
   
   if (is.null(df)) {
-    cli::cli_alert_info("{table_name} not provided - skipping validation")
     return(TRUE)
   }
   
