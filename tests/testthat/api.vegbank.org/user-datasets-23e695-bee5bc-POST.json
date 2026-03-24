@@ -1,0 +1,36 @@
+{
+  "counts": {
+    "di": {
+      "inserted": 3
+    },
+    "ds": {
+      "inserted": 1
+    }
+  },
+  "resources": {
+    "di": [
+      {
+        "action": "inserted",
+        "user_di_code": "1",
+        "vb_di_code": "di.1"
+      },
+      {
+        "action": "inserted",
+        "user_di_code": "2",
+        "vb_di_code": "di.2"
+      },
+      {
+        "action": "inserted",
+        "user_di_code": "3",
+        "vb_di_code": "di.3"
+      }
+    ],
+    "ds": [
+      {
+        "action": "inserted",
+        "user_ds_code": "My Dataset",
+        "vb_ds_code": "ds.1"
+      }
+    ]
+  }
+}
