@@ -1,0 +1,102 @@
+---
+title: "Downloading data with vegbankr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Downloading data with vegbankr}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+## Introduction to `vegbankr`
+
+This package is an R client for VegBank, the vegetation plot database of
+the Ecological Society of America's [Panel on Vegetation
+Classification](https://esa.org/vegpanel/), hosted by the [National
+Center for Ecological Analysis and
+Synthesis](https://www.nceas.ucsb.edu) (NCEAS). VegBank contains
+vegetation plot data, community types recognized by the U.S. National
+Vegetation Classification and others, and all ITIS/USDA plant taxa along
+with other taxa recorded in plot records. As a VegBank API client, the
+`vegbankr` package currently supports querying and downloading
+vegetation plot records and other supporting information from the
+VegBank database, and will soon support validating and uploading new
+data to the VegBank database as well.
+
+```{r, message = FALSE, echo = FALSE}
+library(vegbankr)
+```
+
+### Downloading Plot Observation Data with `vb_get_observations()`
+
+#### Download Single Plot Observation by Plot Code
+
+Grab a single plot observation record based on its "ob" code.
+
+```{r}
+ob.135454 <- vb_get_plot_observations(vb_code = "ob.135454", detail = "full",
+  with_nested = TRUE)
+head(ob.135454)
+```
+
+#### Download Plot Observations for a Project with `vb_get_plot_observations()`
+
+This example downloads 100 plot observations for the Southwest GAP,
+Nevada Project (pj.10510).
+
+```{r}
+vb_get_plot_observations(vb_code = "pj.10510")
+
+# To download more than 100 records, increase the limit argument
+# vb_get_plot_observations(vb_code = "pj.10510", limit = 500)
+```
+
+### Downloading Project Data with `vb_get_projects()`
+
+#### Search by Project Name
+
+This example searches for "GAP" related projects, and returns them in
+descending order by observation count.
+
+```{r}
+vb_get_projects(search = "GAP", sort = "-obs_count") |>
+  dplyr::select(pj_code, project_name, obs_count)
+```
+
+#### Search by Project Code
+
+This example gets the first 100 records of plot observations associated
+with the project `pj.11044` (Pennsylvania HPD Delaware Water Gap). It is
+then sorted by the author_obs_code
+
+```{r}
+obs <- vb_get_plot_observations("pj.11044", sort = "author_obs_code",
+  limit = 100)
+obs |> dplyr::count(state_province)
+```
+
+### Downloading Data by Taxon with `vb_get_taxon_observations()`
+
+#### Get Taxon by Plot Observation
+
+This example gets the taxon (plant) observations associated with a plot 
+observation (ob.135454), and then displays the observations in order based on the plant code of the
+current taxon interpretation.
+
+```{r}
+vb_get_taxon_observations("ob.135454") |>
+  dplyr::arrange(int_curr_plant_code) |>
+  print(n = 35)
+```
+
+#### Get Taxon by Name
+
+This example searches for community concepts with the string "*sequoiadendron*".
+
+```{r}
+
+sequoia_communities <- vb_get_community_concepts(search = "sequoiadendron")
+
+```
