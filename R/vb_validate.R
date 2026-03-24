@@ -128,12 +128,21 @@ vb_validate_plot_observations <- function(plot_observations,
   
   # soils
   if (!is.null(soils)){
-    validation_results$disturbances <- list(
+    validation_results$soils <- list(
       validate_no_nulls(soils, c("user_so_code", "user_ob_code", "horizon")),
       validate_no_duplicates(soils, c("user_so_code")),
       validate_values_exist(soils, "user_ob_code", plot_observations, "user_ob_code")
     )
   } else cli::cli_alert_info("soils table not provided - skipping validation")
+  
+  # stems
+  if (!is.null(stem_data)){
+    validation_results$stem_data <- list(
+      validate_no_nulls(stem_data, c("user_sc_code", "user_tm_code", "stem_count", "user_sl_code")),
+      validate_no_duplicates(stem_data, c("user_sl_code")),
+      validate_values_exist(stem_data, "user_tm_code", strata_cover_data, "user_tm_code")
+    )
+  } else cli::cli_alert_info("stem_data table not provided - skipping validation")
   
   
   validation_results <- lapply(validation_results, function(x) all(unlist(x)))
