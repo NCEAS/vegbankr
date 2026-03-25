@@ -22,9 +22,8 @@ Vegetation Classification and others, and all ITIS/USDA plant taxa along
 with other taxa recorded in plot records.
 
 As a VegBank API client, the `vegbankr` package currently supports querying and downloading
-vegetation plot records and other supporting information from the
-VegBank database, and will soon support validating and uploading new
-data to the VegBank database as well.
+vegetation plot records, in addition to validating and uploading new
+data to the VegBank database.
 
 Many of the functions utilize the following arguments:
 
@@ -43,12 +42,12 @@ Many of the functions utilize the following arguments:
 library(vegbankr)
 ```
 
-## Download Plot Observation Data with `vb_get_plot_observations()`
+## Download Plot Observation Data
 
 The `vb_get_plot_observations()` function allows users to download
 vegetation plot data from VegBank. 
 
-### Download Single Plot Observation by Plot Code
+### Single Plot Observation by Plot Code
 
 To retrieve a specific plot observation record using its "ob" code, use
 the following command:
@@ -65,7 +64,7 @@ head(ob.135454)
 Omitting `detail = "full"` or setting `with_nested = FALSE` returns a
 smaller summary better for quick browsing or larger downloads.
 
-### Download Plot Observations for a Project with `vb_get_plot_observations()`
+### Plot Observations for a Project
 
 You can also download multiple plot observations for a specific project.
 For example, to retrieve 100 plot observations from the Southwest GAP,
@@ -80,7 +79,7 @@ head(pj.10510)
 
 ```
 
-## Download Project Data with `vb_get_projects()`
+## Project Data
 
 `vb_get_projects()` returns information about projects established to collect vegetation plot data.
 
@@ -92,7 +91,7 @@ This example retrieves all projects whose name contains "GAP", sorted in descend
 vb_get_projects(search = "GAP", sort = "-obs_count")
 ```
 
-### Download Plot Observations by Project Code
+### Plot Observations by Project Code
 
 Once you have identified a project code, you can pass it directly to `vb_get_plot_observations`. This example retrieves the first 100 records of plot observations associated
 with the project `pj.11044` (Pennsylvania HPD Delaware Water Gap), sorted by the author's observation code.
@@ -102,11 +101,11 @@ obs <- vb_get_plot_observations("pj.11044", sort = "author_obs_code")
 obs
 ```
 
-## Download Data by Taxon with `vb_get_taxon_observations()`
+## Taxon Observations
 
 `vb_get_taxon_observations()` retrieves the individual plant taxon records associated with a given plot observation. Each row represents one taxon recorded in the plot
 
-### Get Taxon by Plot Observation
+### Taxon Observations by Plot
 
 This example retrieves the taxon (plant) observations associated with the plot `ob.135454`
 
@@ -114,7 +113,7 @@ This example retrieves the taxon (plant) observations associated with the plot `
 vb_get_taxon_observations("ob.135454")
 ```
 
-## Download Data by Plant Community Concept with `vb_get_community_concepts()`
+## Plant Community Concepts
 
 The example below searches for community concepts that include the genus
 *Sequoiadendron*.
