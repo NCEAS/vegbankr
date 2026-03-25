@@ -277,9 +277,41 @@ docs %>%
 
 ## Data Validation
 
+Validating that your data conform the VegBank schema is an important step to a successful data upload. Of course, validation occurs before ingest into the database, and some validation is also done by the API, but users often benefit from getting easy to read validation results prior to even attempting a data upload.
+
+The `vb_validate` family of functions will check for the presence of required fields, unique fields, and cross-check required foreign keys across tables.
+
+To validate your plot observations data before submitting, you pass all of your loader tables as `data.frames` to the appropriate arguments in `vb_validate_plot_observations`.
+
+```{r, eval = FALSE}
+vb_validate_plot_observations(plot_observations = plots,
+                              projects = projects,
+                              parties = party,
+                              contributors = contrib,
+                              disturbances = dist,
+                              community_classifications = comm,
+                              strata_cover_data = strata_cover,
+                              taxon_interpretations = tax,
+                              strata = strata)
+```
+
+If there are issues in the data, the validator will return output that looks like this:
+
+```
+✖ disturbances.user_ob_code values not found in plot_observations.user_ob_code: DO001, DO002, DO003
+ℹ soils table not provided - skipping validation
+ℹ stem_data table not provided - skipping validation
+ℹ references table not provided - skipping validation
+```
+
+In this example, `user_ob_code` in the `disturbances` table contains values that are not found in `user_ob_code` in `plot_observations`. As described in the disturbances section of the loader tables requirements above, all values in this foreign key must be present in `user_ob_code` in the plot observations loader table.
+
+To correct this mistake, you would need to return to the code that performed the data modeling to determine what the cause of the issue is. It could be that the entire wrong column in the original data was mapped to one of the two `user_ob_codes`, or it could be that there are capitalization or white space issues that make the same code not be recognized as equivalent across tables. Note that validation is case and white space sensitive across all checks.
+
+
 ## Data Upload
 
-To upload data, first you need to point your R session to the correct vegbank instance and set a token.
+Once data are validated, you are ready to try to upload data. First you need to point your R session to the correct VegBank instance and set a token.
 
 To do a test upload, point to the test instance.
 
