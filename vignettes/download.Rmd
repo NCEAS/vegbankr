@@ -19,84 +19,139 @@ Center for Ecological Analysis and
 Synthesis](https://www.nceas.ucsb.edu) (NCEAS). VegBank contains
 vegetation plot data, community types recognized by the U.S. National
 Vegetation Classification and others, and all ITIS/USDA plant taxa along
-with other taxa recorded in plot records. As a VegBank API client, the
-`vegbankr` package currently supports querying and downloading
+with other taxa recorded in plot records.
+
+As a VegBank API client, the `vegbankr` package currently supports querying and downloading
 vegetation plot records and other supporting information from the
 VegBank database, and will soon support validating and uploading new
 data to the VegBank database as well.
+
+Many of the functions utilize the following arguments:
+
+| Argument | Description |
+|---|---|
+| `vb_code` | A VegBank code. For example, an observation code (`ob.*`) or project code (`pj.*`) |
+| `detail` | Level of detail returned: `"full"` includes all available fields; the default returns a summary subset |
+| `with_nested` | If `TRUE`, nested child records (e.g. taxon observations, stratum data) are included as list columns |
+| `limit` | Maximum number of records to return (default: 100) |
+| `offset` | Number of records to skip before returning results; useful for pagination |
+| `sort` | Field name to sort by; prefix with `-` for descending order (e.g. `"-obs_count"`) |
+| `search` | Optional search string for filtering results | 
+
 
 ```{r, message = FALSE, echo = FALSE}
 library(vegbankr)
 ```
 
-### Downloading Plot Observation Data with `vb_get_observations()`
+## Download Plot Observation Data with `vb_get_plot_observations()`
 
-#### Download Single Plot Observation by Plot Code
+The `vb_get_plot_observations()` function allows users to download
+vegetation plot data from VegBank. 
 
-Grab a single plot observation record based on its "ob" code.
+### Download Single Plot Observation by Plot Code
+
+To retrieve a specific plot observation record using its "ob" code, use
+the following command:
 
 ```{r}
+# Retrieve a specific plot observation
 ob.135454 <- vb_get_plot_observations(vb_code = "ob.135454", detail = "full",
   with_nested = TRUE)
+
+# Preview the downloaded data
 head(ob.135454)
 ```
 
-#### Download Plot Observations for a Project with `vb_get_plot_observations()`
+Omitting `detail = "full"` or setting `with_nested = FALSE` returns a
+smaller summary better for quick browsing or larger downloads.
 
-This example downloads 100 plot observations for the Southwest GAP,
-Nevada Project (pj.10510).
+### Download Plot Observations for a Project with `vb_get_plot_observations()`
 
-```{r}
-vb_get_plot_observations(vb_code = "pj.10510")
-
-# To download more than 100 records, increase the limit argument
-# vb_get_plot_observations(vb_code = "pj.10510", limit = 500)
-```
-
-### Downloading Project Data with `vb_get_projects()`
-
-#### Search by Project Name
-
-This example searches for "GAP" related projects, and returns them in
-descending order by observation count.
+You can also download multiple plot observations for a specific project.
+For example, to retrieve 100 plot observations from the Southwest GAP,
+Nevada Project (pj.10510):
 
 ```{r}
-vb_get_projects(search = "GAP", sort = "-obs_count") |>
-  dplyr::select(pj_code, project_name, obs_count)
+# Retrieve all plot observations for a specific project
+pj.10510 <- vb_get_plot_observations(vb_code = "pj.10510")
+
+# Preview the data
+head(pj.10510)
+
 ```
 
-#### Search by Project Code
+## Download Project Data with `vb_get_projects()`
 
-This example gets the first 100 records of plot observations associated
-with the project `pj.11044` (Pennsylvania HPD Delaware Water Gap). It is
-then sorted by the author_obs_code
+`vb_get_projects()` returns information about projects established to collect vegetation plot data.
+
+### Search by Project Name
+
+This example retrieves all projects whose name contains "GAP", sorted in descending order by observation count so that the most data-rich projects appear first.
 
 ```{r}
-obs <- vb_get_plot_observations("pj.11044", sort = "author_obs_code",
-  limit = 100)
-obs |> dplyr::count(state_province)
+vb_get_projects(search = "GAP", sort = "-obs_count")
 ```
 
-### Downloading Data by Taxon with `vb_get_taxon_observations()`
+### Download Plot Observations by Project Code
 
-#### Get Taxon by Plot Observation
-
-This example gets the taxon (plant) observations associated with a plot 
-observation (ob.135454), and then displays the observations in order based on the plant code of the
-current taxon interpretation.
+Once you have identified a project code, you can pass it directly to `vb_get_plot_observations`. This example retrieves the first 100 records of plot observations associated
+with the project `pj.11044` (Pennsylvania HPD Delaware Water Gap), sorted by the author's observation code.
 
 ```{r}
-vb_get_taxon_observations("ob.135454") |>
-  dplyr::arrange(int_curr_plant_code) |>
-  print(n = 35)
+obs <- vb_get_plot_observations("pj.11044", sort = "author_obs_code")
+obs
 ```
 
-#### Get Taxon by Name
+## Download Data by Taxon with `vb_get_taxon_observations()`
 
-This example searches for community concepts with the string "*sequoiadendron*".
+`vb_get_taxon_observations()` retrieves the individual plant taxon records associated with a given plot observation. Each row represents one taxon recorded in the plot
+
+### Get Taxon by Plot Observation
+
+This example retrieves the taxon (plant) observations associated with the plot `ob.135454`
+
+```{r}
+vb_get_taxon_observations("ob.135454")
+```
+
+## Download Data by Plant Community Concept with `vb_get_community_concepts()`
+
+The example below searches for community concepts that include the genus
+*Sequoiadendron*.
 
 ```{r}
 
-sequoia_communities <- vb_get_community_concepts(search = "sequoiadendron")
+vb_get_community_concepts(search = "sequoiadendron")
 
 ```
+
+## Other Function Options
+
+### Changing Limit & Offset
+
+To download more than 100 records, increase the `limit` argument. To page through a large results in set chunks, combine `limit` and `offset`
+
+```{r}
+
+# Download up to 500 records
+vb_get_plot_observations(vb_code = "pj.10510", limit = 500)
+
+# Download the second page of 100 records
+vb_get_plot_observations(vb_code = "pj.10510", limit = 100, offset = 100)
+
+```
+
+
+### Sorting Results
+
+### Manipulating Downloaded Data with `dplyr`
+
+Because downloaded VegBank data is saved as dataframes, the data can be
+manipulated using base R or dplyr functions. Below we highlight a few
+possible data manipulations.
+
+```{r, message = FALSE}
+library(dplyr)
+```
+
+#### ! Need to think of exampls !
