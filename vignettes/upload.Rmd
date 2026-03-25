@@ -34,8 +34,18 @@ Vegetation Classification and others, and all ITIS/USDA plant taxa along
 with other taxa recorded in plot records. As a VegBank API client, the
 `vegbankr` package currently supports querying and downloading
 vegetation plot records and other supporting information from the
-VegBank database, and will soon support validating and uploading new
+VegBank database, and supports validating and uploading new
 data to the VegBank database as well.
+
+## Contributing data to VegBank
+
+To upload data to VegBank, you must **first request contributor permission** 
+from the ESA  Vegetation Classification Panel. You can request to 
+be a contributor by emailing [help@vegbank.org](mailto:help@vegbank.org) and
+the panel will evaluate your request with the goal of maintaining high-quality 
+vegetation data in the system. Once your contributor role is 
+granted, you  will be able to log in and upload new plot data with the 
+[vegbankr R package](https://nceas.github.io/vegbankr). 
 
 To use `vegbankr` to upload data, there are 3 key steps:
 
