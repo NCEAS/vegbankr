@@ -1,9 +1,10 @@
 #' Validate VegBank loader tables for plot observations and related data
 #'
-#' Performs comprehensive validation checks on VegBank loader tables to ensure
+#' Performs validation checks on VegBank loader tables to ensure
 #' data integrity before upload. Validates required fields, uniqueness constraints,
 #' and referential integrity between related tables. Prints validation errors
-#' and warnings.
+#' and warnings. This validation tool is a first pass at catching errors -
+#' full validation is only done at upload.
 #'
 #' @param plot_observations A data frame containing details about plot
 #'   observations
@@ -40,8 +41,6 @@ vb_validate_plot_observations <- function(plot_observations,
                                           strata_cover_data = NULL, stem_data = NULL, taxon_interpretations = NULL,
                                           contributors = NULL) {
   
-  fields <- utils::read.csv(system.file("loader-table-fields.csv", package = "vegbankr"))
-  
   validation_results <- list()
   
   # plot_observations
@@ -66,7 +65,6 @@ vb_validate_plot_observations <- function(plot_observations,
     )
   } else cli::cli_alert_info("parties table not provided - skipping validation")
   
-  # TODO: validate all vegbank codes exist in vegbank (optional???)
   # contributors
   if (!is.null(contributors)){
     validation_results$contributors <- list(
@@ -74,8 +72,8 @@ vb_validate_plot_observations <- function(plot_observations,
       validate_no_duplicates(contributors, c("user_cr_code")),
       validate_at_least_one_present(contributors, "vb_py_code", "user_py_code"),
       validate_values_exist(child_df = contributors, child_col = "user_py_code", parent_df = parties, parent_col = "user_py_code")
-      # TODO: validate the record identifier based on contributor_type
     )
+    
   } else cli::cli_alert_info("contributors table not provided - skipping validation")
   
   # community classifications
@@ -113,7 +111,6 @@ vb_validate_plot_observations <- function(plot_observations,
       validate_at_least_one_present(taxon_interpretations, "user_py_code", "vb_py_code"),
       validate_values_exist(taxon_interpretations, "user_to_code", strata_cover_data, "user_to_code"),
       validate_values_exist(taxon_interpretations, "user_py_code", parties, "user_py_code")
-      # TODO: references
     )
   } else cli::cli_alert_info("taxon_interpretations table not provided - skipping validation")
   
@@ -144,6 +141,15 @@ vb_validate_plot_observations <- function(plot_observations,
     )
   } else cli::cli_alert_info("stem_data table not provided - skipping validation")
   
+  # references
+  if (!is.null(references)){
+    validation_results$references <- list(
+      validate_no_nulls(references, c("user_rf_code")),
+      validate_no_duplicates(references, c("user_rf_code"))
+    )
+  } else cli::cli_alert_info("references table not provided - skipping validation")
+  
+  
   
   validation_results <- lapply(validation_results, function(x) all(unlist(x)))
   if (all(unlist(validation_results))){
@@ -152,6 +158,156 @@ vb_validate_plot_observations <- function(plot_observations,
   return(validation_results)
   
 }
+
+#' Validate VegBank loader tables for new plant concepts
+#'
+#' Performs validation checks on VegBank loader tables to ensure
+#' data integrity before upload. Validates required fields, uniqueness constraints,
+#' and referential integrity between related tables. Prints validation errors
+#' and warnings. This validation tool is a first pass at catching errors -
+#' full validation is only done at upload.
+#'
+#' @param plant_concepts A data frame containing plant concepts as plant names
+#'   associated with references, along with with status details and taxonomic
+#'   parents
+#' @param plant_names A data frame containing plant name usages associated with
+#'   specific classification systems for new plant concepts
+#' @param plant_correlations A data frame defining correlations between plant
+#'   concepts
+#' @param parties A data frame containing details about new parties
+#' @param references A data frame containing details about new references
+#'
+#' @return A named list with one element per table, each containing a logical value
+#'   (TRUE if all validations passed for that table, FALSE otherwise). For example:
+#'   \code{list(parties = TRUE, contributors = FALSE, plot_observations = TRUE)}
+#' 
+#' @import dplyr
+#' @import tidyr
+#' @export
+#'
+vb_validate_plant_concepts <- function(plant_concepts,
+                                       plant_names = NULL, plant_correlations = NULL, parties = NULL,
+                                       references = NULL) {
+  validation_results <- list()
+  
+  # plant_concepts
+  validation_results$plant_concepts <- list(
+    validate_no_nulls(plant_concepts, c("user_pc_code", "name", "start_date", "plant_concept_status")),
+    validate_no_duplicates(plant_concepts, c("user_pc_code")),
+    validate_at_least_one_present(plant_concepts, "user_rf_code", "vb_rf_code"),
+    validate_at_least_one_present(plant_concepts, "user_status_py_code", "vb_status_py_code"),
+    validate_at_least_one_present(plant_concepts, "user_status_rf_code", "vb_status_rf_code"),
+    validate_at_least_one_present(plant_concepts, "user_parent_pc_code", "vb_parent_pc_code"),
+    validate_values_exist(plant_concepts, "user_rf_code", references, "user_rf_code"),
+    validate_values_exist(plant_names, "user_status_py_code", parties, "user_py_code")
+  )
+  
+  # plant_correlations
+  if (!is.null(plant_correlations)){
+    validation_results$plant_correlations <- list(
+      validate_no_nulls(plant_correlations, c("convergence_type", "correlation_start")),
+      validate_at_least_one_present(plant_correlations, "user_correlated_pc_code", "vb_correlated_pc_code")
+    )
+  } else cli::cli_alert_info("plant_correlations table not provided - skipping validation")
+  
+  # plant_names
+  if (!is.null(plant_names)){
+    validation_results$plant_names <- list(
+      validate_no_nulls(plant_names, c("user_pc_code", "name", "name_type", "name_status")),
+      validate_at_least_one_present(plant_names, "user_usage_py_code", "vb_usage_py_code"),
+      validate_values_exist(plant_names, "user_pc_code", plant_concepts, "user_pc_code"),
+      validate_values_exist(plant_names, "user_usage_py_code", parties, "user_py_code")
+    )
+  } else cli::cli_alert_info("plant_names table not provided - skipping validation")
+  
+  # parties
+  if (!is.null(parties)){
+    validation_results$parties <- list(
+      validate_no_nulls(parties, c("user_py_code")),
+      validate_no_duplicates(parties, c("user_py_code"))
+    )
+  } else cli::cli_alert_info("parties table not provided - skipping validation")
+  
+  # references
+  if (!is.null(references)){
+    validation_results$references <- list(
+      validate_no_nulls(references, c("user_rf_code")),
+      validate_no_duplicates(references, c("user_rf_code"))
+    )
+  } else cli::cli_alert_info("references table not provided - skipping validation")
+  
+  validation_results <- lapply(validation_results, function(x) all(unlist(x)))
+  if (all(unlist(validation_results))){
+    cli::cli_alert_success("All loader tables valid.")
+  }
+  return(validation_results)
+  
+}
+
+#' Validate VegBank loader tables for new community concepts
+#'
+#' Performs validation checks on VegBank loader tables to ensure
+#' data integrity before upload. Validates required fields, uniqueness constraints,
+#' and referential integrity between related tables. Prints validation errors
+#' and warnings. This validation tool is a first pass at catching errors -
+#' full validation is only done at upload.
+#' 
+#' @param community_concepts A data frame containing community concepts as
+#'   community names associated with references, along with with status details
+#'   and taxonomic parents
+#' @param community_names A data frame containing community name usages
+#'   associated with specific classification systems for new community concepts
+#' @param community_correlations A data frame defining correlations between
+#'   community concepts
+#' @param parties A data frame containing details about new parties
+#' @param references A data frame containing details about new references
+#' @return A named list with one element per table, each containing a logical value
+#'   (TRUE if all validations passed for that table, FALSE otherwise). For example:
+#'   \code{list(community_concepts = TRUE, community_names = FALSE, community_correlations = TRUE)}
+#' 
+#' @import dplyr
+#' @import tidyr
+#' @export
+#'
+vb_validate_community_concepts <- function(community_concepts,
+                                         community_names = NULL, community_correlations = NULL, parties = NULL,
+                                         references = NULL) {
+  
+  validation_results <- list()
+  # community_concepts
+  validation_results$community_concepts <- list(
+    validate_no_nulls(community_concepts, c("user_cc_code", "name", "start_date", "comm_concept_status")),
+    validate_no_duplicates(community_concepts, c("user_cc_code")),
+    validate_at_least_one_present(community_concepts, "user_status_py_code", "vb_status_py_code"),
+    validate_at_least_one_present(community_concepts, "user_rf_code", "vb_rf_code"),
+    validate_values_exist(community_concepts, "user_rf_code", references, "user_rf_code"),
+    validate_values_exist(community_concepts, "user_status_py_code", parties, "user_py_code")
+  )
+  
+  # community_names
+  if (!is.null(community_names)){
+    validation_results$community_names <- list(
+      validate_no_nulls(community_names, c("user_cc_code", "name", "name_type", "name_status")),
+      validate_at_least_one_present(community_names, "user_usage_py_code", "vb_usage_py_code"),
+      validate_values_exist(community_concepts, "user_usage_py_code", parties, "user_py_code")
+    )
+  } else cli::cli_alert_info("community_names table not provided - skipping validation")
+  
+  # community_correlations
+  if (!is.null(community_correlations)){
+    validation_results$community_correlations <- list(
+      validate_no_nulls(community_correlations, c("convergence_type", "correlation_start")),
+      validate_at_least_one_present(community_correlations, "vb_correlated_cc_code", "user_correlated_cc_code")
+    )
+  } else cli::cli_alert_info("community_correlations table not provided - skipping validation")
+  
+  validation_results <- lapply(validation_results, function(x) all(unlist(x)))
+  if (all(unlist(validation_results))){
+    cli::cli_alert_success("All loader tables valid.")
+  }
+  return(validation_results)
+}
+
 
 #' Validate no NULL values in specified columns
 #'
@@ -252,12 +408,12 @@ validate_values_exist <- function(child_df, child_col, parent_df, parent_col) {
     cli::cli_alert_info("{child_table} or {parent_table} not provided - skipping foreign key validation.")
     return(TRUE)
   }
-
+  
   if (!(child_col %in% names(child_df))) {
     cli::cli_alert_info("{child_table}: Column '{child_col}' not found - skipping foreign key validation.")
     return(FALSE)
   }
-
+  
   if (!(parent_col %in% names(parent_df))) {
     cli::cli_alert_info("{child_table}: Column '{parent_col}' not found in {parent_table} - skipping foreign key validation")
     return(FALSE)

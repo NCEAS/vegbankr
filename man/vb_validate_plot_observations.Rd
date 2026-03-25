@@ -58,8 +58,9 @@ A named list with one element per table, each containing a logical value
 \code{list(parties = TRUE, contributors = FALSE, plot_observations = TRUE)}
 }
 \description{
-Performs comprehensive validation checks on VegBank loader tables to ensure
+Performs validation checks on VegBank loader tables to ensure
 data integrity before upload. Validates required fields, uniqueness constraints,
 and referential integrity between related tables. Prints validation errors
-and warnings.
+and warnings. This validation tool is a first pass at catching errors -
+full validation is only done at upload.
 }
