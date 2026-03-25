@@ -197,9 +197,8 @@ vb_validate_plant_concepts <- function(plant_concepts,
     validate_at_least_one_present(plant_concepts, "user_rf_code", "vb_rf_code"),
     validate_at_least_one_present(plant_concepts, "user_status_py_code", "vb_status_py_code"),
     validate_at_least_one_present(plant_concepts, "user_status_rf_code", "vb_status_rf_code"),
-    validate_at_least_one_present(plant_concepts, "user_parent_pc_code", "vb_parent_pc_code"),
     validate_values_exist(plant_concepts, "user_rf_code", references, "user_rf_code"),
-    validate_values_exist(plant_names, "user_status_py_code", parties, "user_py_code")
+    validate_values_exist(plant_concepts, "user_status_py_code", parties, "user_py_code")
   )
   
   # plant_correlations
@@ -231,7 +230,6 @@ vb_validate_plant_concepts <- function(plant_concepts,
   # references
   if (!is.null(references)){
     validation_results$references <- list(
-      validate_no_nulls(references, c("user_rf_code")),
       validate_no_duplicates(references, c("user_rf_code"))
     )
   } else cli::cli_alert_info("references table not provided - skipping validation")
@@ -301,11 +299,108 @@ vb_validate_community_concepts <- function(community_concepts,
     )
   } else cli::cli_alert_info("community_correlations table not provided - skipping validation")
   
+  # references
+  if (!is.null(references)){
+    validation_results$references <- list(
+      validate_no_duplicates(references, c("user_rf_code"))
+    )
+  } else cli::cli_alert_info("references table not provided - skipping validation")
+  
   validation_results <- lapply(validation_results, function(x) all(unlist(x)))
   if (all(unlist(validation_results))){
     cli::cli_alert_success("All loader tables valid.")
   }
   return(validation_results)
+}
+
+#' Validate VegBank loader tables for new stratum methods
+#'
+#' Performs validation checks on VegBank loader tables to ensure
+#' data integrity before upload. Validates required fields, uniqueness constraints,
+#' and referential integrity between related tables. Prints validation errors
+#' and warnings. This validation tool is a first pass at catching errors -
+#' full validation is only done at upload.
+#' 
+#' @param stratum_methods A data frame containing stratum methods and their
+#'   associated component stratum types
+#' @param references A data frame containing details about new references
+#' @return A named list with one element per table, each containing a logical value
+#'   (TRUE if all validations passed for that table, FALSE otherwise). For example:
+#'   \code{list(community_concepts = TRUE, community_names = FALSE, community_correlations = TRUE)}
+#' 
+#' @import dplyr
+#' @import tidyr
+#' @export
+vb_validate_stratum_methods <- function(stratum_methods, references = NULL){
+  
+  validation_results <- list()
+  
+  # stratum_methods
+  validation_results$stratum_methods <- list(
+    validate_no_nulls(stratum_methods, c("user_sm_code", "stratum_method_name")),
+    validate_no_duplicates(stratum_methods, c("user_sm_code")),
+    validate_at_least_one_present(stratum_methods, "user_rf_code", "vb_rf_code"),
+    validate_values_exist(stratum_methods, "user_rf_code", references, "user_rf_code"),
+  )
+  
+  # references
+  if (!is.null(references)){
+    validation_results$references <- list(
+      validate_no_duplicates(references, c("user_rf_code"))
+    )
+  } else cli::cli_alert_info("references table not provided - skipping validation")
+  
+  validation_results <- lapply(validation_results, function(x) all(unlist(x)))
+  if (all(unlist(validation_results))){
+    cli::cli_alert_success("All loader tables valid.")
+  }
+  return(validation_results)
+  
+}
+
+#' Validate VegBank loader tables for new cover methods
+#'
+#' Performs validation checks on VegBank loader tables to ensure
+#' data integrity before upload. Validates required fields, uniqueness constraints,
+#' and referential integrity between related tables. Prints validation errors
+#' and warnings. This validation tool is a first pass at catching errors -
+#' full validation is only done at upload.
+#' 
+#' @param cover_methods A data frame containing cover methods and their
+#'   associated component cover indexes
+#' @param references A data frame containing details about new references
+#' @return A named list with one element per table, each containing a logical value
+#'   (TRUE if all validations passed for that table, FALSE otherwise). For example:
+#'   \code{list(community_concepts = TRUE, community_names = FALSE, community_correlations = TRUE)}
+#' 
+#' @import dplyr
+#' @import tidyr
+#' @export
+vb_validate_cover_methods <- function(cover_methods, references = NULL){
+  
+  validation_results <- list()
+  
+  # cover_methods
+  validation_results$cover_methods <- list(
+    validate_no_nulls(cover_methods, c("user_cm_code", "cover_type", "cover_code", "cover_percent")),
+    validate_no_duplicates(cover_methods, c("user_cm_code")),
+    validate_at_least_one_present(cover_methods, "user_rf_code", "vb_rf_code"),
+    validate_values_exist(cover_methods, "user_rf_code", references, "user_rf_code"),
+  )
+  
+  # references
+  if (!is.null(references)){
+    validation_results$references <- list(
+      validate_no_duplicates(references, c("user_rf_code"))
+    )
+  } else cli::cli_alert_info("references table not provided - skipping validation")
+  
+  validation_results <- lapply(validation_results, function(x) all(unlist(x)))
+  if (all(unlist(validation_results))){
+    cli::cli_alert_success("All loader tables valid.")
+  }
+  return(validation_results)
+  
 }
 
 

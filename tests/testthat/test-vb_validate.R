@@ -1,11 +1,7 @@
-valid_project <- data.frame(
-  user_pj_code = c("MOJA")
-)
+valid_project <- data.frame(user_pj_code = c("MOJA"))
 
-valid_parties <- data.frame(
-  user_py_code = c("PY001", "PY002"),
-  surname = c("Smith", "Jones")
-)
+valid_parties <- data.frame(user_py_code = c("PY001", "PY002"),
+    surname = c("Smith", "Jones"))
 
 valid_contributors <- data.frame(
   user_cr_code = c("CR001", "CR002", "CR003"),
@@ -49,7 +45,7 @@ valid_strata_cover_data <- data.frame(
   user_ob_code = c("OB001", "OB001", "OB002"),
   user_tm_code = c("TM001", "TM002", "TM003"),
   user_to_code = c("TO001", "TO001", "TO002"),
-  user_sr_code = c("SR001", "SR002", "SR003"), 
+  user_sr_code = c("SR001", "SR002", "SR003"),
   author_plant_name = c("Quercus alba", "Quercus alba", "Pinus strobus"),
   cover = c(25, 15, 40)
 )
@@ -57,39 +53,39 @@ valid_strata_cover_data <- data.frame(
 # Strata data
 valid_strata <- data.frame(
   user_ob_code = c("OB001", "OB001", "OB002"),
-  user_sr_code = c("SR001", "SR002", "SR003"),  
+  user_sr_code = c("SR001", "SR002", "SR003"),
   vb_sy_code = c("SY001", "SY002", "SY003")
 )
 
 valid_taxon <- data.frame(
-  user_ti_code = c("TI001", "TI002", "TI003"),  
-  user_to_code = c("TO001", "TO001", "TO002"),  
+  user_ti_code = c("TI001", "TI002", "TI003"),
+  user_to_code = c("TO001", "TO001", "TO002"),
   vb_pc_code = c("PC123", "PC456", "PC789"),
   vb_ar_code = c("ar.55", "ar.34", "ar.16"),
-  user_py_code = c("PY001", "PY002", NA),  
-  vb_py_code = c(NA, NA, "VB999"),  
+  user_py_code = c("PY001", "PY002", NA),
+  vb_py_code = c(NA, NA, "VB999"),
   original_interpretation = c(TRUE, TRUE, FALSE),
   current_interpretation = c(TRUE, FALSE, TRUE)
 )
 
 valid_disturbances <- data.frame(
-  user_do_code = c("DO001", "DO002", "DO003"),  
-  user_ob_code = c("OB001", "OB002", "OB003"), 
+  user_do_code = c("DO001", "DO002", "DO003"),
+  user_ob_code = c("OB001", "OB002", "OB003"),
   type = c("fire", "grazing", "logging"),
   intensity = c("high", "moderate", "low"),
   comment = c("Wildfire 2020", "Cattle grazing", "Selective harvest")
 )
 
 invalid_disturbances <- data.frame(
-  user_do_code = c("DO001", "DO002", "DO003"),  
+  user_do_code = c("DO001", "DO002", "DO003"),
   type = c("fire", "grazing", "logging"),
   intensity = c("high", "moderate", "low"),
   comment = c("Wildfire 2020", "Cattle grazing", "Selective harvest")
 )
 
 valid_soils <- data.frame(
-  user_so_code = c("SO001", "SO002", "SO003"),  
-  user_ob_code = c("OB001", "OB002", "OB003"),  
+  user_so_code = c("SO001", "SO002", "SO003"),
+  user_ob_code = c("OB001", "OB002", "OB003"),
   horizon = c("A", "A", "B"),
   texture = c("sandy loam", "clay", "silt loam"),
   depth = c(15, 20, 30)
@@ -124,18 +120,85 @@ valid_community_names <- data.frame(
   user_usage_py_code = c("PY001", "PY001")
 )
 
-valid_refs <- data.frame(user_rf_code = "REF001",
-                  short_name = "a short name")
+valid_stratum_methods = data.frame(
+  user_sm_code = c("jr_sm_1"),
+  stratum_method_name = c("my stratum method name"),
+  stratum_method_description = c("my stratum description"),
+  stratum_assignment = c("whatever this is"),
+  user_rf_code = c("REF001"),
+  stratum_index = c("index 1", "index 2"),
+  stratum_name = c("name 1", "name 2"),
+  stratum_description = c("description 1", "description 2")
+)
+
+valid_plant_names <- tibble::tibble(
+  user_pc_code = rep(c("pc.91465", "ACER", "ACRU", "ACRUD2", "ACRUD"), c(2L, 4L, 4L, 3L, 4L)),
+  name_type = c(
+    "English common", "Scientific without authors", "English common",
+    "Scientific", "Scientific without authors", "Code", "English common",
+    "Scientific", "Scientific without authors", "Code", "Scientific",
+    "Scientific without authors", "Code", "English common", "Scientific",
+    "Scientific without authors", "Code"
+  ),
+  name = c(
+    "Maple family", "Aceraceae", "maple", "Acer L.", "Acer", "ACER", "red maple",
+    "Acer rubrum L.", "Acer rubrum", "ACRU",
+    "Acer rubrum L. ssp. drummondii (Hook. & Arn. ex Nutt.) A.E. Murray",
+    "Acer rubrum ssp. drummondii", "ACRUD2", "Drummond's maple",
+    "Acer rubrum L. var. drummondii (Hook. & Arn. ex Nutt.) Sarg.",
+    "Acer rubrum var. drummondii", "ACRUD"
+  ),
+  name_status = "Standard",
+  usage_start = as.Date("2026-02-04"),
+  user_usage_py_code = "PY001",
+)
+
+valid_plant_concepts <- tibble::tibble(
+  user_pc_code = c("pc.91465", "ACER", "ACRU", "ACRUD2", "ACRUD"),
+  name = c(
+    "Aceraceae", "Acer L.", "Acer rubrum L.",
+    "Acer rubrum L. ssp. drummondii (Hook. & Arn. ex Nutt.) A.E. Murray",
+    "Acer rubrum L. var. drummondii (Hook. & Arn. ex Nutt.) Sarg."
+  ),
+  description = NA_character_,
+  vb_rf_code = NA_character_,
+  user_rf_code = "REF001",
+  user_status_rf_code = "REF001",
+  plant_concept_status = c("accepted", "accepted", "accepted", "not accepted", "accepted"),
+  vb_parent_pc_code = c("pc.92372", NA, NA, NA, NA),
+  user_parent_pc_code = c(NA, "pc.91465", "ACER", NA, "ACRU"),
+  plant_level = c("family", "genus", "species", "subspecies", "variety"),
+  start_date = as.Date("2026-02-04"),
+  user_status_py_code = "PY001",
+)
+
+valid_plant_correlations <- tibble::tibble(
+  user_pc_code = "ACRUD",
+  user_correlated_pc_code = "ACRUD2",
+  convergence_type = "undetermined",
+  correlation_start = as.Date("2026-02-04"),
+)
+
+valid_cover_methods <- data.frame(
+  user_cm_code = c("cm1"),
+  cover_type = c("My really amazing cover method"),
+  user_rf_code = "REF001",
+  cover_code = c("cvr_type_1"),
+  cover_percent = c(45),
+  upper_limit = c(10),
+  lower_limit = c(0)
+)
+
+valid_refs <- data.frame(user_rf_code = "REF001", short_name = "a short name")
 
 
 test_that("vb_validate_plot_observations works for valid data", {
-
   result <- vb_validate_plot_observations(
     projects = valid_project,
     parties = valid_parties,
     contributors = valid_contributors,
     plot_observations = valid_plots,
-    community_classifications = valid_community_classifications, 
+    community_classifications = valid_community_classifications,
     strata_cover_data = valid_strata_cover_data,
     strata = valid_strata,
     taxon_interpretations = valid_taxon,
@@ -148,22 +211,18 @@ test_that("vb_validate_plot_observations works for valid data", {
 })
 
 test_that("vb_validate_plot_observations works for valid minimal data", {
-
-  result <- vb_validate_plot_observations(
-    plot_observations = valid_plots
-  )
+  result <- vb_validate_plot_observations(plot_observations = valid_plots)
   
   expect_true(all(unlist(result)))
 })
 
 test_that("vb_validate_plot_observations works for invalid data", {
-  
   result <- vb_validate_plot_observations(
     projects = valid_project,
     parties = valid_parties,
     contributors = valid_contributors,
     plot_observations = invalid_plots,
-    community_classifications = valid_community_classifications, 
+    community_classifications = valid_community_classifications,
     strata_cover_data = valid_strata_cover_data,
     strata = valid_strata,
     taxon_interpretations = valid_taxon,
@@ -180,12 +239,23 @@ test_that("vb_validate_plot_observations works for invalid data", {
 })
 
 test_that("vb_validate_community_concepts works for valid data", {
-  
   result <- vb_validate_community_concepts(
     community_concepts = valid_community_concepts,
     community_names = valid_community_names,
     parties = valid_parties,
     references = valid_refs
+  )
+  
+  expect_true(all(unlist(result)))
+  
+})
+
+test_that("vb_validate_plant_concepts works for valid data", {
+  result <- vb_validate_plant_concepts(plant_concepts = valid_plant_concepts,
+                                       plant_correlations = valid_plant_correlations,
+                                       plant_names = valid_plant_names,
+                                       parties = valid_parties,
+                                       references = valid_refs
   )
   
   expect_true(all(unlist(result)))
