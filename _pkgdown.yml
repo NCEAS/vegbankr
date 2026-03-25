@@ -9,6 +9,9 @@ navbar:
     intro:
       text: About
       href: index.html
+    download:
+      text: Download
+      href: articles/download.html
     upload:
       text: Upload
       href: articles/upload.html
