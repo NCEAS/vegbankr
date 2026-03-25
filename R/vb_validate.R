@@ -504,7 +504,7 @@ validate_values_exist <- function(child_df, child_col, parent_df, parent_col, op
     if (optional){
       return(TRUE)
     } else {
-      cli::cli_alert_info("{child_table} or {parent_table} not provided - skipping foreign key validation.")
+      cli::cli_alert_warning("{child_table} or {parent_table} not provided - skipping foreign key validation.")
       return(TRUE) 
     }
   }
@@ -513,7 +513,7 @@ validate_values_exist <- function(child_df, child_col, parent_df, parent_col, op
     if (optional) {
       return(TRUE)
     } else {
-      cli::cli_alert_info("{child_table}: Column '{child_col}' not found - skipping foreign key validation.")
+      cli::cli_alert_warning("{child_table}: Column '{child_col}' not found - skipping foreign key validation.")
       return(FALSE)
     }
   }
