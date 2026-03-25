@@ -4,7 +4,13 @@
 \alias{validate_values_exist}
 \title{Validate values exist in parent table}
 \usage{
-validate_values_exist(child_df, child_col, parent_df, parent_col)
+validate_values_exist(
+  child_df,
+  child_col,
+  parent_df,
+  parent_col,
+  optional = FALSE
+)
 }
 \arguments{
 \item{child_df}{Child data frame}
@@ -14,6 +20,8 @@ validate_values_exist(child_df, child_col, parent_df, parent_col)
 \item{parent_df}{Parent data frame}
 
 \item{parent_col}{Column name in parent data frame}
+
+\item{optional}{(Boolean) If FALSE, check will fail if parent column is not found. Otherwise, check will skip.}
 }
 \value{
 Logical. TRUE if validation passes, FALSE otherwise

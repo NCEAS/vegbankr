@@ -131,7 +131,7 @@ valid_stratum_methods = data.frame(
   stratum_description = c("description 1", "description 2")
 )
 
-valid_plant_names <- tibble::tibble(
+valid_plant_names <-  data.frame(
   user_pc_code = rep(c("pc.91465", "ACER", "ACRU", "ACRUD2", "ACRUD"), c(2L, 4L, 4L, 3L, 4L)),
   name_type = c(
     "English common", "Scientific without authors", "English common",
@@ -150,10 +150,11 @@ valid_plant_names <- tibble::tibble(
   ),
   name_status = "Standard",
   usage_start = as.Date("2026-02-04"),
-  user_usage_py_code = "PY001",
-)
+  vb_usage_py_code = "py.511"
+) |>
+  structure(class = c("tbl_df", "tbl", "data.frame"))
 
-valid_plant_concepts <- tibble::tibble(
+valid_plant_concepts <- data.frame(
   user_pc_code = c("pc.91465", "ACER", "ACRU", "ACRUD2", "ACRUD"),
   name = c(
     "Aceraceae", "Acer L.", "Acer rubrum L.",
@@ -165,18 +166,19 @@ valid_plant_concepts <- tibble::tibble(
   user_rf_code = "REF001",
   user_status_rf_code = "REF001",
   plant_concept_status = c("accepted", "accepted", "accepted", "not accepted", "accepted"),
-  vb_parent_pc_code = c("pc.92372", NA, NA, NA, NA),
+  vb_parent_pc_code = rep(c("pc.92372", NA), c(1L, 4L)),
   user_parent_pc_code = c(NA, "pc.91465", "ACER", NA, "ACRU"),
   plant_level = c("family", "genus", "species", "subspecies", "variety"),
   start_date = as.Date("2026-02-04"),
-  user_status_py_code = "PY001",
-)
+  vb_status_py_code = "py.511"
+) |>
+  structure(class = c("tbl_df", "tbl", "data.frame"))
 
-valid_plant_correlations <- tibble::tibble(
+valid_plant_correlations <-  data.frame(
   user_pc_code = "ACRUD",
   user_correlated_pc_code = "ACRUD2",
   convergence_type = "undetermined",
-  correlation_start = as.Date("2026-02-04"),
+  correlation_start = as.Date("2026-02-04")
 )
 
 valid_cover_methods <- data.frame(
