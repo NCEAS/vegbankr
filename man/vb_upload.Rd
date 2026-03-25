@@ -5,6 +5,10 @@
 \alias{vb_upload_plot_observations}
 \alias{vb_upload_plant_concepts}
 \alias{vb_upload_community_concepts}
+\alias{vb_upload_taxon_interpretations}
+\alias{vb_upload_community_classifications}
+\alias{vb_upload_cover_methods}
+\alias{vb_upload_stratum_methods}
 \title{Upload data to VegBank}
 \usage{
 vb_upload(resource, ..., query_params = NULL, dry_run = FALSE)
@@ -44,6 +48,25 @@ vb_upload_community_concepts(
   what_to_deactivate = NULL,
   dry_run = FALSE
 )
+
+vb_upload_taxon_interpretations(
+  taxon_interpretations,
+  parties = NULL,
+  references = NULL,
+  dry_run = FALSE
+)
+
+vb_upload_community_classifications(
+  community_classifications,
+  parties = NULL,
+  references = NULL,
+  contributors = NULL,
+  dry_run = FALSE
+)
+
+vb_upload_cover_methods(cover_methods, references = NULL, dry_run = FALSE)
+
+vb_upload_stratum_methods(stratum_methods, references = NULL, dry_run = FALSE)
 }
 \arguments{
 \item{resource}{\emph{Available only for \code{vb_upload()}.} Character string
@@ -119,6 +142,12 @@ associated with specific classification systems for new community concepts}
 
 \item{community_correlations}{A data frame defining correlations between
 community concepts}
+
+\item{cover_methods}{A data frame containing cover methods and their
+associated component cover indexes}
+
+\item{stratum_methods}{A data frame containing stratum methods and their
+associated component stratum types}
 }
 \value{
 The processed response object from the VegBank API documenting what
@@ -146,6 +175,15 @@ interpretation.
 through usages, with some status designation
 \item \code{vb_upload_community_concepts()} - Community concepts linked to community
 names through usages, with some status designation
+\item \code{vb_upload_taxon_interpretations()} - Re-interpretation of existing
+observation), associating them with one or more VegBank plant concepts
+\item \code{vb_upload_community_classifications()} - Re-interpretation of existing
+VegBank plot observations, associating them with one or more VegBank
+community concepts as part of a classification activity
+\item \code{vb_upload_cover_methods()} - New cover methods, including all component
+cover indexes defined by the method
+\item \code{vb_upload_stratum_methods()} - New stratum methods, including all component
+stratum types defined by the method
 }
 
 If \code{vb_debug()} is enabled, additional debugging details will be reported to
