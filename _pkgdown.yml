@@ -3,7 +3,7 @@ template:
   bootstrap: 5
 navbar:
   structure:
-    left: [intro, upload, articles]
+    left: [intro, download, upload, articles]
     right: [search, github]
   components:
     intro:
