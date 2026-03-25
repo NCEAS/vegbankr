@@ -2,7 +2,7 @@
 title: "Uploading plot data with vegbankr"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Uploading data with vegbankr}
+  %\VignetteIndexEntry{Uploading plot data with vegbankr}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -335,7 +335,7 @@ From here, uploading is easy using the `vb_upload_plot_observations()` function.
 
 To run the function, you'll take the same `data.frames` used in the validation section and pass them as arguments to the function like below. Note the `dry_run` argument. This is a way to do one last round of validation before inserting the data into VegBank. Setting a dry run allows the API to go through all of the steps except the very last insert call. If the dry run is successful, output will display saying that rows were inserted (but they weren't!). If it is not successful, it will error and more work is needed to ensure the loader tables conform to the required schema.
 
-```{r}
+```{r eval = FALSE}
 vb_upload_plot_observations(plot_observations = plots_semi,
                             projects = projects,
                             parties = party,
