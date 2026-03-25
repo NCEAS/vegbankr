@@ -42,7 +42,7 @@ Many of the functions utilize the following arguments:
 library(vegbankr)
 ```
 
-## Download Plot Observation Data
+## Plot Observation Data
 
 The `vb_get_plot_observations()` function allows users to download
 vegetation plot data from VegBank. 
