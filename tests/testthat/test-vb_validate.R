@@ -103,6 +103,30 @@ valid_stem <- data.frame(
   stem_diameter = c(15.5, 22.3, 8.7)
 )
 
+valid_community_concepts <- data.frame(
+  user_cc_code = "88.100.00",
+  name = "Abies grandis – Picea sitchensis – Thuja plicata",
+  user_rf_code = "REF001",
+  user_status_rf_code = "MCV - CDFW CNPS",
+  comm_concept_status = "accepted",
+  user_parent_cc_code = NA,
+  comm_level = "alliance",
+  start_date = "1995-11-01",
+  user_status_py_code = "PY001"
+)
+
+valid_community_names <- data.frame(
+  user_cc_code = c("88.100.00", "88.100.00"),
+  name_type = c("Scientific", "Code"),
+  name = c("Abies grandis – Picea sitchensis – Thuja plicata", "88.100.00"),
+  name_status = c("Standard", "Standard"),
+  usage_start = c("1995-11-01", "1995-11-01"),
+  user_usage_py_code = c("PY001", "PY001")
+)
+
+valid_refs <- data.frame(user_rf_code = "REF001",
+                  short_name = "a short name")
+
 
 test_that("vb_validate_plot_observations works for valid data", {
 
@@ -152,5 +176,18 @@ test_that("vb_validate_plot_observations works for invalid data", {
   expect_false(result$disturbances)
   expect_true(result$parties)
   
+  
+})
+
+test_that("vb_validate_community_concepts works for valid data", {
+  
+  result <- vb_validate_community_concepts(
+    community_concepts = valid_community_concepts,
+    community_names = valid_community_names,
+    parties = valid_parties,
+    references = valid_refs
+  )
+  
+  expect_true(all(unlist(result)))
   
 })

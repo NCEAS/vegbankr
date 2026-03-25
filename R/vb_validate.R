@@ -289,7 +289,7 @@ vb_validate_community_concepts <- function(community_concepts,
     validation_results$community_names <- list(
       validate_no_nulls(community_names, c("user_cc_code", "name", "name_type", "name_status")),
       validate_at_least_one_present(community_names, "user_usage_py_code", "vb_usage_py_code"),
-      validate_values_exist(community_concepts, "user_usage_py_code", parties, "user_py_code")
+      validate_values_exist(community_names, "user_usage_py_code", parties, "user_py_code")
     )
   } else cli::cli_alert_info("community_names table not provided - skipping validation")
   
