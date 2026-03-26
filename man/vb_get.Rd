@@ -88,6 +88,7 @@ vb_get_plant_concepts(
   offset = 0,
   parquet = NULL,
   search = NULL,
+  status = NULL,
   with_nested = NULL,
   ...
 )
@@ -146,6 +147,7 @@ vb_get_community_concepts(
   offset = 0,
   parquet = NULL,
   search = NULL,
+  status = NULL,
   with_nested = NULL,
   ...
 )
@@ -177,6 +179,7 @@ vb_get_plot_observations(
   offset = 0,
   parquet = NULL,
   search = NULL,
+  status = NULL,
   detail = NULL,
   with_nested = NULL,
   num_taxa = NULL,
@@ -243,6 +246,14 @@ to the API GET request.}
 structures. All endpoints support \code{FALSE}. For those that support \code{TRUE},
 this is the default for individual record queries, otherwise the default is
 \code{FALSE}. Set to \code{NULL} to use the API default.}
+
+\item{status}{Optional string for limiting results by status, with
+default equivalent to 'any' if unset. Available for:
+\itemize{
+\item \strong{plot-observations:} "any", "current"
+\item \strong{community-concepts:} "any", "current", "accepted",
+"current_accepted"
+}}
 
 \item{detail}{Character string specifying level of detail. All endpoints
 support "full" detail. For those that support "minimal" detail, this is the
