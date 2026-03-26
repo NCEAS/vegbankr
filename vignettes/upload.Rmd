@@ -44,12 +44,12 @@ from the ESA  Vegetation Classification Panel. You can request to
 be a contributor by emailing [help@vegbank.org](mailto:help@vegbank.org) and
 the panel will evaluate your request with the goal of maintaining high-quality 
 vegetation data in the system. Once your contributor role is 
-granted, you  will be able to log in and upload new plot data with the 
+granted, you will be able to log in and upload new plot data with the 
 [vegbankr R package](https://nceas.github.io/vegbankr). 
 
 To use `vegbankr` to upload data, there are 3 key steps:
 
-1.  Model and transform your data to the vegbank loader table format
+1.  Model and transform your data to the VegBank Loader Table format
 2.  Validate your data
 3.  Upload your data using `vb_upload_plot_observations(...)`
 
@@ -109,9 +109,9 @@ docs %>%
 The contributors loader table is fairly code heavy, but is closely linked to
 both the Projects table and the Parties table, and is used to link parties (people) with their contributions to plots, projects, taxa, and classifications.
 
-`user_py_code` is a foreign key to the `parties` table, so any values present in this field must be present there as well. Optionally, instead of `user_py_code`, `vb_py_code` can be used if the party is already in vegbank. One of `user_py_code` or `vb_py_code` must be present, but having both in the same row is disallowed.
+`user_py_code` is a foreign key to the `parties` table, so any values present in this field must be present there as well. Optionally, instead of `user_py_code`, `vb_py_code` can be used if the party is already in VegBank. One of `user_py_code` or `vb_py_code` must be present, but having both in the same row is disallowed.
 
-`vb_ar_code` is the vegbank role code - a code in the format `ar.{nn}`. A table of allowed values and their meanings is listed below the loader table variables.
+`vb_ar_code` is the VegBank role code - a code in the format `ar.{nn}`. A table of allowed values and their meanings is listed below the loader table variables.
 
 Finally, the `contributor_type` indicates whether this contributor is linked to an Observation, Project, or Classification. The `record_identifier` value will depend on which of these three types the contributor is associated with. If the contributor should be associated with a project with `user_pj_code` `MOJA`, the `record_identifier` for that contributor should be `MOJA` and the contributor type should be Project. This transitively will also associate the contributor with all plots associated with that project. If the contributor should only be associated with a particular observation with `user_ob_code` `MOJA_0214`, the record identifier is that observation identifier, and the `contributor_type` should be Observation.
 
@@ -234,7 +234,7 @@ at a plot, such as fire, grazing, logging, or other events that have impacted
 the vegetation. The primary key is `user_do_code`. The foreign key `user_ob_code` links each
 disturbance record to a specific plot observation and is required.
 
-`type` describes the kind of disturbance and is a required field. This field is a closed list in vegbank, with options listed below.
+`type` describes the kind of disturbance and is a required field. This field is a closed list in VegBank, with options listed below.
 
 ```{r, echo = FALSE}
 docs %>% 
