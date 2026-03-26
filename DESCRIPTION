@@ -20,6 +20,11 @@ Authors@R: c(
         role = c("aut"),
         comment=c(ORCID = "0000-0003-4703-1974"))
     )
+    person("Maggie", "Klope",
+        email = "mmklope@nceas.ucsb.edu",
+        role = c("aut"),
+        comment=c(ORCID = "0000-0003-3926-7039"))
+    )
 Description: Provides a programmatic interface to 'VegBank', the
     vegetation plot database of the Ecological Society of America's
     Panel on Vegetation Classification, hosted by the National Center
