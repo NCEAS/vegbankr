@@ -94,8 +94,8 @@ docs %>%
 ```
 
 ### Parties
- 
- The Parties loader table is used to upload new parties (people) associated with plots, projects, taxa, and classifications. The primary key is `user_py_code` which is used as a foreign key in the Contributors loader table. Once uploaded, VegBank will create a `vb_py_code` for each party to be used in the Contributors table.
+
+The Parties loader table is used to upload new parties (people) associated with plots, projects, taxa, and classifications. The primary key is `user_py_code` which is used as a foreign key in the Contributors loader table. Once uploaded, VegBank will create a `vb_py_code` for each party to be used in the Contributors table.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -232,15 +232,57 @@ docs %>%
 The disturbances loader table contains information about disturbances observed
 at a plot, such as fire, grazing, logging, or other events that have impacted
 the vegetation. The primary key is `user_do_code`. The foreign key `user_ob_code` links each
-disturbance record to a specific plot observation and is required.
-
-`type` describes the kind of disturbance and is a required field. This field is a closed list in VegBank, with options listed below.
+disturbance record to a specific plot observation and is required. `type` describes the kind of disturbance and is a required field. This field is a closed list in VegBank, with options listed below.
 
 ```{r, echo = FALSE}
 docs %>% 
   filter(loader_table == "disturbances") %>% 
   select(-loader_table) %>% 
   datatable()
+```
+
+Below are the allowed disturbance types:
+
+```{r, echo = FALSE}
+disturbance_types <- tibble::tibble(
+  type = c(
+    "Animal, general",
+    "Grazing, domestic stock",
+    "Grazing, native ungulates",
+    "Herbivory, invertebrate",
+    "Herbivory, vertebrates",
+    "Human, general",
+    "Cultivation",
+    "Fire suppression",
+    "Herbicide or chemical",
+    "Mowing",
+    "Roads and vehicular traffic",
+    "Timber harvest, general",
+    "Timber harvest, clearcut",
+    "Timber harvest, selective",
+    "Trampling and trails",
+    "Natural, general",
+    "Avalanche and snow",
+    "Cryoturbation",
+    "Erosion",
+    "Floods",
+    "Hydrologic alteration",
+    "Ice",
+    "Mass movements (landslides)",
+    "Plant disease",
+    "Salt spray",
+    "Tides",
+    "Wind, chronic",
+    "Wind event",
+    "Fire, general",
+    "Fire, canopy",
+    "Fire, ground",
+    "Other disturbances",
+    "unknown"
+  )
+)
+
+datatable(disturbance_types)
 ```
 
 ### Soils
