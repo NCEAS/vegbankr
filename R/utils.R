@@ -132,7 +132,7 @@ send <- function(request, skip_auth = FALSE) {
 
   if (!skip_auth) {
     # If the access token is expired but the refresh token is
-    # still valid, update tokens before retrying the request.
+    # still valid, update tokens before trying the request.
     if (!is.null(vb_get_access_token()) && (!vb_access_token_is_valid() || jwt_expiry_time(vb_get_access_token()) < (Sys.time() + 30))) {
       if (vb_refresh_token_is_valid()) {
         message("Access token expired; refreshing tokens...")
