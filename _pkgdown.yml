@@ -3,12 +3,15 @@ template:
   bootstrap: 5
 navbar:
   structure:
-    left: [intro, upload, articles]
+    left: [intro, download, upload, articles]
     right: [search, github]
   components:
     intro:
       text: About
       href: index.html
+    download:
+      text: Download
+      href: articles/download.html
     upload:
       text: Upload
       href: articles/upload.html
