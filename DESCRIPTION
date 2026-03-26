@@ -18,8 +18,7 @@ Authors@R: c(
     person("Jeanette", "Clark",
         email = "jclark@nceas.ucsb.edu",
         role = c("aut"),
-        comment=c(ORCID = "0000-0003-4703-1974"))
-    )
+        comment=c(ORCID = "0000-0003-4703-1974")),
     person("Maggie", "Klope",
         email = "mmklope@nceas.ucsb.edu",
         role = c("aut"),
