@@ -34,6 +34,15 @@
 #'     \item \strong{parties:} "default", "surname", "organization_name",
 #'           "obs_count"
 #'   }
+#' @param status Optional string for limiting results by status, with
+#'   default equivalent to 'any' if unset. Available for:
+#'   \itemize{
+#'     \item \strong{plot-observations:} "any", "current"
+#"     \item \strong{plant-concepts:} "any", "current", "accepted",
+#"           "current_accepted"
+#'     \item \strong{community-concepts:} "any", "current", "accepted",
+#'           "current_accepted"
+#'   }
 #' @param detail Character string specifying level of detail. All endpoints
 #'   support "full" detail. For those that support "minimal" detail, this is the
 #'   default for collection queries, otherwise the default is "full". Plot
@@ -259,14 +268,14 @@ vb_get_stratum_methods <- function(vb_code = NULL, limit = 100, offset = 0,
 #' @rdname vb_get
 #' @export
 vb_get_plant_concepts <- function(vb_code = NULL, limit = 100, offset = 0,
-                                  parquet = NULL, search = NULL,
+                                  parquet = NULL, search = NULL, status = NULL,
                                   with_nested = NULL, ...) {
   resource <- "plant-concepts"
   vb_key <- get_vb_key(resource)
   is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
   if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
   if (missing(with_nested)) with_nested <- if (is_collection) FALSE else TRUE
-  vb_get(resource, vb_code, parquet = parquet, search = search,
+  vb_get(resource, vb_code, parquet = parquet, search = search, status = status,
          with_nested = with_nested, limit = limit, offset = offset, ...)
 }
 
@@ -344,14 +353,14 @@ vb_get_taxon_interpretations <- function(vb_code = NULL, limit = 100,
 #' @rdname vb_get
 #' @export
 vb_get_community_concepts <- function(vb_code = NULL, limit = 100, offset = 0,
-                                      parquet = NULL, search = NULL,
+                                      parquet = NULL, search = NULL, status = NULL,
                                       with_nested = NULL, ...) {
   resource <- "community-concepts"
   vb_key <- get_vb_key(resource)
   is_collection <- is.null(vb_code) || substr(vb_code, 1, 2) != vb_key
   if (missing(parquet)) parquet <- if (is_collection) TRUE else FALSE
   if (missing(with_nested)) with_nested <- if (is_collection) FALSE else TRUE
-  vb_get(resource, vb_code, parquet = parquet, search = search,
+  vb_get(resource, vb_code, parquet = parquet, search = search, status = status,
          with_nested = with_nested, limit = limit, offset = offset, ...)
 }
 
@@ -390,7 +399,7 @@ vb_get_community_interpretations <- function(vb_code = NULL, limit = 100,
 #' @rdname vb_get
 #' @export
 vb_get_plot_observations <- function(vb_code = NULL, limit = 100, offset = 0,
-                                     parquet = NULL, search = NULL,
+                                     parquet = NULL, search = NULL, status = NULL,
                                      detail = NULL, with_nested = NULL,
                                      num_taxa = NULL, num_comms = NULL, ...) {
   resource <- "plot-observations"
@@ -401,7 +410,7 @@ vb_get_plot_observations <- function(vb_code = NULL, limit = 100, offset = 0,
   if (missing(with_nested)) with_nested <- if (is_collection) FALSE else TRUE
   if (missing(num_taxa)) num_taxa <- if (is_collection) 5 else 5000
   if (missing(num_comms)) num_comms <- if (is_collection) 5 else 5000
-  vb_get(resource, vb_code, parquet = parquet, search = search,
+  vb_get(resource, vb_code, parquet = parquet, search = search, status = status,
          detail = detail, with_nested = with_nested, num_taxa = num_taxa,
          num_comms = num_comms, limit = limit, offset = offset, ...)
 }
