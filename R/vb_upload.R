@@ -182,17 +182,19 @@ vb_upload <- function(resource, ..., query_params = NULL, dry_run = FALSE) {
 #'
 #' @return A data frame, invisibly
 #' @import httr2
+#' @import cli
 #' @importFrom utils head tail
 #'
 #' @noRd
 handle_vb_upload_response <- function(response) {
   resp <- resp_body_string(response) |>
     jsonlite::fromJSON(flatten = TRUE)
+  
+  dry <- FALSE
   if ("dry_run_data" %in% names(resp)) {
-    message(resp$message)
+    dry <- TRUE
+    dry_msg <- resp$message
     resp <- resp$dry_run_data
-  } else {
-    message("Upload complete")
   }
 
   counts <- resp$counts
@@ -201,8 +203,6 @@ handle_vb_upload_response <- function(response) {
   action_msgs <- paste("->",
     sapply(counts, function(cnt) paste(names(cnt), cnt)),
     names(counts), "record(s)")
-
-  for (msg in action_msgs) message(msg)
 
   # Create truncated dataframes to print, showing only first 2 rows
   # and last 2 rows for those with 5+ rows
@@ -219,6 +219,14 @@ handle_vb_upload_response <- function(response) {
       }
     })
   print(resources_peek)
+  
+  for (msg in action_msgs) cli::cli_alert_success(msg)
+  
+  if (dry) {
+    cli::cli_alert_info(dry_msg)
+  } else {
+    cli::cli_alert_success("Upload complete")
+  }
 
   invisible(response)
 }
