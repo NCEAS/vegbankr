@@ -25,6 +25,23 @@ As a VegBank API client, the `vegbankr` package currently supports querying and 
 vegetation plot records, in addition to validating and uploading new
 data to the VegBank database.
 
+## Summary of Functions
+
+| Function | Description |
+|---|---|
+| `vb_get_plot_observations()` | Plot observation data |
+| `vb_get_community_concepts()` | Community concepts (assertions) linked to community names through usages |
+| `vb_get_community_classifications()` | Community classification events wherein one or more community concepts were applied to a plot observation |
+| `vb_get_community_interpretations()` | Assignments of community names and authorities (i.e., community concepts) to specific plot observations, as part of a community classification event |
+| `vb_get_plant_concepts()` | Plant concepts (assertions) linked to plant names through usages |
+| `vb_get_taxon_observations()` | Data provider's determination of taxa observed on a plot, and the overall cover of those taxa |
+| `vb_get_taxon_interpretations()` | Assignments of taxon names and authorities (i.e., plant concepts) to specific taxon observations |
+| `vb_get_cover_methods()` | Information about registered coverclass methods |
+| `vb_get_stratum_methods()` | Information about registered strata sampling protocols |
+| `vb_get_references()` | Information about references cited within VegBank |
+| `vb_get_projects()` | Information about projects established to collect vegetation plot data |
+| `vb_get_parties()` | Information about people and organizations who have contributed to the collection or interpretation of a plot |
+
 Many of the functions utilize the following arguments:
 
 | Argument | Description |
@@ -59,6 +76,7 @@ ob.135454 <- vb_get_plot_observations(vb_code = "ob.135454", detail = "full",
 
 # Preview the downloaded data
 head(ob.135454)
+
 ```
 
 Omitting `detail = "full"` or setting `with_nested = FALSE` returns a
@@ -91,15 +109,35 @@ This example retrieves all projects whose name contains "GAP", sorted in descend
 vb_get_projects(search = "GAP", sort = "-obs_count")
 ```
 
+
 ### Plot Observations by Project Code
 
 Once you have identified a project code, you can pass it directly to `vb_get_plot_observations`. This example retrieves the first 100 records of plot observations associated
 with the project `pj.11044` (Pennsylvania HPD Delaware Water Gap), sorted by the author's observation code.
 
 ```{r}
-obs <- vb_get_plot_observations("pj.11044", sort = "author_obs_code")
-obs
+vb_get_plot_observations("pj.11044", sort = "author_obs_code")
 ```
+## Party Data
+
+`vb_get_parties()` returns information about the people and organization who have contributed to a plot, project, or plant/community interpretation
+
+```{r}
+# get people associated with a project
+vb_get_parties(vb_code = "pj.11044")
+
+# get people associated with a plot observation
+vb_get_parties(vb_code = "ob.3298")
+
+```
+
+### Plot Observations by Party
+
+Once you have identified a party `py` code, it can be used to return all the plot observations associated with a person/organization:
+```{r}
+vb_get_plot_observations(vb_code = "py.1062")
+```
+
 
 ## Taxon Observations
 
@@ -113,6 +151,17 @@ This example retrieves the taxon (plant) observations associated with the plot `
 vb_get_taxon_observations("ob.135454")
 ```
 
+## Plant Species Concepts
+`vb_get_plant_concepts()` can be used to retrieve the plant species concepts associated with plots and projects.
+
+
+```{r}
+
+vb_get_plant_concepts("ob.135454")
+
+```
+
+
 ## Plant Community Concepts
 
 The example below searches for community concepts that include the genus
@@ -120,9 +169,25 @@ The example below searches for community concepts that include the genus
 
 ```{r}
 
-vb_get_community_concepts(search = "sequoiadendron")
+sequoia_communities <- vb_get_community_concepts(search = "sequoiadendron")
+
+# view the plots
+head(sequoia_communities)
 
 ```
+
+Then we can further determine which concept has the most plot observations, then retrieve all of those plot observations from VegBank by directly passing the community concepts codes into `vb_get_plot_observations()`
+
+```{r}
+sequoia_plots <- sequoia_communities |>
+  dplyr::arrange(-obs_count) |>
+  dplyr::slice(1) |>
+  dplyr::pull(cc_code) |>
+  vb_get_plot_observations()
+
+head(sequoia_plots)
+```
+
 
 ## Other Function Options
 
@@ -143,7 +208,26 @@ vb_get_plot_observations(vb_code = "pj.10510", limit = 100, offset = 100)
 
 ### Sorting Results
 
-### Manipulating Downloaded Data with `dplyr`
+Use the `sort` argument to order results by the following fields:
+
+| Endpoint | Sortable Fields |
+|---|---|
+| `plot-observations` | `default`, `author_obs_code` |
+| `plant-concepts` | `default`, `plant_name`, `obs_count` |
+| `community-concepts` | `default`, `comm_name`, `obs_count` |
+| `projects` | `default`, `project_name`, `obs_count` |
+| `parties` | `default`, `surname`, `organization_name`, `obs_count` |
+
+Prefix the
+field name with `-` for descending order. The example below retrieves
+plot observations for projects containing by descending `author_obs_name`
+
+```{r}
+vb_get_plot_observations(vb_code = "pj.10510", sort = '-author_obs_code')
+```
+
+
+## Manipulating Downloaded Data with `dplyr`
 
 Because downloaded VegBank data is saved as dataframes, the data can be
 manipulated using base R or dplyr functions. Below we highlight a few
@@ -153,4 +237,53 @@ possible data manipulations.
 library(dplyr)
 ```
 
-#### ! Need to think of exampls !
+### Select a subset of Columns
+This example retrieves the plot data for `ob.4577`, and then uses the `dplyr::select()` function to select only a subset of columns. 
+```{r}
+# Downloading plant concept data
+plants <- vb_get_plant_concepts("ob.135454")
+
+# Selecting only the plant_name. plant_code, and status columns
+plants_small <- plants |> 
+  dplyr::select(plant_name, plant_code, status)
+
+```
+
+
+### Filter Rows by a Condition
+
+This example first retrieves the
+first 100 records for project `pj.11044` (Pennsylvania HPD Delaware
+Water Gap), sorted by the author's observation code. Then it will filter out observations where the elevation is greater than 250 meters
+```{r}
+obs <- vb_get_plot_observations(
+  vb_code = "pj.11044",
+  sort    = "author_obs_code",
+  limit   = 100
+)
+
+# filter where elevation column is greater than 250 meters
+obs |>
+  dplyr::filter(elevation > 250)
+```
+
+### Summarise Numeric Variables
+
+This example downloads the full plot observation records for project
+`pj.10510` and computes the mean, minimum and maximum slope gradient across all plots.
+
+```{r}
+plot_data <- vb_get_plot_observations(vb_code = "pj.10510", detail = "full")
+
+avg_slope <- plot_data |>
+  dplyr::summarise(
+    slope_mean = mean(slope_gradient, na.rm = TRUE),
+    slope_min  = min(slope_gradient,  na.rm = TRUE),
+    slope_max  = max(slope_gradient,  na.rm = TRUE)
+  )
+
+head(avg_slope)
+```
+
+
+
