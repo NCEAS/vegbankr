@@ -196,7 +196,6 @@ vb_validate_plant_concepts <- function(plant_concepts,
     validate_no_duplicates(plant_concepts, c("user_pc_code")),
     validate_at_least_one_present(plant_concepts, "user_rf_code", "vb_rf_code"),
     validate_at_least_one_present(plant_concepts, "user_status_py_code", "vb_status_py_code"),
-    validate_at_least_one_present(plant_concepts, "user_status_rf_code", "vb_status_rf_code"),
     validate_values_exist(plant_concepts, "user_rf_code", references, "user_rf_code", optional = TRUE),
     validate_values_exist(plant_concepts, "user_status_py_code", parties, "user_py_code", optional = TRUE)
   )
@@ -277,7 +276,6 @@ vb_validate_community_concepts <- function(community_concepts,
     validate_no_nulls(community_concepts, c("user_cc_code", "name", "start_date", "comm_concept_status")),
     validate_no_duplicates(community_concepts, c("user_cc_code")),
     validate_at_least_one_present(community_concepts, "user_status_py_code", "vb_status_py_code"),
-    validate_at_least_one_present(community_concepts, "user_rf_code", "vb_rf_code"),
     validate_values_exist(community_concepts, "user_rf_code", references, "user_rf_code", optional = TRUE),
     validate_values_exist(community_concepts, "user_status_py_code", parties, "user_py_code", optional = TRUE)
   )
@@ -286,7 +284,6 @@ vb_validate_community_concepts <- function(community_concepts,
   if (!is.null(community_names)){
     validation_results$community_names <- list(
       validate_no_nulls(community_names, c("user_cc_code", "name", "name_type", "name_status")),
-      validate_at_least_one_present(community_names, "user_usage_py_code", "vb_usage_py_code"),
       validate_values_exist(community_names, "user_usage_py_code", parties, "user_py_code", optional = TRUE)
     )
   } else cli::cli_alert_info("community_names table not provided - skipping validation")
@@ -339,7 +336,6 @@ vb_validate_stratum_methods <- function(stratum_methods, references = NULL){
   validation_results$stratum_methods <- list(
     validate_no_nulls(stratum_methods, c("user_sm_code", "stratum_method_name")),
     validate_no_duplicates(stratum_methods, c("user_sm_code")),
-    validate_at_least_one_present(stratum_methods, "user_rf_code", "vb_rf_code"),
     validate_values_exist(stratum_methods, "user_rf_code", references, "user_rf_code")
   )
   
@@ -384,7 +380,6 @@ vb_validate_cover_methods <- function(cover_methods, references = NULL){
   validation_results$cover_methods <- list(
     validate_no_nulls(cover_methods, c("user_cm_code", "cover_type", "cover_code", "cover_percent")),
     validate_no_duplicates(cover_methods, c("user_cm_code")),
-    validate_at_least_one_present(cover_methods, "user_rf_code", "vb_rf_code"),
     validate_values_exist(cover_methods, "user_rf_code", references, "user_rf_code")
   )
   
