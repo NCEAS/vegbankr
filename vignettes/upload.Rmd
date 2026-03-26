@@ -106,10 +106,10 @@ docs %>%
 
 ### Contributors
 
-The contributors loader table is fairly code heavy, but is closely linked to
+The contributors loader table is fairly code-heavy, but is closely linked to
 both the Projects table and the Parties table, and is used to link parties (people) with their contributions to plots, projects, taxa, and classifications.
 
-`user_py_code` is a foreign key to the `parties` table, so any values present in this field must be present there as well. Optionally, instead of `user_py_code`, `vb_py_code` can be used if the party is already in VegBank. One of `user_py_code` or `vb_py_code` must be present, but having both in the same row is disallowed.
+`user_py_code` is a foreign key to the `parties` table, so any values present in this field must be present there as well. Optionally, instead of `user_py_code`, `vb_py_code` can be used if the party is already in VegBank. Only one of `user_py_code` or `vb_py_code` must be present, and having both in the same row is disallowed.
 
 `vb_ar_code` is the VegBank role code - a code in the format `ar.{nn}`. A table of allowed values and their meanings is listed below the loader table variables.
 
@@ -162,7 +162,7 @@ Similar to the pattern described in contributors, one of `vb_pl_code` or `user_p
 
 `user_ob_code` is the primary key for an observation on a plot, and may be the same as the plot code if there is only one observation of each plot. If there are multiple observations on the same plot, however, `user_ob_code` must be unique for each observation. 
 
-`user/vb_pj_code` can link a plot and it's observation back to a project. Values in these fields must be present either in the `projects` loader table (`user_pj_code`) or VegBank if the project is already uploaded (`vb_pj_code`). 
+`user/vb_pj_code` can link a plot and its observation back to a project. Values in these fields must be present either in the `projects` loader table (`user_pj_code`) or VegBank if the project is already uploaded (`vb_pj_code`). 
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -199,7 +199,7 @@ docs %>%
 
 ### Strata Methods
 
-Each strata value must also have a VegBank strata method associated with it. This is represented by `vb_sy_code`. To see available codes, see the code snippet below the table. The strata method is linked to an observation via the required `user_ob_code` field. `user_sr_code` is an required identifier that provides a key to each unique strata observation in the strata cover table.
+Each strata value must also have a VegBank strata method associated with it. This is represented by `vb_sy_code`. To see available codes, see the code snippet below the table. The strata method is linked to an observation via the required `user_ob_code` field. `user_sr_code` is a required identifier that provides a key to each unique strata observation in the strata cover table.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -218,7 +218,7 @@ vb_strata <- vb_get_stratum_methods(with_nested = TRUE) %>%
 
 ### Taxon Interpretations
 
-Taxon interpretations associates the plants in the strata cover table with an existing VegBank plant concept code. To get a list of existing plant concepts, use the `vb_get_plant_concepts` function. Note that a person with a role is also required for this table, so one of `user_py_code` (present in the `parties` loader table) or `vb_py_code` (an existing VegBank party) must exist, along with their role, in `vb_ar_code`.
+Taxon interpretations associate the plants in the Strata Cover table with an existing VegBank plant concept code. To get a list of existing plant concepts, use the `vb_get_plant_concepts` function. Note that a person with a role is also required for this table, so one of `user_py_code` (present in the `parties` loader table) or `vb_py_code` (an existing VegBank party) must exist, along with their role, in `vb_ar_code`.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -277,7 +277,7 @@ docs %>%
 
 ## Data Validation
 
-Validating that your data conform the VegBank schema is an important step to a successful data upload. Of course, validation occurs before ingest into the database, and some validation is also done by the API, but users often benefit from getting easy to read validation results prior to even attempting a data upload.
+Validating that your data conform to the VegBank schema is an important step to a successful data upload. Of course, validation occurs before ingest into the database, and some validation is also done by the API, but users often benefit from getting easy to read validation results prior to even attempting a data upload.
 
 The `vb_validate` family of functions will check for the presence of required fields, unique fields, and cross-check required foreign keys across tables.
 
@@ -333,7 +333,7 @@ vb_set_token(tokens = token)
 
 From here, uploading is easy using the `vb_upload_plot_observations()` function. This function takes as arguments data frames for each of the loader tables described above. Note that not all loader tables are required.
 
-To run the function, you'll take the same `data.frames` used in the validation section and pass them as arguments to the function like below. Note the `dry_run` argument. This is a way to do one last round of validation before inserting the data into VegBank. Setting a dry run allows the API to go through all of the steps except the very last insert call. If the dry run is successful, output will display saying that rows were inserted (but they weren't!). If it is not successful, it will error and more work is needed to ensure the loader tables conform to the required schema.
+To run the function, you'll take the same `data.frames` used in the validation section and pass them as arguments to the function like below. Note the `dry_run` argument. This is a way to do one final round of validation before inserting the data into VegBank. Setting a dry run allows the API to go through all of the steps except the very last insert call. If the dry run is successful, output will display saying that rows were inserted (but they weren't!). If it is not successful, it will error and more work is needed to ensure the loader tables conform to the required schema.
 
 ```{r eval = FALSE}
 vb_upload_plot_observations(plot_observations = plots_semi,
