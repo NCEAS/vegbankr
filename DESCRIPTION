@@ -53,7 +53,8 @@ Imports:
     jsonlite,
     nanoparquet,
     purrr,
-    rlang
+    rlang,
+    tidyr
 Suggests:
     DT,
     knitr,
