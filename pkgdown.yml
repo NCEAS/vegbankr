@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   download: download.html
   upload: upload.html
-last_built: 2026-03-27T01:38Z
+last_built: 2026-03-27T02:26Z
 urls:
   reference: https://nceas.github.io/vegbankr/reference
   article: https://nceas.github.io/vegbankr/articles
