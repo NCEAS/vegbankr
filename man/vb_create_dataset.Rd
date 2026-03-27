@@ -26,8 +26,8 @@ The processed response object from the VegBank API documenting what
 (if anything) was successfully created in VegBank.
 }
 \description{
-Use the VegBank API to create a user dataset, which defines a citable
-collection of plot observations that exist in VegBank.
+Use the VegBank API to create a user dataset, which defines a
+collection of plot observations that can be cited in VegBank.
 }
 \examples{
 \dontrun{

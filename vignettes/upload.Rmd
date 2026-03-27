@@ -56,7 +56,7 @@ To use `vegbankr` to upload data, there are 3 key steps:
 This vignette will walk through these 3 steps, with an emphasis on
 modeling and validating data.
 
-## Vegbank Loader Tables
+## VegBank Loader Tables
 
 Loader tables are the data format that is used to upload data into
 VegBank. In order to publish your data to VegBank, the first step is to

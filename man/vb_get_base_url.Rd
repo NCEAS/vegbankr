@@ -13,7 +13,7 @@ A length-one character vector containing the base URL string
 Gets the base URL for the VegBank API. If previously set by the user,
 e.g. via \code{vb_set_base_url()}, this will be pulled from the global
 option (\code{vegbank.base_api_url}). If this option is unset, the package
-default value of "https://api.vegbank.org" will be used.
+default value of \verb{https://api.vegbank.org} will be used.
 }
 \seealso{
 \code{\link[=vb_set_base_url]{vb_set_base_url()}}

@@ -25,7 +25,7 @@ vb_set_base_url <- function(vb_base_url, port) {
 #' Gets the base URL for the VegBank API. If previously set by the user,
 #' e.g. via `vb_set_base_url()`, this will be pulled from the global
 #' option (`vegbank.base_api_url`). If this option is unset, the package
-#' default value of "https://api.vegbank.org" will be used.
+#' default value of `https://api.vegbank.org` will be used.
 #'
 #' @returns A length-one character vector containing the base URL string
 #' @seealso [vb_set_base_url()]

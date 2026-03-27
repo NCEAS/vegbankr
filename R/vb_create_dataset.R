@@ -1,8 +1,8 @@
 #' Create a VegBank dataset
 #'
 #' @description
-#' Use the VegBank API to create a user dataset, which defines a citable
-#' collection of plot observations that exist in VegBank.
+#' Use the VegBank API to create a user dataset, which defines a
+#' collection of plot observations that can be cited in VegBank.
 #'
 #' @param name A single character string giving the dataset name. Must be 100
 #'   characters or fewer.

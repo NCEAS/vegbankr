@@ -86,7 +86,7 @@ smaller summary better for quick browsing or larger downloads.
 
 You can also download multiple plot observations for a specific project.
 For example, to retrieve 100 plot observations from the Southwest GAP,
-Nevada Project (pj.10510):
+Nevada Project (`pj.10510`):
 
 ```{r}
 # Retrieve all plot observations for a specific project
@@ -165,7 +165,7 @@ vb_get_plant_concepts("ob.135454")
 ## Plant Community Concepts
 
 The example below searches for community concepts that include the genus
-*Sequoiadendron*.
+`Sequoiadendron`.
 
 ```{r}
 
@@ -230,7 +230,7 @@ vb_get_plot_observations(vb_code = "pj.10510", sort = '-author_obs_code')
 ## Manipulating Downloaded Data with `dplyr`
 
 Because downloaded VegBank data is saved as dataframes, the data can be
-manipulated using base R or dplyr functions. Below we highlight a few
+manipulated using base R or `dplyr` functions. Below we highlight a few
 possible data manipulations.
 
 ```{r, message = FALSE}
@@ -267,7 +267,7 @@ obs |>
   dplyr::filter(elevation > 250)
 ```
 
-### Summarise Numeric Variables
+### Summarize Numeric Variables
 
 This example downloads the full plot observation records for project
 `pj.10510` and computes the mean, minimum and maximum slope gradient across all plots.

@@ -9,6 +9,7 @@ JWT
 NCEAS
 OAuth
 ORCID
+Sortable
 VegBank
 api
 canonicalize
@@ -20,4 +21,4 @@ http
 https
 lifecycle
 nceas
-vegbank
+validator
