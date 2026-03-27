@@ -78,6 +78,7 @@ vb_get_plant_concepts(
   offset = 0,
   parquet = NULL,
   search = NULL,
+  status = NULL,
   with_nested = NULL,
   ...
 )
@@ -88,6 +89,7 @@ vb_get_taxon_observations(
   offset = 0,
   parquet = NULL,
   search = NULL,
+  detail = NULL,
   with_nested = NULL,
   ...
 )
@@ -97,6 +99,7 @@ vb_get_taxon_importances(
   limit = 100,
   offset = 0,
   parquet = NULL,
+  detail = NULL,
   with_nested = NULL,
   ...
 )
@@ -106,10 +109,18 @@ vb_get_stem_counts(
   limit = 100,
   offset = 0,
   parquet = NULL,
+  detail = NULL,
   ...
 )
 
-vb_get_strata(vb_code = NULL, limit = 100, offset = 0, parquet = NULL, ...)
+vb_get_strata(
+  vb_code = NULL,
+  limit = 100,
+  offset = 0,
+  parquet = NULL,
+  detail = NULL,
+  ...
+)
 
 vb_get_taxon_interpretations(
   vb_code = NULL,
@@ -126,6 +137,7 @@ vb_get_community_concepts(
   offset = 0,
   parquet = NULL,
   search = NULL,
+  status = NULL,
   with_nested = NULL,
   ...
 )
@@ -157,6 +169,7 @@ vb_get_plot_observations(
   offset = 0,
   parquet = NULL,
   search = NULL,
+  status = NULL,
   detail = NULL,
   with_nested = NULL,
   num_taxa = NULL,
@@ -210,9 +223,11 @@ vb_get(
 
 - search:
 
-  Optional search string for filtering results based on full-text
-  search. Available for: plot-observations, plant-concepts,
-  community-concepts, projects, and parties.
+  Optional search string for filtering results based on full-text search
+  or the resource's vb_code (the latter of which is functionally
+  equivalent to using the `vb_code` argument directly). Available for:
+  plot-observations, plant-concepts, community-concepts, projects, and
+  parties.
 
 - sort:
 
@@ -241,6 +256,16 @@ vb_get(
   endpoints support `FALSE`. For those that support `TRUE`, this is the
   default for individual record queries, otherwise the default is
   `FALSE`. Set to `NULL` to use the API default.
+
+- status:
+
+  Optional string for limiting results by status, with default
+  equivalent to 'any' if unset. Available for:
+
+  - **plot-observations:** "any", "current"
+
+  - **community-concepts:** "any", "current", "accepted",
+    "current_accepted"
 
 - detail:
 

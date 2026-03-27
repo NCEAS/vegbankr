@@ -2,6 +2,7 @@
 <url><loc>https://nceas.github.io/vegbankr/404.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/CONTRIBUTING.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/LICENSE-text.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/articles/download.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/articles/index.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/articles/upload.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/authors.html</loc></url>
@@ -10,8 +11,13 @@
 <url><loc>https://nceas.github.io/vegbankr/reference/canonicalize_names.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/get_page_details.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/index.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/validate_at_least_one_present.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/validate_no_duplicates.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/validate_no_nulls.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/validate_values_exist.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_access_token_is_valid.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_count.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_create_dataset.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_debug.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_get.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_get_base_url.html</loc></url>
@@ -25,5 +31,10 @@
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_undebug.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_unset_token.html</loc></url>
 <url><loc>https://nceas.github.io/vegbankr/reference/vb_upload.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_validate_community_concepts.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_validate_cover_methods.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_validate_plant_concepts.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_validate_plot_observations.html</loc></url>
+<url><loc>https://nceas.github.io/vegbankr/reference/vb_validate_stratum_methods.html</loc></url>
 </urlset>
 

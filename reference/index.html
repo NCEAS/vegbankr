@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vegbankr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,10 +16,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../index.html">About</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/download.html">Download</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/upload.html">Upload</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/download.html">Downloading data with vegbankr</a></li>
+    <li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -61,6 +63,34 @@
 
         <dt>
 
+          <code><a href="validate_at_least_one_present.html">validate_at_least_one_present()</a></code>
+
+        </dt>
+        <dd>Validate at least one of two columns is present</dd>
+
+        <dt>
+
+          <code><a href="validate_no_duplicates.html">validate_no_duplicates()</a></code>
+
+        </dt>
+        <dd>Validate no duplicate values in specified columns</dd>
+
+        <dt>
+
+          <code><a href="validate_no_nulls.html">validate_no_nulls()</a></code>
+
+        </dt>
+        <dd>Validate no NULL values in specified columns</dd>
+
+        <dt>
+
+          <code><a href="validate_values_exist.html">validate_values_exist()</a></code>
+
+        </dt>
+        <dd>Validate values exist in parent table</dd>
+
+        <dt>
+
           <code><a href="vb_access_token_is_valid.html">vb_access_token_is_valid()</a></code>
 
         </dt>
@@ -72,6 +102,13 @@
 
         </dt>
         <dd>Get record count for a VegBank resource</dd>
+
+        <dt>
+
+          <code><a href="vb_create_dataset.html">vb_create_dataset()</a></code>
+
+        </dt>
+        <dd>Create a VegBank dataset</dd>
 
         <dt>
 
@@ -159,16 +196,51 @@
 
         <dt>
 
-          <code><a href="vb_upload.html">vb_upload()</a></code> <code><a href="vb_upload.html">vb_upload_plot_observations()</a></code> <code><a href="vb_upload.html">vb_upload_plant_concepts()</a></code> <code><a href="vb_upload.html">vb_upload_community_concepts()</a></code>
+          <code><a href="vb_upload.html">vb_upload()</a></code> <code><a href="vb_upload.html">vb_upload_plot_observations()</a></code> <code><a href="vb_upload.html">vb_upload_plant_concepts()</a></code> <code><a href="vb_upload.html">vb_upload_community_concepts()</a></code> <code><a href="vb_upload.html">vb_upload_taxon_interpretations()</a></code> <code><a href="vb_upload.html">vb_upload_community_classifications()</a></code> <code><a href="vb_upload.html">vb_upload_cover_methods()</a></code> <code><a href="vb_upload.html">vb_upload_stratum_methods()</a></code>
 
         </dt>
         <dd>Upload data to VegBank</dd>
+
+        <dt>
+
+          <code><a href="vb_validate_community_concepts.html">vb_validate_community_concepts()</a></code>
+
+        </dt>
+        <dd>Validate VegBank loader tables for new community concepts</dd>
+
+        <dt>
+
+          <code><a href="vb_validate_cover_methods.html">vb_validate_cover_methods()</a></code>
+
+        </dt>
+        <dd>Validate VegBank loader tables for new cover methods</dd>
+
+        <dt>
+
+          <code><a href="vb_validate_plant_concepts.html">vb_validate_plant_concepts()</a></code>
+
+        </dt>
+        <dd>Validate VegBank loader tables for new plant concepts</dd>
+
+        <dt>
+
+          <code><a href="vb_validate_plot_observations.html">vb_validate_plot_observations()</a></code>
+
+        </dt>
+        <dd>Validate VegBank loader tables for plot observations and related data</dd>
+
+        <dt>
+
+          <code><a href="vb_validate_stratum_methods.html">vb_validate_stratum_methods()</a></code>
+
+        </dt>
+        <dd>Validate VegBank loader tables for new stratum methods</dd>
       </dl></div>
   </main></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark.</p>
+  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark, Maggie Klope.</p>
 </div>
 
 <div class="pkgdown-footer-right">

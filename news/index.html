@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vegbankr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,10 +16,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../index.html">About</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/download.html">Download</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/upload.html">Upload</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/download.html">Downloading data with vegbankr</a></li>
+    <li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -33,21 +35,50 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/NCEAS/vegbankr/blob/v0.9.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/NCEAS/vegbankr/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="vegbankr-100">vegbankr 1.0.0<a class="anchor" aria-label="anchor" href="#vegbankr-100"></a></h2>
+<p>Production release of the VegBank API client, version 1.0.0 on 2026-03-26.</p>
+<p>New features:</p>
+<ul><li>write validation function <a href="https://github.com/NCEAS/vegbankr/issues/78" class="external-link">#78</a>
+</li>
+<li>Support new “minimal” detail when getting various entities <a href="https://github.com/NCEAS/vegbankr/issues/88" class="external-link">#88</a>
+</li>
+<li>Document and test updated search behavior <a href="https://github.com/NCEAS/vegbankr/issues/90" class="external-link">#90</a>
+</li>
+<li>Fully support the VegBank 2.0.0 write API <a href="https://github.com/NCEAS/vegbankr/issues/92" class="external-link">#92</a>
+</li>
+<li>Add functions for remaining VegBank upload endpoints <a href="https://github.com/NCEAS/vegbankr/issues/93" class="external-link">#93</a>
+</li>
+<li>Support creation of user datasets <a href="https://github.com/NCEAS/vegbankr/issues/94" class="external-link">#94</a>
+</li>
+<li>Add user-friendly upload data validation <a href="https://github.com/NCEAS/vegbankr/issues/79" class="external-link">#79</a>
+</li>
+<li>Support status parameter in concept/observation getters <a href="https://github.com/NCEAS/vegbankr/issues/99" class="external-link">#99</a>
+</li>
+<li>make upload output more easily understandable without lots of scrolling <a href="https://github.com/NCEAS/vegbankr/issues/100" class="external-link">#100</a>
+</li>
+<li>Add upload sanity tests that can be run locally <a href="https://github.com/NCEAS/vegbankr/issues/102" class="external-link">#102</a>
+</li>
+</ul><p>Bug fixes:</p>
+<ul><li>logical bug when vb_refresh_tokens() fails to get a token <a href="https://github.com/NCEAS/vegbankr/issues/81" class="external-link">#81</a>
+</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.0" id="vegbankr-090">vegbankr 0.9.0<a class="anchor" aria-label="anchor" href="#vegbankr-090"></a></h2>
-<p>First production release of the VegBank API client;</p>
+<p>First production release of the VegBank API client, version 0.9.0 on 2026-03-20.</p>
 <ul><li>Initial API development release</li>
 <li>Complete coverage of read API endpoints</li>
 <li>Nearly complete coverage of write API endpoints</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark.</p>
+  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark, Maggie Klope.</p>
 </div>
 
 <div class="pkgdown-footer-right">

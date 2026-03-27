@@ -1,17 +1,5 @@
 # Uploading plot data with vegbankr
 
-``` r
-library(dplyr)
-library(DT)
-
-docs <- read.csv("../inst/loader-table-fields.csv")
-
-docs$required <- factor(docs$required, levels = c("required", "best practice", "commonly used", "sometimes used"))
-
-docs <- docs %>% 
-  arrange(required)
-```
-
 ## Introduction to `vegbankr`
 
 This package is an R client for VegBank, the vegetation plot database of
@@ -24,19 +12,29 @@ Vegetation Classification and others, and all ITIS/USDA plant taxa along
 with other taxa recorded in plot records. As a VegBank API client, the
 `vegbankr` package currently supports querying and downloading
 vegetation plot records and other supporting information from the
-VegBank database, and will soon support validating and uploading new
-data to the VegBank database as well.
+VegBank database, and supports validating and uploading new data to the
+VegBank database as well.
+
+## Contributing data to VegBank
+
+To upload data to VegBank, you must **first request contributor
+permission** from the ESA Vegetation Classification Panel. You can
+request to be a contributor by emailing <help@vegbank.org> and the panel
+will evaluate your request with the goal of maintaining high-quality
+vegetation data in the system. Once your contributor role is granted,
+you will be able to log in and upload new plot data with the [vegbankr R
+package](https://nceas.github.io/vegbankr).
 
 To use `vegbankr` to upload data, there are 3 key steps:
 
-1.  Model and transform your data to the vegbank loader table format
+1.  Model and transform your data to the VegBank Loader Table format
 2.  Validate your data
 3.  Upload your data using `vb_upload_plot_observations(...)`
 
 This vignette will walk through these 3 steps, with an emphasis on
 modeling and validating data.
 
-## Vegbank Loader Tables
+## VegBank Loader Tables
 
 Loader tables are the data format that is used to upload data into
 VegBank. In order to publish your data to VegBank, the first step is to
@@ -79,7 +77,7 @@ party to be used in the Contributors table.
 
 ### Contributors
 
-The contributors loader table is fairly code heavy, but is closely
+The contributors loader table is fairly code-heavy, but is closely
 linked to both the Projects table and the Parties table, and is used to
 link parties (people) with their contributions to plots, projects, taxa,
 and classifications.
@@ -87,10 +85,10 @@ and classifications.
 `user_py_code` is a foreign key to the `parties` table, so any values
 present in this field must be present there as well. Optionally, instead
 of `user_py_code`, `vb_py_code` can be used if the party is already in
-vegbank. One of `user_py_code` or `vb_py_code` must be present, but
+VegBank. Only one of `user_py_code` or `vb_py_code` must be present, and
 having both in the same row is disallowed.
 
-`vb_ar_code` is the vegbank role code - a code in the format `ar.{nn}`.
+`vb_ar_code` is the VegBank role code - a code in the format `ar.{nn}`.
 A table of allowed values and their meanings is listed below the loader
 table variables.
 
@@ -127,10 +125,10 @@ be the same as the plot code if there is only one observation of each
 plot. If there are multiple observations on the same plot, however,
 `user_ob_code` must be unique for each observation.
 
-`user/vb_pj_code` can link a plot and it’s observation back to a
-project. Values in these fields must be present either in the `projects`
-loader table (`user_pj_code`) or VegBank if the project is already
-uploaded (`vb_pj_code`).
+`user/vb_pj_code` can link a plot and its observation back to a project.
+Values in these fields must be present either in the `projects` loader
+table (`user_pj_code`) or VegBank if the project is already uploaded
+(`vb_pj_code`).
 
 ### Community Classifications
 
@@ -153,10 +151,10 @@ This loader table contains data from a plot observation of the plant
 names, cover, and strata in a given plot. The `user_ob_code` is a
 required foreign key that links the plant to a plot observation. All
 values in this field must be present in the plot observations loader
-table. `user_tm_code` is a key that is unique for each combination of
-`user_ob_code`, plant name, and strata in this table. `user_to_code` is
+table. `user_to_code` is a key that is unique for each combination of
+`user_ob_code`, plant name, and strata in this table. `user_tm_code` is
 a key that is unique for each combination of `user_ob_code` and plant
-name - so `user_to_code` may be repeated in this table if a plant exists
+name - so `user_tm_code` may be repeated in this table if a plant exists
 in multiple strata in a plot observation. `user_sr_code` is a foreign
 key that corresponds to the `strata` loader table, described below.
 
@@ -164,7 +162,10 @@ key that corresponds to the `strata` loader table, described below.
 
 Each strata value must also have a VegBank strata method associated with
 it. This is represented by `vb_sy_code`. To see available codes, see the
-code snippet below the table:
+code snippet below the table. The strata method is linked to an
+observation via the required `user_ob_code` field. `user_sr_code` is a
+required identifier that provides a key to each unique strata
+observation in the strata cover table.
 
 ``` r
 vb_strata <- vb_get_stratum_methods(with_nested = TRUE) %>% 
@@ -175,7 +176,7 @@ vb_strata <- vb_get_stratum_methods(with_nested = TRUE) %>%
 
 ### Taxon Interpretations
 
-Taxon interpretations associates the plants in the strata cover table
+Taxon interpretations associate the plants in the Strata Cover table
 with an existing VegBank plant concept code. To get a list of existing
 plant concepts, use the `vb_get_plant_concepts` function. Note that a
 person with a role is also required for this table, so one of
@@ -187,17 +188,13 @@ person with a role is also required for this table, so one of
 
 The disturbances loader table contains information about disturbances
 observed at a plot, such as fire, grazing, logging, or other events that
-have impacted the vegetation.
+have impacted the vegetation. The primary key is `user_do_code`. The
+foreign key `user_ob_code` links each disturbance record to a specific
+plot observation and is required. `type` describes the kind of
+disturbance and is a required field. This field is a closed list in
+VegBank, with options listed below.
 
-The primary key is `user_do_code`. The foreign key `user_ob_code` links
-each disturbance record to a specific plot observation and is required.
-
-`type` describes the kind of disturbance and is a required field.
-`comment` is a best practice field for providing text details about the
-disturbance and its impacts. `intensity` describes the degree or
-severity of the disturbance, `age` records the estimated time in years
-since the disturbance event occurred, and `extent` captures the percent
-of the plot that experienced the disturbance event.
+Below are the allowed disturbance types:
 
 ### Soils
 
@@ -205,22 +202,11 @@ The Soils loader table is used to describe soils collected from a plot.
 This includes information on soil horizons, texture, color, depth, and
 chemical properties.
 
-The primary key is `user_so_code`, which can be a simple row number. The
-foreign key `user_ob_code` links each soil record to a specific plot
-observation when used.
-
-`horizon` is a required field that identifies the soil horizon being
-described. `depth_top` and `depth_bottom` define the vertical extent of
-each horizon. `color` records soil color following USDA guidelines.
-
-Soil texture can be described using `texture` class and/or by recording
-the percent composition. Chemical properties include `organic` matter
-content, `ph`, `exchange_capacity`, and `base_saturation`. Methods for
-chemical analyses should be documented in the plot observation’s
-`methodsNarrative` field.
-
-A `description` field shows additional text details about the soil
-characteristics.
+The primary key is `user_so_code`, which can be a simple row number.
+`user_ob_code` links to the observations table. The foreign key
+`user_ob_code` links each soil record to a specific plot observation
+when used. `horizon` is a required field that identifies the soil
+horizon being described.
 
 ### Stem Data
 
@@ -234,21 +220,115 @@ The required foreign key `user_tm_code` links each stem record to a
 specific taxon observation in the strata cover table, associating stems
 with their species identification.
 
-`stem_count` is a required field recording the number of stems of a
-single species that share the same diameter and height characteristics.
-`stem_diameter` records stem diameter in centimeters. When diameter
-classes are used, this value represents the class midpoint, with
-`stem_diameter_accuracy` storing the offset to the class endpoint.
-Similarly, `stem_height` records height in meters, with
-`stem_height_accuracy` capturing measurement precision when height
-classes are used.
+## Data Validation
 
-Individual stems can be tracked with `user_sl_code` (stem location
-identifier), `stem_code` (field label or tag number), and precise
-positions via `stem_x_position` and `stem_y_position` coordinates in
-meters relative to the plot origin, with the x-axis defined by the plot
-azimuth.
+Validating that your data conform to the VegBank schema is an important
+step to a successful data upload. Of course, validation occurs before
+ingest into the database, and some validation is also done by the API,
+but users often benefit from getting easy to read validation results
+prior to even attempting a data upload.
 
-Additional fields include `stem_health` for recording stem condition and
-`stem_taxon_area` for expert users to record the sampling area used to
-infer species presence.
+The `vb_validate` family of functions will check for the presence of
+required fields, unique fields, and cross-check required foreign keys
+across tables.
+
+To validate your plot observations data before submitting, you pass all
+of your loader tables as `data.frames` to the appropriate arguments in
+`vb_validate_plot_observations`.
+
+``` r
+vb_validate_plot_observations(plot_observations = plots,
+                              projects = projects,
+                              parties = party,
+                              contributors = contrib,
+                              disturbances = dist,
+                              community_classifications = comm,
+                              strata_cover_data = strata_cover,
+                              taxon_interpretations = tax,
+                              strata = strata)
+```
+
+If there are issues in the data, the validator will return output that
+looks like this:
+
+    ✖ disturbances.user_ob_code values not found in plot_observations.user_ob_code: DO001, DO002, DO003
+    ℹ soils table not provided - skipping validation
+    ℹ stem_data table not provided - skipping validation
+    ℹ references table not provided - skipping validation
+
+In this example, `user_ob_code` in the `disturbances` table contains
+values that are not found in `user_ob_code` in `plot_observations`. As
+described in the disturbances section of the loader tables requirements
+above, all values in this foreign key must be present in `user_ob_code`
+in the plot observations loader table.
+
+To correct this mistake, you would need to return to the code that
+performed the data modeling to determine what the cause of the issue is.
+It could be that the entire wrong column in the original data was mapped
+to one of the two `user_ob_codes`, or it could be that there are
+capitalization or white space issues that make the same code not be
+recognized as equivalent across tables. Note that validation is case and
+white space sensitive across all checks.
+
+## Data Upload
+
+Once data are validated, you are ready to try to upload data. First you
+need to point your R session to the correct VegBank instance and set a
+token.
+
+To do a test upload, point to the test instance.
+
+``` r
+vb_set_base_url("https://api-dev.vegbank.org")
+```
+
+Next, get a token by logging into <http://api-dev.vegbank.org/login>.
+After logging in, you should see a JSON document that contains an access
+token and refresh token. The easiest way to get this information into R
+is to select the “Raw Data” option in your browser (if available) to get
+the plain text JSON. Copy this to your clipboard, and paste it into R to
+save to the variable `token`. You’ll need to encase this string in
+**single quotes**. Double quotes will give a syntax error.
+
+``` r
+token <- '{"message":"Authorization successful","token":{"access_token":".......","refresh_token":"......."}}'
+```
+
+Then set your token using:
+
+``` r
+vb_set_token(tokens = token)
+```
+
+From here, uploading is easy using the
+[`vb_upload_plot_observations()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
+function. This function takes as arguments data frames for each of the
+loader tables described above. Note that not all loader tables are
+required.
+
+To run the function, you’ll take the same `data.frames` used in the
+validation section and pass them as arguments to the function like
+below. Note the `dry_run` argument. This is a way to do one final round
+of validation before inserting the data into VegBank. Setting a dry run
+allows the API to go through all of the steps except the very last
+insert call. If the dry run is successful, output will display saying
+that rows were inserted (but they weren’t!). If it is not successful, it
+will error and more work is needed to ensure the loader tables conform
+to the required schema.
+
+``` r
+vb_upload_plot_observations(plot_observations = plots_semi,
+                            projects = projects,
+                            parties = party,
+                            contributors = contrib_semi,
+                            disturbances = dist_semi,
+                            community_classifications = comm_semi,
+                            strata_cover_data = strat_semi,
+                            taxon_interpretations = tax_semi,
+                            strata = strat_defs_semi,
+                            soils = soils,
+                            dry_run = TRUE)
+```
+
+Once you get a successful dry run, set `dry_run` to `FALSE` to complete
+your upload!

@@ -19,7 +19,7 @@ read API features that may not (yet) supported by vegbankr."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">vegbankr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,10 +28,12 @@ read API features that may not (yet) supported by vegbankr."></head><body>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../index.html">About</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/download.html">Download</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/upload.html">Upload</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/download.html">Downloading data with vegbankr</a></li>
+    <li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -45,7 +47,7 @@ read API features that may not (yet) supported by vegbankr."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Retrieve data from VegBank</h1>
-      <small class="dont-index">Source: <a href="https://github.com/NCEAS/vegbankr/blob/v0.9.0/R/vb_get.R" class="external-link"><code>R/vb_get.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NCEAS/vegbankr/blob/main/R/vb_get.R" class="external-link"><code>R/vb_get.R</code></a></small>
       <div class="d-none name"><code>vb_get.Rd</code></div>
     </div>
 
@@ -127,6 +129,7 @@ read API features that may not (yet) supported by <code>vegbankr</code>.</p>
 <span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  parquet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  search <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  status <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  with_nested <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -137,6 +140,7 @@ read API features that may not (yet) supported by <code>vegbankr</code>.</p>
 <span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  parquet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  search <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  detail <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  with_nested <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -146,6 +150,7 @@ read API features that may not (yet) supported by <code>vegbankr</code>.</p>
 <span>  limit <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  parquet <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  detail <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  with_nested <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -155,10 +160,18 @@ read API features that may not (yet) supported by <code>vegbankr</code>.</p>
 <span>  limit <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  parquet <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  detail <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">vb_get_strata</span><span class="op">(</span>vb_code <span class="op">=</span> <span class="cn">NULL</span>, limit <span class="op">=</span> <span class="fl">100</span>, offset <span class="op">=</span> <span class="fl">0</span>, parquet <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">vb_get_strata</span><span class="op">(</span></span>
+<span>  vb_code <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  limit <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  parquet <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  detail <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">vb_get_taxon_interpretations</span><span class="op">(</span></span>
 <span>  vb_code <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -175,6 +188,7 @@ read API features that may not (yet) supported by <code>vegbankr</code>.</p>
 <span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  parquet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  search <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  status <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  with_nested <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -206,6 +220,7 @@ read API features that may not (yet) supported by <code>vegbankr</code>.</p>
 <span>  offset <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  parquet <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  search <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  status <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  detail <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  with_nested <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  num_taxa <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -261,8 +276,10 @@ collection queries and <code>FALSE</code> for single-record queries.</p></dd>
 
 <dt id="arg-search">search<a class="anchor" aria-label="anchor" href="#arg-search"></a></dt>
 <dd><p>Optional search string for filtering results based on full-text
-search. Available for: plot-observations, plant-concepts, community-concepts,
-projects, and parties.</p></dd>
+search or the resource's vb_code (the latter of which is functionally
+equivalent to using the <code>vb_code</code> argument directly). Available for:
+plot-observations, plant-concepts, community-concepts, projects, and
+parties.</p></dd>
 
 
 <dt id="arg-sort">sort<a class="anchor" aria-label="anchor" href="#arg-sort"></a></dt>
@@ -287,6 +304,14 @@ to the API GET request.</p></dd>
 structures. All endpoints support <code>FALSE</code>. For those that support <code>TRUE</code>,
 this is the default for individual record queries, otherwise the default is
 <code>FALSE</code>. Set to <code>NULL</code> to use the API default.</p></dd>
+
+
+<dt id="arg-status">status<a class="anchor" aria-label="anchor" href="#arg-status"></a></dt>
+<dd><p>Optional string for limiting results by status, with
+default equivalent to 'any' if unset. Available for:</p><ul><li><p><strong>plot-observations:</strong> "any", "current"</p></li>
+<li><p><strong>community-concepts:</strong> "any", "current", "accepted",
+"current_accepted"</p></li>
+</ul></dd>
 
 
 <dt id="arg-detail">detail<a class="anchor" aria-label="anchor" href="#arg-detail"></a></dt>
@@ -459,7 +484,7 @@ pass <code>NULL</code> for the parameter (e.g., <code>detail = NULL</code>).</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark.</p>
+  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark, Maggie Klope.</p>
 </div>
 
 <div class="pkgdown-footer-right">

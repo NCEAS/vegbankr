@@ -1,7 +1,7 @@
 ## vegbankr: An R client for the VegBank API
 
   
-[![vegbank](reference/figures/logo_vegbank_high_res.svg)](https://rstudio.github.io/vegbankr/)
+[![vegbank](reference/figures/logo_vegbank_high_res.svg)](https://nceas.github.io/vegbankr/)
 
 [![R-CMD-check](https://github.com/NCEAS/vegbankr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NCEAS/vegbankr/actions/workflows/R-CMD-check.yaml)
 
@@ -16,9 +16,12 @@
   requests**](https://github.com/NCEAS/vegbankr/issues)
 - Contact us: <help@vegbank.org>
 - [VegBank discussions](https://github.com/NCEAS/vegbank2/discussions)
-- Citation: \> *Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette
-  Clark*. 2026. **vegbankr: An R API package for the VegBank data
-  system**. Version 0.9.0. VegBank. <doi:10.82902/J1159D>
+- Citation:
+
+> *Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark, Maggie
+> Klope*. 2026. **vegbankr: An R API package for the VegBank data
+> system**. Version 1.0.0. VegBank.
+> [`doi:10.82902/J1MW28`](https://doi.org/10.82902/J1MW28)
 
 This package is an R client for VegBank, the vegetation plot database of
 the Ecological Society of America’s [Panel on Vegetation

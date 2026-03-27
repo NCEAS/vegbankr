@@ -7,6 +7,14 @@
   using a package-provided lookup table by default
 - [`get_page_details()`](https://nceas.github.io/vegbankr/reference/get_page_details.md)
   : Get paging details for a VegBank dataframe
+- [`validate_at_least_one_present()`](https://nceas.github.io/vegbankr/reference/validate_at_least_one_present.md)
+  : Validate at least one of two columns is present
+- [`validate_no_duplicates()`](https://nceas.github.io/vegbankr/reference/validate_no_duplicates.md)
+  : Validate no duplicate values in specified columns
+- [`validate_no_nulls()`](https://nceas.github.io/vegbankr/reference/validate_no_nulls.md)
+  : Validate no NULL values in specified columns
+- [`validate_values_exist()`](https://nceas.github.io/vegbankr/reference/validate_values_exist.md)
+  : Validate values exist in parent table
 - [`vb_access_token_is_valid()`](https://nceas.github.io/vegbankr/reference/vb_access_token_is_valid.md)
   : Check whether the stored access token is present and not expired
 - [`vb_count()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
@@ -27,6 +35,8 @@
   [`vb_count_taxon_observations()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
   [`vb_count_user_datasets()`](https://nceas.github.io/vegbankr/reference/vb_count.md)
   : Get record count for a VegBank resource
+- [`vb_create_dataset()`](https://nceas.github.io/vegbankr/reference/vb_create_dataset.md)
+  : Create a VegBank dataset
 - [`vb_debug()`](https://nceas.github.io/vegbankr/reference/vb_debug.md)
   : Enable VegBank API debugging mode
 - [`vb_get_projects()`](https://nceas.github.io/vegbankr/reference/vb_get.md)
@@ -73,4 +83,19 @@
   [`vb_upload_plot_observations()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
   [`vb_upload_plant_concepts()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
   [`vb_upload_community_concepts()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
+  [`vb_upload_taxon_interpretations()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
+  [`vb_upload_community_classifications()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
+  [`vb_upload_cover_methods()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
+  [`vb_upload_stratum_methods()`](https://nceas.github.io/vegbankr/reference/vb_upload.md)
   : Upload data to VegBank
+- [`vb_validate_community_concepts()`](https://nceas.github.io/vegbankr/reference/vb_validate_community_concepts.md)
+  : Validate VegBank loader tables for new community concepts
+- [`vb_validate_cover_methods()`](https://nceas.github.io/vegbankr/reference/vb_validate_cover_methods.md)
+  : Validate VegBank loader tables for new cover methods
+- [`vb_validate_plant_concepts()`](https://nceas.github.io/vegbankr/reference/vb_validate_plant_concepts.md)
+  : Validate VegBank loader tables for new plant concepts
+- [`vb_validate_plot_observations()`](https://nceas.github.io/vegbankr/reference/vb_validate_plot_observations.md)
+  : Validate VegBank loader tables for plot observations and related
+  data
+- [`vb_validate_stratum_methods()`](https://nceas.github.io/vegbankr/reference/vb_validate_stratum_methods.md)
+  : Validate VegBank loader tables for new stratum methods

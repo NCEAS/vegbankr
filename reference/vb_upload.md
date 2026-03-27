@@ -46,6 +46,25 @@ vb_upload_community_concepts(
   what_to_deactivate = NULL,
   dry_run = FALSE
 )
+
+vb_upload_taxon_interpretations(
+  taxon_interpretations,
+  parties = NULL,
+  references = NULL,
+  dry_run = FALSE
+)
+
+vb_upload_community_classifications(
+  community_classifications,
+  parties = NULL,
+  references = NULL,
+  contributors = NULL,
+  dry_run = FALSE
+)
+
+vb_upload_cover_methods(cover_methods, references = NULL, dry_run = FALSE)
+
+vb_upload_stratum_methods(stratum_methods, references = NULL, dry_run = FALSE)
 ```
 
 ## Arguments
@@ -164,6 +183,16 @@ vb_upload_community_concepts(
 
   A data frame defining correlations between community concepts
 
+- cover_methods:
+
+  A data frame containing cover methods and their associated component
+  cover indexes
+
+- stratum_methods:
+
+  A data frame containing stratum methods and their associated component
+  stratum types
+
 ## Value
 
 The processed response object from the VegBank API documenting what (if
@@ -188,6 +217,20 @@ dataframes are expected (and, in some case, required).
 
 3.  `vb_upload_community_concepts()` - Community concepts linked to
     community names through usages, with some status designation
+
+4.  `vb_upload_taxon_interpretations()` - Re-interpretation of existing
+    observation), associating them with one or more VegBank plant
+    concepts
+
+5.  `vb_upload_community_classifications()` - Re-interpretation of
+    existing VegBank plot observations, associating them with one or
+    more VegBank community concepts as part of a classification activity
+
+6.  `vb_upload_cover_methods()` - New cover methods, including all
+    component cover indexes defined by the method
+
+7.  `vb_upload_stratum_methods()` - New stratum methods, including all
+    component stratum types defined by the method
 
 If
 [`vb_debug()`](https://nceas.github.io/vegbankr/reference/vb_debug.md)

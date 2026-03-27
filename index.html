@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">vegbankr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,11 +32,13 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="active nav-item"><a class="nav-link" href="index.html">About</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/download.html">Download</a></li>
 <li class="nav-item"><a class="nav-link" href="articles/upload.html">Upload</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/upload.html">Uploading plot data with vegbankr</a></li>
+<li><a class="dropdown-item" href="articles/download.html">Downloading data with vegbankr</a></li>
+    <li><a class="dropdown-item" href="articles/upload.html">Uploading plot data with vegbankr</a></li>
   </ul>
 </li>
       </ul>
@@ -56,7 +58,7 @@
 <h2 id="vegbankr-an-r-client-for-the-vegbank-api">vegbankr: An R client for the VegBank API<a class="anchor" aria-label="anchor" href="#vegbankr-an-r-client-for-the-vegbank-api"></a>
 </h2>
 <div align="center">
-<p><br><a href="https://rstudio.github.io/vegbankr/" class="external-link"><img src="reference/figures/logo_vegbank_high_res.svg" alt="vegbank" width="200px"></a></p>
+<p><br><a href="https://nceas.github.io/vegbankr/"><img src="reference/figures/logo_vegbank_high_res.svg" alt="vegbank" width="200px"></a></p>
 <!-- badges: start -->
 <a href="https://github.com/NCEAS/vegbankr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/NCEAS/vegbankr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <!-- badges: end -->
 <hr style="color:transparent">
@@ -72,9 +74,11 @@
 <li>Contact us: <a href="mailto:help@vegbank.org" class="email">help@vegbank.org</a>
 </li>
 <li><a href="https://github.com/NCEAS/vegbank2/discussions" class="external-link">VegBank discussions</a></li>
-<li>Citation: &gt; <em>Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark</em>. 2026. <strong>vegbankr: An R API package for the VegBank data system</strong>. Version 0.9.0. VegBank. <a href="doi:10.82902/J1159D" class="uri">doi:10.82902/J1159D</a>
-</li>
+<li>Citation:</li>
 </ul>
+<blockquote>
+<p><em>Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark, Maggie Klope</em>. 2026. <strong>vegbankr: An R API package for the VegBank data system</strong>. Version 1.0.0. VegBank. <a href="https://doi.org/10.82902/J1MW28" class="external-link"><code>doi:10.82902/J1MW28</code></a></p>
+</blockquote>
 <p>This package is an R client for VegBank, the vegetation plot database of the Ecological Society of America’s <a href="https://esa.org/vegpanel/" class="external-link">Panel on Vegetation Classification</a>, hosted by the <a href="https://www.nceas.ucsb.edu" class="external-link">National Center for Ecological Analysis and Synthesis</a> (NCEAS). VegBank contains vegetation plot data, community types recognized by the U.S. National Vegetation Classification and others, and all ITIS/USDA plant taxa along with other taxa recorded in plot records. As a VegBank API client, the <code>vegbankr</code> package currently supports querying and downloading vegetation plot records and other supporting information from the VegBank database, and will soon support validating and uploading new data to the VegBank database as well.</p>
 <p>VegBank in general, and the <code>vegbankr</code> package in particular, are open source, community projects. We <a href="./CONTRIBUTING.html">welcome contributions</a> in many forms, including code, data, documentation, bug reports, testing, etc. Use the <a href="https://github.com/NCEAS/vegbank2/discussions" class="external-link">VegBank discussions</a> to discuss these contributions with us.</p>
 </div>
@@ -262,6 +266,7 @@ limitations under the License.</code></pre>
 <li>Matthew B. Jones <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0077-4738" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Rushiraj Nenuji <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4678-5213" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Jeanette Clark <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4703-1974" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Maggie Klope <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3926-7039" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -272,7 +277,7 @@ limitations under the License.</code></pre>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark.</p>
+  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark, Maggie Klope.</p>
 </div>
 
 <div class="pkgdown-footer-right">

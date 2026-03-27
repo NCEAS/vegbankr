@@ -15,7 +15,7 @@ typical usage, the resource-specific functions should be preferred."></head><bod
 
     <a class="navbar-brand me-2" href="../index.html">vegbankr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,10 +24,12 @@ typical usage, the resource-specific functions should be preferred."></head><bod
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../index.html">About</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/download.html">Download</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/upload.html">Upload</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/download.html">Downloading data with vegbankr</a></li>
+    <li><a class="dropdown-item" href="../articles/upload.html">Uploading plot data with vegbankr</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -41,7 +43,7 @@ typical usage, the resource-specific functions should be preferred."></head><bod
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Upload data to VegBank</h1>
-      <small class="dont-index">Source: <a href="https://github.com/NCEAS/vegbankr/blob/v0.9.0/R/vb_upload.R" class="external-link"><code>R/vb_upload.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NCEAS/vegbankr/blob/main/R/vb_upload.R" class="external-link"><code>R/vb_upload.R</code></a></small>
       <div class="d-none name"><code>vb_upload.Rd</code></div>
     </div>
 
@@ -91,7 +93,26 @@ typical usage, the resource-specific functions should be preferred.</p>
 <span>  references <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  what_to_deactivate <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dry_run <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">vb_upload_taxon_interpretations</span><span class="op">(</span></span>
+<span>  <span class="va">taxon_interpretations</span>,</span>
+<span>  parties <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  references <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dry_run <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">vb_upload_community_classifications</span><span class="op">(</span></span>
+<span>  <span class="va">community_classifications</span>,</span>
+<span>  parties <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  references <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  contributors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dry_run <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">vb_upload_cover_methods</span><span class="op">(</span><span class="va">cover_methods</span>, references <span class="op">=</span> <span class="cn">NULL</span>, dry_run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">vb_upload_stratum_methods</span><span class="op">(</span><span class="va">stratum_methods</span>, references <span class="op">=</span> <span class="cn">NULL</span>, dry_run <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -217,6 +238,16 @@ associated with specific classification systems for new community concepts</p></
 <dd><p>A data frame defining correlations between
 community concepts</p></dd>
 
+
+<dt id="arg-cover-methods">cover_methods<a class="anchor" aria-label="anchor" href="#arg-cover-methods"></a></dt>
+<dd><p>A data frame containing cover methods and their
+associated component cover indexes</p></dd>
+
+
+<dt id="arg-stratum-methods">stratum_methods<a class="anchor" aria-label="anchor" href="#arg-stratum-methods"></a></dt>
+<dd><p>A data frame containing stratum methods and their
+associated component stratum types</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -239,6 +270,15 @@ interpretation.</p></li>
 through usages, with some status designation</p></li>
 <li><p><code>vb_upload_community_concepts()</code> - Community concepts linked to community
 names through usages, with some status designation</p></li>
+<li><p><code>vb_upload_taxon_interpretations()</code> - Re-interpretation of existing
+observation), associating them with one or more VegBank plant concepts</p></li>
+<li><p><code>vb_upload_community_classifications()</code> - Re-interpretation of existing
+VegBank plot observations, associating them with one or more VegBank
+community concepts as part of a classification activity</p></li>
+<li><p><code>vb_upload_cover_methods()</code> - New cover methods, including all component
+cover indexes defined by the method</p></li>
+<li><p><code>vb_upload_stratum_methods()</code> - New stratum methods, including all component
+stratum types defined by the method</p></li>
 </ol><p>If <code><a href="vb_debug.html">vb_debug()</a></code> is enabled, additional debugging details will be reported to
 the console, primarily focused on the data being uploaded.</p>
 </div>
@@ -250,7 +290,7 @@ the console, primarily focused on the data being uploaded.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark.</p>
+  <p>Developed by Jim Regetz, Matthew B. Jones, Rushiraj Nenuji, Jeanette Clark, Maggie Klope.</p>
 </div>
 
 <div class="pkgdown-footer-right">
