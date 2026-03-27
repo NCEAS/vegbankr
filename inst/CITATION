@@ -17,13 +17,17 @@ authors <- c(
     person("Jeanette", "Clark",
         email = "jclark@nceas.ucsb.edu",
         role = c("aut"),
-        comment=c(ORCID = "0000-0003-4703-1974"))
+        comment=c(ORCID = "0000-0003-4703-1974")),
+    person("Maggie", "Klope",
+        email = "mmklope@nceas.ucsb.edu",
+        role = c("aut"),
+        comment=c(ORCID = "0000-0003-3926-7039"))
 )
 bibentry(bibtype = "Manual",
          title = paste0("{vegbankr}: ", title),
          author = authors,
          year = year,
          note = note,
-         url = "https://doi.org/10.82902/J1159D",
-         doi = '10.82902/J1159D'
+         url = "https://doi.org/10.82902/J1MW28",
+         doi = '10.82902/J1MW28'
 )
