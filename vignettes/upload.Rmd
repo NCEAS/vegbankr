@@ -76,7 +76,18 @@ interactive tables display the allowed `field` (column names), whether
 the field is required, best practice, commonly used, or sometimes used,
 and a description of the field.
 
-There are a number of fields that act as codes and that are used as primary and secondary keys to link loader tables together. Codes that begin with `user_` are supplied by the data contributor. Codes that begin with `vb_` are created by the database upon data upload. 
+There are a number of fields that act as codes and that are used as primary and secondary keys to link loader tables together. Codes that begin with `user_` are supplied by the data contributor. Codes that begin with `vb_` are created by the database upon data upload, and where reference refer to codes that already exist in, and are retrievable via `vb_get` functions. For more details on downloading data from VegBank, see the [download vignette](https://nceas.github.io/vegbankr/articles/download.html).
+
+### Diagram
+
+Below is an Entity-Relationship diagram describing the relationship between the loader tables described above. Note that not all fields are shown for each table - the focus on this diagram is showing keys and relationships between tables. Some representative fields for each table are included, however. Click the diagram to expand in a new tab.
+
+<a href="images/loader-tables-diagram.svg" target="_blank">
+![Click to Zoom](images/loader-tables-diagram.svg)
+</a>
+
+
+
 
 ### Projects
 
@@ -188,7 +199,9 @@ docs %>%
 
 ### Strata Cover
 
-This loader table contains data from a plot observation of the plant names, cover, and strata in a given plot. The `user_ob_code` is a required foreign key that links the plant to a plot observation. All values in this field must be present in the plot observations loader table. `user_to_code` is a key that is unique for each combination of `user_ob_code`, plant name, and strata in this table. `user_tm_code` is a key that is unique for each combination of `user_ob_code` and plant name - so `user_tm_code` may be repeated in this table if a plant exists in multiple strata in a plot observation. `user_sr_code` is a foreign key that corresponds to the `strata` loader table, described below.
+This loader table contains data about the observed plants, cover, and strata in a given plot. VegBank separates plant records into three components: observations, interpretations, and importance. A taxon observation (`user_to_code`) represents seeing a plant at a specific place and time. The taxon importance (`user_tm_code`) indicates unique observations of measurable data like percent cover and stem counts. Because a single plant can occur in multiple vegetation layers, one observation of a plant on a plot (`user_to_code`) may have several importance (`user_tm_code`) records, each documenting the plant's characteristics in a different stratum. Therefore `user_to_code` is a key that is unique for each combination of `user_ob_code`, plant name, and strata in this table. `user_tm_code` is a key that is unique for each combination of `user_ob_code` and plant name.
+
+The `user_ob_code` is a required foreign key that links the plant to a plot observation. All values in this field must be present in the plot observations loader table.  - so `user_tm_code` may be repeated in this table if a plant exists in multiple strata in a plot observation. `user_sr_code` is a foreign key that corresponds to the `strata` loader table, described below.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -199,7 +212,7 @@ docs %>%
 
 ### Strata Methods
 
-Each strata value must also have a VegBank strata method associated with it. This is represented by `vb_sy_code`. To see available codes, see the code snippet below the table. The strata method is linked to an observation via the required `user_ob_code` field. `user_sr_code` is a required identifier that provides a key to each unique strata observation in the strata cover table.
+Each strata name (eg: shrub, tree) must also have a VegBank strata method associated with it. The methods give the allowed strata values and descriptions of each strata within a method. A strata name within a strata method is represented by a unique `vb_sy_code`. To see available codes, use the code snippet below the table. The strata method is linked to an observation via the required `user_ob_code` field. `user_sr_code` is a required identifier that provides a key to each unique strata observation in the strata cover table.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -218,7 +231,7 @@ vb_strata <- vb_get_stratum_methods(with_nested = TRUE) %>%
 
 ### Taxon Interpretations
 
-Taxon interpretations associate the plants in the Strata Cover table with an existing VegBank plant concept code. To get a list of existing plant concepts, use the `vb_get_plant_concepts` function. Note that a person with a role is also required for this table, so one of `user_py_code` (present in the `parties` loader table) or `vb_py_code` (an existing VegBank party) must exist, along with their role, in `vb_ar_code`.
+Taxon interpretations associate the plants in the Strata Cover table with an existing VegBank plant concept code. To get a list of existing plant concepts, use the `vb_get_plant_concepts` function. The taxon interpretation (`user_ti_code`) identifier, and this table as a whole, indicates what species the observer believes a plant observation (`user_to_code`, from strata cover) to be. Separating interpretations from observations allows multiple researchers to assign different interpretations to the same observation if they disagree on identification.  Note that a person with a role is also required for this table, so one of `user_py_code` (present in the `parties` loader table) or `vb_py_code` (an existing VegBank party) must exist, along with their role, in `vb_ar_code`.
 
 ```{r, echo = FALSE}
 docs %>% 
@@ -302,7 +315,7 @@ docs %>%
 ### Stem Data
 
 The Stem Data loader table is used to describe individual plant stems measured at a plot. 
-This table supports detailed tree/shrub demographic data collection, including
+This table supports detailed plant demographic data collection, including
 stem diameter, height, location, and health status.
 
 The primary key is `user_sc_code`, which is the stem count identifier. The
@@ -355,13 +368,19 @@ To correct this mistake, you would need to return to the code that performed the
 
 Once data are validated, you are ready to try to upload data. First you need to point your R session to the correct VegBank instance and set a token.
 
-To do a test upload, point to the test instance.
+To do a test upload, point to the test instance. This is a development sandbox version of the production VegBank. Because it is a sandbox, some data in this instance may be repeated or erroneous, and persistence of both the instance and the data it holds is not guaranteed. 
 
 ```{r, eval = FALSE}
 vb_set_base_url("https://api-dev.vegbank.org")
 ```
 
-Next, get a token by logging into [http://api-dev.vegbank.org/login](http://api-dev.vegbank.org/login). After logging in, you should see a JSON document that contains an access token and refresh token. The easiest way to get this information into R is to select the "Raw Data" option in your browser (if available) to get the plain text JSON. Copy this to your clipboard, and paste it into R to save to the variable `token`. You'll need to encase this string in **single quotes**. Double quotes will give a syntax error.
+To upload to production VegBank, use the following URL:
+
+```{r, eval = FALSE}
+vb_set_base_url("https://api.vegbank.org")
+```
+
+Next, get a token by logging into [http://api-dev.vegbank.org/login](http://api-dev.vegbank.org/login) for the sandbox environment, or [http://api.vegbank.org/login](http://api.vegbank.org/login) for production. After logging in, you should see a JSON document that contains an access token and refresh token. The easiest way to get this information into R is to select the "Raw Data" option in your browser (if available) to get the plain text JSON. Copy this to your clipboard, and paste it into R to save to the variable `token`. You'll need to encase this string in **single quotes**. Double quotes will give a syntax error.
 
 ```{r, eval = FALSE}
 token <- '{"message":"Authorization successful","token":{"access_token":".......","refresh_token":"......."}}'
@@ -391,6 +410,4 @@ vb_upload_plot_observations(plot_observations = plots_semi,
                             dry_run = TRUE)
 ```
 
-Once you get a successful dry run, set `dry_run` to `FALSE` to complete your upload!
-
-
+Once you get a successful dry run, set `dry_run` to `FALSE` to complete your upload. Uploaded data will be visible at [https://dev.vegbank.org/beta/](https://dev.vegbank.org/beta/) for the sandbox instance, and [https://vegbank.org/](https://vegbank.org/) for production.
