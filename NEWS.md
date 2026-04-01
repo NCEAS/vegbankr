@@ -1,3 +1,11 @@
+# vegbankr 1.0.1
+
+Production release of the VegBank API client, version 1.0.1 on 2026-04-02.
+
+New features:
+
+- additional documentation including a loader table diagram [#106](https://github.com/NCEAS/vegbankr/issues/106) 
+
 # vegbankr 1.0.0
 
 Production release of the VegBank API client, version 1.0.0 on 2026-03-26.
