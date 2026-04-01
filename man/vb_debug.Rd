@@ -22,6 +22,10 @@ currently controls two things:
 \item Reporting of the elapsed time, as a console message
 }
 }
+\examples{
+vb_debug(1)
+# Enabling VegBank debugging with verbosity 1
+}
 \seealso{
-\code{\link[=vb_undebug]{vb_undebug()}}, \code{\link[httr2:req_perform]{httr2::req_perform()}}
+\code{\link[=vb_undebug]{vb_undebug()}},
 }

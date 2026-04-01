@@ -6,7 +6,7 @@
 #'
 #' @param vb_base_url (character) The base URL, including protocol and domain
 #' @param port (numeric) Optional port value
-#' @returns NULL
+#' @return NULL
 #' @examples
 #' vb_set_base_url("https://api.vegbank.org")
 #' vb_set_base_url("http://localhost", port = 8080)
@@ -27,9 +27,13 @@ vb_set_base_url <- function(vb_base_url, port) {
 #' option (`vegbank.base_api_url`). If this option is unset, the package
 #' default value of `https://api.vegbank.org` will be used.
 #'
-#' @returns A length-one character vector containing the base URL string
+#' @return A length-one character vector containing the base URL string
 #' @seealso [vb_set_base_url()]
 #' @export
+#' 
+#' @examples
+#' vb_get_base_url()
+#' # [1] "https://api.vegbank.org"
 vb_get_base_url <- function() {
   base_url <- getOption("vegbank.base_api_url")
   if (base_url == "" || is.null(base_url)) {
@@ -52,8 +56,12 @@ vb_get_base_url <- function() {
 #' `httr2::req_perform()`, and in all cases include display of API
 #' request time duration.
 #'
-#' @seealso [vb_undebug()], [httr2::req_perform()]
+#' @return NULL
+#' @seealso [vb_undebug()], 
 #' @export
+#' @examples
+#' vb_debug(1)
+#' # Enabling VegBank debugging with verbosity 1
 vb_debug <- function(verbosity=1) {
   if (is.null(verbosity) || !is.atomic(verbosity) ||
       length(verbosity) != 1 || is.na(verbosity) ||
@@ -72,8 +80,12 @@ vb_debug <- function(verbosity=1) {
 #'
 #' Unset VegBank debugging. Equivalent to `vb_debug(0)`.
 #'
+#' @return NULL
 #' @seealso [vb_debug()]
 #' @export
+#' @examples
+#' vb_undebug()
+#' # Disabling VegBank debugging
 vb_undebug <- function() {
   options(vegbank.debug = 0)
   message("Disabling VegBank debugging")

@@ -190,3 +190,28 @@ If \code{vb_debug()} is enabled, additional debugging details will be reported t
 the console, primarily focused on the data being uploaded.
 }
 }
+\examples{
+\dontrun{
+# Prepare data. Data frames must match the expected VegBank schema.
+new_projects <- data.frame(
+  user_pj_code = "PROJ-1",
+  project_name = "My VegBank Project"
+)
+
+new_plots <- data.frame(
+  user_ob_code = "OBS-1",
+  user_pj_code = "PROJ-1",
+  obs_start_date = "2024-01-01"
+)
+
+# Authenticate using a token
+vb_set_token(token = ...)
+
+# Upload using the appropriate upload function, or the generic `vb_upload`.
+vb_upload_plot_observations(
+  projects = new_projects,
+  plot_observations = new_plots
+)
+}
+
+}
