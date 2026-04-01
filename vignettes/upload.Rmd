@@ -212,7 +212,7 @@ docs %>%
 
 ### Strata Methods
 
-Each strata name (eg: shrub, tree) must also have a VegBank strata method associated with it. The methods give the allowed strata values and descriptions of each strata within a method. A strata name within a strata method is represented by a unique `vb_sy_code`. To see available codes, use the code snippet below the table. The strata method is linked to an observation via the required `user_ob_code` field. `user_sr_code` is a required identifier that provides a key to each unique strata observation in the strata cover table.
+Each strata name (shrub, tree) must also have a VegBank strata method associated with it. The methods give the allowed strata values and descriptions of each strata within a method. A strata name within a strata method is represented by a unique `vb_sy_code`. To see available codes, use the code snippet below the table. The strata method is linked to an observation via the required `user_ob_code` field. `user_sr_code` is a required identifier that provides a key to each unique strata observation in the strata cover table.
 
 ```{r, echo = FALSE}
 docs %>% 
