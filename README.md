@@ -42,14 +42,16 @@ these contributions with us.
 
 ## Installation
 
-The `vegbankr` package is not yet available on CRAN, but you can install
-it directly from this GitHub repository using either the
-[`remotes`](https://github.com/r-lib/remotes) or
-[`devtools`](https://github.com/r-lib/devtools/) package. First install one of
-those packages, and then use it to install `vegbankr` as follows:
+You can install the released version of `vegbankr` from [CRAN](https://CRAN.R-project.org) with:
 
 ```r
-# or use `devtools::` if you prefer
+install.packages("vegbankr")
+```
+
+To install the development version from [GitHub](https://github.com/NCEAS/vegbankr), use remotes:
+
+```r
+# install.packages("remotes")
 remotes::install_github("nceas/vegbankr")
 ```
 
