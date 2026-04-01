@@ -24,3 +24,17 @@ and referential integrity between related tables. Prints validation errors
 and warnings. This validation tool is a first pass at catching errors -
 full validation is only done at upload.
 }
+\examples{
+
+cover_methods <- data.frame(
+  user_cm_code = c("cm1"),
+  cover_type = c("My really amazing cover method"),
+  user_rf_code = "REF001",
+  cover_code = c("cvr_type_1"),
+  cover_percent = c(45),
+  upper_limit = c(10),
+  lower_limit = c(0)
+)
+
+vb_validate_cover_methods(cover_methods = cover_methods)
+}

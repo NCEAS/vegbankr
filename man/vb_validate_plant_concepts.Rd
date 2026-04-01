@@ -39,3 +39,26 @@ and referential integrity between related tables. Prints validation errors
 and warnings. This validation tool is a first pass at catching errors -
 full validation is only done at upload.
 }
+\examples{
+
+plant_concepts <- data.frame(
+  user_pc_code = c("pc.91465", "ACER", "ACRU", "ACRUD2", "ACRUD"),
+  name = c(
+    "Aceraceae", "Acer L.", "Acer rubrum L.",
+    "Acer rubrum L. ssp. drummondii (Hook. & Arn. ex Nutt.) A.E. Murray",
+    "Acer rubrum L. var. drummondii (Hook. & Arn. ex Nutt.) Sarg."),
+  description = NA_character_,
+  vb_rf_code = NA_character_,
+  user_rf_code = "REF001",
+  user_status_rf_code = "REF001",
+  plant_concept_status = c("accepted", "accepted", "accepted", "not accepted", "accepted"),
+  vb_parent_pc_code = rep(c("pc.92372", NA), c(1L, 4L)),
+  user_parent_pc_code = c(NA, "pc.91465", "ACER", NA, "ACRU"),
+  plant_level = c("family", "genus", "species", "subspecies", "variety"),
+  start_date = as.Date("2026-02-04"),
+  vb_status_py_code = "py.511")
+  
+vb_validate_plant_concepts(plant_concepts = plant_concepts)
+
+
+}

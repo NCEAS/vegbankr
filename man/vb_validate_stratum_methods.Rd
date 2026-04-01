@@ -24,3 +24,18 @@ and referential integrity between related tables. Prints validation errors
 and warnings. This validation tool is a first pass at catching errors -
 full validation is only done at upload.
 }
+\examples{
+stratum_methods <- data.frame(
+  user_sm_code = c("jr_sm_1"),
+  stratum_method_name = c("my stratum method name"),
+  stratum_method_description = c("my stratum description"),
+  stratum_assignment = c("whatever this is"),
+  user_rf_code = c("REF001"),
+  stratum_index = c("index 1", "index 2"),
+  stratum_name = c("name 1", "name 2"),
+  stratum_description = c("description 1", "description 2")
+)
+
+vb_validate_stratum_methods(stratum_methods = stratum_methods)
+
+}

@@ -34,6 +34,23 @@
 #' @import dplyr
 #' @import tidyr
 #' @export
+#' 
+#' @examples
+#' 
+#' plot_observations <- data.frame(
+#'   user_ob_code = c("OB001", "OB002", "OB003"),
+#'   user_pl_code = c("PL001", "PL002", NA),
+#'   vb_pl_code = c(NA, NA, "VB001"),
+#'   author_plot_code = c("AP001", "AP002", "AP003"),
+#'   author_obs_code = c("AO001", "AO002", "AO003"),
+#'   user_pj_code = c("MOJA", "MOJA", "MOJA"),
+#'   user_parent_pl_code = c(NA, "PL001", NA),
+#'   latitude = c(37.7749, 34.0522, 40.7128),
+#'   longitude = c(-122.4194, -118.2437, -74.0060),
+#'   obs_start_date = c("2024-01-15", "2024-02-20", "2024-03-10")
+#' )
+#' 
+#' vb_validate_plot_observations(plot_observations = plot_observations)
 #'
 vb_validate_plot_observations <- function(plot_observations,
                                           projects = NULL, parties = NULL, references = NULL, soils = NULL,
@@ -185,6 +202,28 @@ vb_validate_plot_observations <- function(plot_observations,
 #' @import tidyr
 #' @export
 #'
+#' @examples
+#' 
+#' plant_concepts <- data.frame(
+#'   user_pc_code = c("pc.91465", "ACER", "ACRU", "ACRUD2", "ACRUD"),
+#'   name = c(
+#'     "Aceraceae", "Acer L.", "Acer rubrum L.",
+#'     "Acer rubrum L. ssp. drummondii (Hook. & Arn. ex Nutt.) A.E. Murray",
+#'     "Acer rubrum L. var. drummondii (Hook. & Arn. ex Nutt.) Sarg."),
+#'   description = NA_character_,
+#'   vb_rf_code = NA_character_,
+#'   user_rf_code = "REF001",
+#'   user_status_rf_code = "REF001",
+#'   plant_concept_status = c("accepted", "accepted", "accepted", "not accepted", "accepted"),
+#'   vb_parent_pc_code = rep(c("pc.92372", NA), c(1L, 4L)),
+#'   user_parent_pc_code = c(NA, "pc.91465", "ACER", NA, "ACRU"),
+#'   plant_level = c("family", "genus", "species", "subspecies", "variety"),
+#'   start_date = as.Date("2026-02-04"),
+#'   vb_status_py_code = "py.511")
+#'   
+#' vb_validate_plant_concepts(plant_concepts = plant_concepts)
+#' 
+#' 
 vb_validate_plant_concepts <- function(plant_concepts,
                                        plant_names = NULL, plant_correlations = NULL, parties = NULL,
                                        references = NULL) {
@@ -265,7 +304,21 @@ vb_validate_plant_concepts <- function(plant_concepts,
 #' @import dplyr
 #' @import tidyr
 #' @export
-#'
+#' 
+#' @examples
+#' community_concepts <- data.frame(
+#'   user_cc_code = "88.100.00",
+#'   name = "Abies grandis – Picea sitchensis – Thuja plicata",
+#'   user_rf_code = "REF001",
+#'   user_status_rf_code = "MCV - CDFW CNPS",
+#'   comm_concept_status = "accepted",
+#'   user_parent_cc_code = NA,
+#'   comm_level = "alliance",
+#'   start_date = "1995-11-01",
+#'   user_status_py_code = "PY001"
+#' )
+#' 
+#' vb_validate_community_concepts(community_concepts = community_concepts)
 vb_validate_community_concepts <- function(community_concepts,
                                            community_names = NULL, community_correlations = NULL, parties = NULL,
                                            references = NULL) {
@@ -328,6 +381,21 @@ vb_validate_community_concepts <- function(community_concepts,
 #' @import dplyr
 #' @import tidyr
 #' @export
+#' 
+#' @examples
+#' stratum_methods <- data.frame(
+#'   user_sm_code = c("jr_sm_1"),
+#'   stratum_method_name = c("my stratum method name"),
+#'   stratum_method_description = c("my stratum description"),
+#'   stratum_assignment = c("whatever this is"),
+#'   user_rf_code = c("REF001"),
+#'   stratum_index = c("index 1", "index 2"),
+#'   stratum_name = c("name 1", "name 2"),
+#'   stratum_description = c("description 1", "description 2")
+#' )
+#' 
+#' vb_validate_stratum_methods(stratum_methods = stratum_methods)
+#' 
 vb_validate_stratum_methods <- function(stratum_methods, references = NULL){
   
   validation_results <- list()
@@ -372,6 +440,20 @@ vb_validate_stratum_methods <- function(stratum_methods, references = NULL){
 #' @import dplyr
 #' @import tidyr
 #' @export
+#' 
+#' @examples
+#' 
+#' cover_methods <- data.frame(
+#'   user_cm_code = c("cm1"),
+#'   cover_type = c("My really amazing cover method"),
+#'   user_rf_code = "REF001",
+#'   cover_code = c("cvr_type_1"),
+#'   cover_percent = c(45),
+#'   upper_limit = c(10),
+#'   lower_limit = c(0)
+#' )
+#' 
+#' vb_validate_cover_methods(cover_methods = cover_methods)
 vb_validate_cover_methods <- function(cover_methods, references = NULL){
   
   validation_results <- list()

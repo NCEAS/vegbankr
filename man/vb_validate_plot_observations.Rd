@@ -64,3 +64,21 @@ and referential integrity between related tables. Prints validation errors
 and warnings. This validation tool is a first pass at catching errors -
 full validation is only done at upload.
 }
+\examples{
+
+plot_observations <- data.frame(
+  user_ob_code = c("OB001", "OB002", "OB003"),
+  user_pl_code = c("PL001", "PL002", NA),
+  vb_pl_code = c(NA, NA, "VB001"),
+  author_plot_code = c("AP001", "AP002", "AP003"),
+  author_obs_code = c("AO001", "AO002", "AO003"),
+  user_pj_code = c("MOJA", "MOJA", "MOJA"),
+  user_parent_pl_code = c(NA, "PL001", NA),
+  latitude = c(37.7749, 34.0522, 40.7128),
+  longitude = c(-122.4194, -118.2437, -74.0060),
+  obs_start_date = c("2024-01-15", "2024-02-20", "2024-03-10")
+)
+
+vb_validate_plot_observations(plot_observations = plot_observations)
+
+}

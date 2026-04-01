@@ -39,3 +39,18 @@ and referential integrity between related tables. Prints validation errors
 and warnings. This validation tool is a first pass at catching errors -
 full validation is only done at upload.
 }
+\examples{
+community_concepts <- data.frame(
+  user_cc_code = "88.100.00",
+  name = "Abies grandis – Picea sitchensis – Thuja plicata",
+  user_rf_code = "REF001",
+  user_status_rf_code = "MCV - CDFW CNPS",
+  comm_concept_status = "accepted",
+  user_parent_cc_code = NA,
+  comm_level = "alliance",
+  start_date = "1995-11-01",
+  user_status_py_code = "PY001"
+)
+
+vb_validate_community_concepts(community_concepts = community_concepts)
+}
