@@ -57,7 +57,7 @@ remotes::install_github("nceas/vegbankr")
 
 To view more details about the VegBank API ... you'll have to be a
 little patient. It's still in development! Keep an eye on the core
-VegBank repo at https://github.com/NCEAS/vegbank2 for developments and
+VegBank repository at https://github.com/NCEAS/vegbank2 for developments and
 announcements.
 
 On that note, prior to its production release, the main VegBank API
