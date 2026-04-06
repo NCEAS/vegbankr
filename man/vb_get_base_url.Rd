@@ -15,6 +15,10 @@ e.g. via \code{vb_set_base_url()}, this will be pulled from the global
 option (\code{vegbank.base_api_url}). If this option is unset, the package
 default value of \verb{https://api.vegbank.org} will be used.
 }
+\examples{
+vb_get_base_url()
+# [1] "https://api.vegbank.org"
+}
 \seealso{
 \code{\link[=vb_set_base_url]{vb_set_base_url()}}
 }

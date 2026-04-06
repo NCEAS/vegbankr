@@ -5,11 +5,11 @@ Date: 2026-04-02
 Authors@R: c(
     person("Jim", "Regetz",
         email = "regetz@nceas.ucsb.edu",
-        role = c("aut", "cre"),
+        role = c("aut", "cre", "cph"),
         comment=c(ORCID = "0009-0008-2666-6229")),
     person("Matthew B.", "Jones",
         email = "jones@nceas.ucsb.edu",
-        role = c("aut"),
+        role = c("aut", "cph"),
         comment=c(ORCID = "0000-0003-0077-4738")),
     person("Rushiraj", "Nenuji",
         email = "nenuji@nceas.ucsb.edu",
@@ -22,7 +22,8 @@ Authors@R: c(
     person("Maggie", "Klope",
         email = "mmklope@nceas.ucsb.edu",
         role = c("aut"),
-        comment=c(ORCID = "0000-0003-3926-7039"))
+        comment=c(ORCID = "0000-0003-3926-7039")),
+    person("Regents of the University of California", role = c("cph"))
     )
 Description: Provides a programmatic interface to 'VegBank', the
     vegetation plot database of the Ecological Society of America's
@@ -31,11 +32,10 @@ Description: Provides a programmatic interface to 'VegBank', the
     'VegBank' contains vegetation plot
     data, community types recognized by the U.S. National Vegetation
     Classification and others, and all 'ITIS/USDA' plant taxa along with
-    other taxa recorded in plot records. As a 'VegBank' API client, the
-    'vegbankr' package currently supports querying and downloading
-    vegetation plot records and other supporting information from the
-    'VegBank' database, and validating and uploading new
-    data to the 'VegBank' database as well.
+    other taxa recorded in plot records. As an API client, the 'vegbankr'
+    package supports querying and downloading vegetation plot records
+    and supporting information, as well as validating and uploading
+    new data directly to the database.
 License: Apache License (>= 2) | file LICENSE
 URL: https://github.com/NCEAS/vegbankr, https://nceas.github.io/vegbankr/, https://nceas.r-universe.dev/vegbankr
 BugReports: https://github.com/NCEAS/vegbankr/issues

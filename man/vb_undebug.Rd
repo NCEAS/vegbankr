@@ -9,6 +9,10 @@ vb_undebug()
 \description{
 Unset VegBank debugging. Equivalent to \code{vb_debug(0)}.
 }
+\examples{
+vb_undebug()
+# Disabling VegBank debugging
+}
 \seealso{
 \code{\link[=vb_debug]{vb_debug()}}
 }
